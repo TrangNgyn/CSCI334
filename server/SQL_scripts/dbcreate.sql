@@ -1,0 +1,2 @@
+CREATE DATABASE csci334;
+USE csci334;
