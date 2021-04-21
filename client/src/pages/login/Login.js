@@ -1,23 +1,29 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Center, Flex, Text } from "@chakra-ui/layout";
+import { Box, Center, Text } from "@chakra-ui/layout";
 import React from "react";
-import { Container } from "react-bootstrap";
 
-const login = ({ login }) => {
+const login = ({ login, setAccType }) => {
   return (
     <Center h="100vh" layerStyle="mainBG">
-      <Box>
-        <Text as="h2">Login</Text>
-      </Box>
-      <Box>
-        <Container maxW="conatiner.sm">
-          <form>
-            <input type="text" name="accType" />
+      <Box bg="white" borderRadius="lg" p={5}>
+        <Box>
+          <Text as="h2">Login</Text>
+        </Box>
+        <form>
+          <Box>
+            <Text>Account type (civ, org, bus)</Text>
+            <input
+              type="text"
+              name="accType"
+              onChange={(e) => setAccType(e.target.value)}
+            />
+          </Box>
+          <Box pt="5">
             <Button type="submit" variant="green" onClick={login}>
               Login
             </Button>
-          </form>
-        </Container>
+          </Box>
+        </form>
       </Box>
     </Center>
   );

@@ -7,15 +7,26 @@ import OrganisationHome from "./organisation/OrganisationHome";
 export default function AppRouting() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accType, setAccType] = useState("civ");
+
   const handleLogin = (e) => {
     e.preventDefault();
     setIsLoggedIn(!isLoggedIn);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   if (isLoggedIn) {
-    accType === "civ" && <CivilianHome />;
-    accType === "bus" && <BusinessHome />;
-    accType === "org" && <OrganisationHome />;
+    if (accType === "civ") {
+      return <CivilianHome handleLogout={handleLogout} />;
+    }
+    if (accType === "bus") {
+      return <BusinessHome handleLogout={handleLogout} />;
+    }
+    if (accType === "org") {
+      return <OrganisationHome handleLogout={handleLogout} />;
+    }
   }
-  return <Login login={handleLogin} setType={setAccType} />;
+  return <Login login={handleLogin} setAccType={setAccType} />;
 }

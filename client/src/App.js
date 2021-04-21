@@ -1,11 +1,7 @@
 import AppRouting from "./pages/AppRouting";
 
 const App = () => {
-  return (
-    <body>
-      <AppRouting />
-    </body>
-  );
+  return <AppRouting />;
 };
 
 export default App;
