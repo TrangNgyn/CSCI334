@@ -1,32 +1,83 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Center, Text } from "@chakra-ui/layout";
-import React from "react";
+import {
+  Button,
+  Center,
+  Text,
+  Input,
+  Flex,
+  Spacer,
+  Stack,
+  Image,
+  Heading,
+  InputGroup,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import SignUp from "./SignUp";
 
-const login = ({ login, setAccType }) => {
-  return (
-    <Center h="100vh" layerStyle="mainBG">
-      <Box bg="white" borderRadius="lg" p={5}>
-        <Box>
-          <Text as="h2">Login</Text>
-        </Box>
-        <form>
-          <Box>
-            <Text>Account type (civ, org, bus)</Text>
-            <input
-              type="text"
-              name="accType"
-              onChange={(e) => setAccType(e.target.value)}
-            />
-          </Box>
-          <Box pt="5">
-            <Button type="submit" variant="green" onClick={login}>
-              Login
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </Center>
-  );
-};
+function Login({ signUp, login, accTypes, setAccType }) {
+  const [isLoggingIn, setIsLoggingIn] = useState(true);
 
-export default login;
+  const handleIsLoggingIn = (e) => {
+    e.preventDefault();
+    setIsLoggingIn(!isLoggingIn);
+  };
+  if (isLoggingIn) {
+    return (
+      <Center h="100vh" layerStyle="mainBG">
+        <Stack spacing="10" mx="auto" maxW="md" w="90%">
+          <Stack align="center">
+            <Image borderRadius="full" src="" alt="Trace Response Logo" />
+            <Text as="h2" align="center" mt="1">
+              Trace Response
+            </Text>
+            <Heading align="center">Login</Heading>
+          </Stack>
+          <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
+            <InputGroup size="md">
+              {/* TO-DO: add isRequired */}
+              <Input
+                name="email"
+                placeholder="Email"
+                variant="filled"
+                bg="#efefef"
+              />
+            </InputGroup>
+            <InputGroup size="md">
+              {/* TO-DO: add isRequired */}
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                variant="filled"
+                bg="#efefef"
+              />
+            </InputGroup>
+            <Flex>
+              <Button
+                variant="gray"
+                borderRadius="md"
+                onClick={handleIsLoggingIn}
+              >
+                Sign Up
+              </Button>
+              <Spacer />
+              <Button variant="green" borderRadius="md" onClick={login}>
+                Login
+              </Button>
+            </Flex>
+          </Stack>
+        </Stack>
+      </Center>
+    );
+  } else {
+    return (
+      <SignUp
+        signUp={signUp}
+        accTypes={accTypes}
+        setAccType={setAccType}
+        isLoggingIn={handleIsLoggingIn}
+      />
+    );
+  }
+}
+
+export default Login;
