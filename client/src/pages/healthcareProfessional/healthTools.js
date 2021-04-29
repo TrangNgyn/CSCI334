@@ -69,9 +69,9 @@ const HealthTools = ({ back }) => {
   }
 
   return (
-    <Flex h="100vh" layerStyle="mainBG" minW="sm">
-      <Stack spacing="10" mx="auto" maxW="lg" p="10" w="90%">
-        <Text as="h1" align="center">
+    <Flex h="100vh" layerStyle="function">
+      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
+        <Text as="h1" mt={10} mx="auto">
           Health Tools
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg">
@@ -83,7 +83,7 @@ const HealthTools = ({ back }) => {
             <Spacer />
             <Text>{userID}</Text>
           </Flex>
-          <Stack>
+          <Stack spacing={4}>
             <Button variant="green" onClick={handleAddVacination}>
               Add Vacination
             </Button>
@@ -95,7 +95,7 @@ const HealthTools = ({ back }) => {
             </Button>
           </Stack>
         </Stack>
-        <Button variant="gray" onClick={handleReset}>
+        <Button variant="gray" onClick={handleReset} position="fixed" bottom={8} maxW="lg" w="90%">
           BACK
         </Button>
       </Stack>

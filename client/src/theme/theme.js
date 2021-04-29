@@ -20,6 +20,9 @@ const overrides = {
     mainBG: {
       bgGradient: "linear(to-br, #8BF3B5, #2FE562, )",
     },
+    function: {
+      bg: "#efefef"
+  }
   },
   components: {
     Button,

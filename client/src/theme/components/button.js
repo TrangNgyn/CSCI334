@@ -12,7 +12,7 @@ const Button = {
       borderRadius: "md",
     },
     gray: {
-      bg: "gray.200",
+      bg: "#dadada",
       color: "gray.700",
       borderRadius: "md",
     },

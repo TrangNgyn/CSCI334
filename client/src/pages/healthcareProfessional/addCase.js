@@ -15,12 +15,12 @@ import viruses from "./viruses"
 function AddVacination({ back, name, userID }) {
 
   return (
-    <Flex h="100vh" layerStyle="mainBG" minW="sm">
-      <Stack spacing="10" mx="auto" maxW="lg" p="10" w="90%">
-        <Text as="h1" align="center">
-          Confirm Infection
+    <Flex h="100vh" layerStyle="function">
+      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
+        <Text as="h1" mt={10}mx="auto">
+          Confirm Positive Case
         </Text>
-        <Box bg="white" rounded="lg" p={8} boxShadow="lg">
+        <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
           <Text as="h2" mt={0}>
             Confirm Positive Case
           </Text>
@@ -45,15 +45,14 @@ function AddVacination({ back, name, userID }) {
               placeholder={Date.now()}
               variant="filled"
               bg="#efefef"
-              mt={3}
               id="date"
             />
           </InputGroup>
-          <Button variant="red" mt={5} w="100%" onClick={back}>
+          <Button variant="red" w="100%" onClick={back}>
             Confirm Positive Case
           </Button>
-        </Box>
-        <Button variant="gray" onClick={back}>
+        </Stack>
+        <Button variant="gray" onClick={back} position="fixed" bottom={8} maxW="lg" w="90%">
           BACK
         </Button>
       </Stack>

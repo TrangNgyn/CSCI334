@@ -11,12 +11,12 @@ import React from "react";
 
 const findUser = ({ back, handleFindingUser }) => {
   return (
-    <Flex h="100vh" layerStyle="mainBG" minW="sm">
-      <Stack spacing="10" mx="auto" maxW="lg" p="10" w="90%">
-        <Text as="h1" align="center">
+    <Flex h="100vh" layerStyle="function">
+      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
+        <Text as="h1" mt={10}mx="auto">
           Health Tools
         </Text>
-        <Box bg="white" rounded="lg" p={8} boxShadow="lg">
+        <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
           <Text as="h2" m={0}>
             Find User
           </Text>
@@ -26,7 +26,6 @@ const findUser = ({ back, handleFindingUser }) => {
               variant="filled"
               bg="#efefef"
               placeholder="Email"
-              mt={3}
               id="email"
             ></Input>
           </InputGroup>
@@ -36,15 +35,14 @@ const findUser = ({ back, handleFindingUser }) => {
               variant="filled"
               bg="#efefef"
               placeholder="User ID"
-              mt={3}
               id="userID"
             ></Input>
           </InputGroup>
-          <Button variant="green" onClick={handleFindingUser} w="100%" mt={5}>
+          <Button variant="green" onClick={handleFindingUser} w="100%">
             Find
           </Button>
-        </Box>
-        <Button variant="gray" onClick={back}>
+        </Stack>
+        <Button variant="gray" onClick={back} position="fixed" bottom={8} maxW="lg" w="90%">
           BACK
         </Button>
       </Stack>

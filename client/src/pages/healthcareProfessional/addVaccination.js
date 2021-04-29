@@ -20,12 +20,12 @@ function AddVacination({ back }) {
   };
 
   return (
-    <Flex h="100vh" layerStyle="mainBG" minW="sm">
-      <Stack spacing="10" mx="auto" maxW="lg" p="10" w="90%">
-        <Text as="h1" align="center">
-          Add Vacination
+    <Flex h="100vh" layerStyle="function">
+      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
+        <Text as="h1" mt={10}mx="auto">
+          Add Vaccination
         </Text>
-        <Box bg="white" rounded="lg" p={8} boxShadow="lg">
+        <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
           <Text as="h2" mt={0}>
             Vaccination Certificate
           </Text>
@@ -49,7 +49,6 @@ function AddVacination({ back }) {
             bg="#efefef"
             id="vaccineName"
             disabled
-            mt={3}
           >
             {virusName !== false
               ? viruses
@@ -69,17 +68,16 @@ function AddVacination({ back }) {
               placeholder={Date.now()}
               variant="filled"
               bg="#efefef"
-              mt={3}
             />
           </InputGroup>
-          <Checkbox defaultIsChecked display="block" mt={3}>
+          <Checkbox defaultIsChecked display="block">
             Requires follow-up?
           </Checkbox>
-          <Button variant="green" w="100%" onClick={back} mt={5}>
+          <Button variant="green" w="100%" onClick={back}>
             Add Vaccination
           </Button>
-        </Box>
-        <Button variant="gray" onClick={back}>
+        </Stack>
+        <Button variant="gray" onClick={back} position="fixed" bottom={8} maxW="lg" w="90%">
           BACK
         </Button>
       </Stack>

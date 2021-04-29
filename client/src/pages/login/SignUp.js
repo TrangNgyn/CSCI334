@@ -16,16 +16,16 @@ import React from "react";
 const SignUp = ({ isLoggingIn, signUp, setAccType, accTypes }) => {
   return (
     <Center h="100vh" layerStyle="mainBG">
-      <Stack spacing="10" mx="auto" maxW="md" w="90%">
+      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
         <Stack align="center">
           {/* TO-DO: add logo */}
           <Image borderRadius="full" src="" alt="Trace Response Logo" />
           <Text as="h2" align="center" mt="1">
             Trace Response
           </Text>
-          <Heading align="center">Sign Up</Heading>
         </Stack>
         <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
+          <Text as="h2" mt={0}>Sign Up</Text>
           <Select
             name="accType"
             variant="filled"
@@ -66,7 +66,7 @@ const SignUp = ({ isLoggingIn, signUp, setAccType, accTypes }) => {
             </Button>
           </Flex>
           <a href="">
-            <Text fontSize="sm" mt={5} mb={0} align="center">Sign Up for your organization</Text>
+            <Text fontSize="sm" mt={3} mb={0} align="center">Sign Up for your organization</Text>
           </a>
         </Stack>
       </Stack>

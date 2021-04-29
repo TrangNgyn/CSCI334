@@ -23,15 +23,15 @@ function Login({ signUp, login, accTypes, setAccType }) {
   if (isLoggingIn) {
     return (
       <Center h="100vh" layerStyle="mainBG">
-        <Stack spacing="10" mx="auto" maxW="md" w="90%">
+        <Stack spacing="10" mx="auto" maxW="lg" w="90%">
           <Stack align="center">
             <Image borderRadius="full" src="" alt="Trace Response Logo" />
             <Text as="h2" align="center" mt="1">
               Trace Response
             </Text>
-            <Heading align="center">Login</Heading>
           </Stack>
           <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
+            <Text as="h2" mt={0}>Login</Text>
             <InputGroup size="md">
               {/* TO-DO: add isRequired */}
               <Input
