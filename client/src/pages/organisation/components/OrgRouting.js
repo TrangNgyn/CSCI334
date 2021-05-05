@@ -1,0 +1,17 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { orgRoutes } from "../components/OrgRoutes";
+
+export default function OrgRouting() {
+  return (
+    <Routes>
+      {orgRoutes.map((route) => (
+        <Route
+          key={route.component}
+          path={route.path}
+          element={route.element}
+        />
+      ))}
+    </Routes>
+  );
+}

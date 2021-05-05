@@ -10,74 +10,82 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import SignUp from "./SignUp";
-import LogoMenu from "../../components/LogoMenu/LogoMenu";
-import { civMenuRoutes } from "../pageRoutes/CivRoutes";
+import LogoIcon from "../../components/LogoMenu/LogoIcon";
 import { observer } from "mobx-react";
+import DotPattern from "../../components/DotPattern";
 
 function Login({ userStore }) {
   const [signUp, setSignUp] = useState(false);
+
   const handleLogin = (e) => {
     e.preventDefault();
     userStore.doLogin();
   };
 
-  if (!userStore.isLoggedIn) {
-    if (!signUp) {
-      return (
-        <Center h="100vh" layerStyle="mainBG">
-          <Stack spacing="10" mx="auto" maxW="lg" w="90%">
-            <Stack align="center">
-              <LogoMenu menuItems={civMenuRoutes} />
-              <Text as="h2" align="center" mt="1">
-                Trace Response
-              </Text>
-            </Stack>
-            <form onSubmit={(e) => handleLogin(e)}>
-              <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
-                <Text as="h2" mt={0}>
-                  Login
-                </Text>
-
-                <InputGroup size="md">
-                  {/* TO-DO: add isRequired */}
-                  <Input
-                    name="email"
-                    placeholder="Email"
-                    variant="filled"
-                    bg="#efefef"
-                  />
-                </InputGroup>
-                <InputGroup size="md">
-                  {/* TO-DO: add isRequired */}
-                  <Input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    variant="filled"
-                    bg="#efefef"
-                  />
-                </InputGroup>
-                <VStack pt="3">
-                  <Button
-                    variant="gray"
-                    type="button"
-                    onClick={() => setSignUp(true)}
-                  >
-                    Sign Up
-                  </Button>
-                  <Spacer />
-                  <Button variant="green" type="submit">
-                    Login
-                  </Button>
-                </VStack>
-              </Stack>
-            </form>
+  if (!signUp) {
+    return (
+      <Center h="100vh" layerStyle="mainBG">
+        <DotPattern />
+        <Stack spacing="10" mx="auto" maxW="lg" w="90%">
+          <Stack align="center">
+            <LogoIcon />
+            <Text variant="heading" as="h2" align="center" pt="3">
+              Trace Response
+            </Text>
           </Stack>
-        </Center>
-      );
-    } else {
-      return <SignUp userStore={userStore} setSignUp={setSignUp} />;
-    }
+          <form onSubmit={handleLogin}>
+            <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
+              <Text as="h2" mt={0}>
+                Account Login
+              </Text>
+
+              <InputGroup size="md">
+                <Input
+                  isRequired
+                  name="email"
+                  placeholder="Email"
+                  variant="filled"
+                  bg="#efefef"
+                  value={userStore.email}
+                  onChange={(e) =>
+                    userStore.setProperty(e.target.name, e.target.value)
+                  }
+                />
+              </InputGroup>
+              <InputGroup size="md">
+                <Input
+                  isRequired
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  variant="filled"
+                  bg="#efefef"
+                  value={userStore.password}
+                  onChange={(e) =>
+                    userStore.setProperty(e.target.name, e.target.value)
+                  }
+                />
+              </InputGroup>
+              <VStack pt="3">
+                <Button
+                  variant="gray"
+                  type="button"
+                  onClick={() => setSignUp(true)}
+                >
+                  Sign Up
+                </Button>
+                <Spacer />
+                <Button variant="green" type="submit">
+                  Login
+                </Button>
+              </VStack>
+            </Stack>
+          </form>
+        </Stack>
+      </Center>
+    );
+  } else {
+    return <SignUp userStore={userStore} setSignUp={setSignUp} />;
   }
 }
 

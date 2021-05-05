@@ -1,12 +1,21 @@
-import AppRouting from "./pages/AppRouting";
 import { BrowserRouter as Router } from "react-router-dom";
+import AppRouting from "./pages/AppRouting";
+import Login from "./pages/login/Login";
+import { UserStore } from "./stores/UserStore";
+import { observer } from "mobx-react";
 
 const App = () => {
-  return (
-    <Router>
-      <AppRouting />;
-    </Router>
-  );
+  const userStore = UserStore;
+  console.log(userStore.isLoggedIn);
+  if (!userStore.isLoggedIn) {
+    return <Login userStore={userStore} />;
+  } else {
+    return (
+      <Router>
+        <AppRouting userStore={userStore} />
+      </Router>
+    );
+  }
 };
 
-export default App;
+export default observer(App);

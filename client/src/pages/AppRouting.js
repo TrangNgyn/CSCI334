@@ -1,35 +1,26 @@
-import React, { useState } from "react";
-import Login from "./login/Login";
-import BusinessHome from "./business/BusinessHome";
-import CivilianHome from "./civilian/home/CivilianHome";
-import OrganisationHome from "./organisation/OrganisationHome";
-import HealthcareProfessionalHome from "./healthcareProfessional/healthcareProfessionalHome";
-import { UserStore } from "../stores/UserStore";
+import React from "react";
+import BusRouting from "./business/components/BusRouting";
+import CivilianRouting from "./civilian/components/CivilianRouting";
+import OrgRouting from "./organisation/components/OrgRouting";
+import HealthRouting from "./healthcareProfessional/components/HealthRouting";
 import { observer } from "mobx-react";
 
-function AppRouting() {
-  const userStore = UserStore;
-
-  const handleLogout = () => {
-    userStore.doLogout();
-  };
-
-  if (userStore.isLoggedIn) {
-    if (userStore.accType === "civ") {
-      return <CivilianHome handleLogout={handleLogout} />;
-    }
-    if (userStore.accType === "bus") {
-      return <BusinessHome handleLogout={handleLogout} />;
-    }
-    if (userStore.accType === "org") {
-      return <OrganisationHome handleLogout={handleLogout} />;
-    }
-    if (userStore.accType === "hea") {
-      return <HealthcareProfessionalHome handleLogout={handleLogout} />;
-    }
+function AppRouting({ userStore }) {
+  if (userStore.accType === "civ") {
+    return <CivilianRouting />;
+  }
+  if (userStore.accType === "hea") {
+    return <HealthRouting />;
+  }
+  if (userStore.accType === "bus") {
+    return <BusRouting />;
+  }
+  if (userStore.accType === "org") {
+    return <OrgRouting />;
   }
 
-  return <Login userStore={userStore} />;
+  // Plan type not found
+  userStore.doLogout();
 }
 
 export default observer(AppRouting);

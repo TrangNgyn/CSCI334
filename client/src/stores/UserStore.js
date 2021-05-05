@@ -2,8 +2,8 @@ import { action, makeAutoObservable, runInAction } from "mobx";
 
 class UserStoreImpl {
   id = "";
-  email = "";
-  password = "";
+  email = "email@email.com";
+  password = "pass123";
   accType = "civ";
   firstName = "";
   lastName = "";
@@ -17,6 +17,7 @@ class UserStoreImpl {
   // Response from sign in
   isLoggedIn = false;
   errorMSG = "";
+  isLoading = false;
 
   // Business Account
   businessName = "";
@@ -38,10 +39,9 @@ class UserStoreImpl {
 
   resetState = () => {
     this.id = "";
-    this.id = "";
     this.email = "";
     this.password = "";
-    this.accType = "";
+    this.accType = "civ";
     this.firstName = "";
     this.lastName = "";
     this.certIDs = [];
@@ -107,6 +107,40 @@ class UserStoreImpl {
     //         this.isLoading = false;
     //       }
     //     });
+    //   });
+  };
+
+  doSignUp = () => {
+    //this.isLoading = true;
+    this.isLoggedIn = true;
+
+    if (!validateEmail(this.email)) {
+      this.errorMsg = "Email format is incorrect";
+      this.isLoading = false;
+      return;
+    }
+
+    // fetch('/api/account/createaccount', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     accType: this.accType,
+    //     email: this.email,
+    //     password: this.password,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     if (json.success) {
+    //       this.resetState();
+    //       this.errorMsg = json.message;
+    //       this.isLoading = false;
+    //     } else {
+    //       this.errorMsg = json.message;
+    //       this.isLoading = false;
+    //     }
     //   });
   };
 }

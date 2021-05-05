@@ -1,8 +1,13 @@
 import React from "react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import LogoIcon from "./LogoIcon";
+import { useNavigate } from "react-router-dom";
+import { UserStore } from "../../stores/UserStore";
 
 export default function LogoMenu({ menuItems }) {
+  let navigate = useNavigate();
+  const userStore = UserStore;
+
   return (
     <Menu>
       <MenuButton
@@ -22,11 +27,19 @@ export default function LogoMenu({ menuItems }) {
             bg="white"
             border="none"
             key={item.title}
-            onClick={() => console.log(item.path)}
+            onClick={() => navigate(item.path)}
           >
             {item.title}
           </MenuItem>
         ))}
+        <MenuItem
+          bg="white"
+          border="none"
+          key={"logout"}
+          onClick={() => userStore.doLogout()}
+        >
+          Logout
+        </MenuItem>
       </MenuList>
     </Menu>
   );

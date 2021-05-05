@@ -21,11 +21,16 @@ const accTypes = [
 ];
 
 const SignUp = ({ userStore, setSignUp }) => {
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    setSignUp(false);
+  };
+
   return (
     <Center h="100vh" layerStyle="mainBG">
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
         <Stack align="center"></Stack>
-        <form onSubmit={() => userStore.doLogin()}>
+        <form onSubmit={handleSignUp}>
           <Stack spacing={4} bg="white" rounded="lg" p={8} boxShadow="lg">
             <Text as="h2" mt={0}>
               Sign Up

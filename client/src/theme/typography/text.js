@@ -1,9 +1,16 @@
 const Text = {
   baseStyle: {
-    fontFamily: "Raleway",
+    fontFamily: "Roboto",
+    color: "#636363",
   },
   sizes: {},
-  variants: {},
+  variants: {
+    heading: {
+      fontFamily: "Raleway",
+      color: "#171717",
+      fontSize: { base: "1.8rem", md: "3rem" },
+    },
+  },
 };
 
 export default Text;
