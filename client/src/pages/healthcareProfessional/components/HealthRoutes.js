@@ -1,20 +1,33 @@
-import BusLandingPage from "../BusLandingPage";
-import CheckInPage from "../checkIn/CheckInPage";
+import HealthLandingPage from "../HealthLandingPage";
+import FindUserPage from "../findUser/findUserPage";
+import Healthtools from "../healthTools/healthTools";
+import HealthHomePage from "../home/HealthHomePage";
 
-// Finish this
 export const healthRoutes = [
   {
-    element: <BusLandingPage />,
+    element: <HealthLandingPage />,
   },
   {
-    path: "/hea/checkin",
-    element: <CheckInPage />,
+    path: "/hea/home",
+    element: <HealthHomePage />,
+  },
+  {
+    path: "/hea/finduser",
+    element: <FindUserPage />,
+  },
+  {
+    path: "/hea/healthtools",
+    element: <Healthtools />,
   },
 ];
 
 export const healthMenuRoutes = [
   {
-    title: "Check In",
-    path: "bus/checkin",
+    title: "Home",
+    path: "hea/home",
+  },
+  {
+    title: "Find User",
+    path: "hea/finduser",
   },
 ];

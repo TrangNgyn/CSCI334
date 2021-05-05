@@ -5,12 +5,8 @@ import { civRoutes } from "../components/civRoutes";
 export default function CivilianRouting() {
   return (
     <Routes>
-      {civRoutes.map((route) => (
-        <Route
-          key={route.component}
-          path={route.path}
-          element={route.element}
-        />
+      {civRoutes.map((route, x) => (
+        <Route key={x} path={route.path} element={route.element} />
       ))}
     </Routes>
   );

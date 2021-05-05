@@ -1,6 +1,6 @@
 import { Flex, Stack, Text, Spacer, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
-import Tab from "../components/StatisticTab";
+import Tab from "../../../components/StatisticTab";
 
 function ViewStatistics({ back }) {
   return (
@@ -15,7 +15,6 @@ function ViewStatistics({ back }) {
               Employee Stats
             </Text>
             <Spacer />
-            <Icon></Icon>
           </Flex>
         </Stack>
         <Button variant="gray" onClick={back}>

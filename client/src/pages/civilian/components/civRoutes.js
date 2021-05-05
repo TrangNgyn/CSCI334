@@ -39,10 +39,10 @@ export const civRoutes = [
 export const civMenuRoutes = [
   {
     title: "Home",
-    path: "civ/home",
+    path: "/civ/home",
   },
   {
     title: "Check In",
-    path: "civ/checkin",
+    path: "/civ/checkin",
   },
 ];
