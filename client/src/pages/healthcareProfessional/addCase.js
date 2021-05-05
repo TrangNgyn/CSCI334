@@ -1,23 +1,20 @@
 import {
-    Flex,
-    Stack,
-    Text,
-    Box,
-    InputGroup,
-    Input,
-    Button,
-    Select,
-    Checkbox,
-  } from "@chakra-ui/react";
+  Flex,
+  Stack,
+  Text,
+  InputGroup,
+  Input,
+  Button,
+  Select,
+} from "@chakra-ui/react";
 import React from "react";
-import viruses from "./viruses"
+import viruses from "./viruses";
 
 function AddVacination({ back, name, userID }) {
-
   return (
     <Flex h="100vh" layerStyle="function">
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
-        <Text as="h1" mt={10}mx="auto">
+        <Text as="h1" mt={10} mx="auto">
           Confirm Positive Case
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
@@ -52,7 +49,14 @@ function AddVacination({ back, name, userID }) {
             Confirm Positive Case
           </Button>
         </Stack>
-        <Button variant="gray" onClick={back} position="fixed" bottom={8} maxW="lg" w="90%">
+        <Button
+          variant="gray"
+          onClick={back}
+          position="fixed"
+          bottom={8}
+          maxW="lg"
+          w="90%"
+        >
           BACK
         </Button>
       </Stack>

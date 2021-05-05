@@ -1,3 +1,1 @@
-const layerStyles = {
-    
-};
+const layerStyles = {};

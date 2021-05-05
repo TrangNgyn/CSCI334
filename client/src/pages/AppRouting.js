@@ -1,49 +1,35 @@
 import React, { useState } from "react";
 import Login from "./login/Login";
 import BusinessHome from "./business/BusinessHome";
-import CivilianHome from "./civilian/CivilianHome";
+import CivilianHome from "./civilian/home/CivilianHome";
 import OrganisationHome from "./organisation/OrganisationHome";
 import HealthcareProfessionalHome from "./healthcareProfessional/healthcareProfessionalHome";
+import { UserStore } from "../stores/UserStore";
+import { observer } from "mobx-react";
 
-const accTypes = [
-  { name: "Civilian", id: "civ" },
-  { name: "Business", id: "bus" },
-  { name: "Healthcare Professional", id: "hea" },
-  { name: "Organization", id: "org" },
-];
-
-export default function AppRouting() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accType, setAccType] = useState("civ");
-  
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(!isLoggedIn);
-  };
-
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(!isLoggedIn);
-  };
+function AppRouting() {
+  const userStore = UserStore;
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    userStore.doLogout();
   };
 
-  if (isLoggedIn) {
-    if (accType === "civ") {
+  if (userStore.isLoggedIn) {
+    if (userStore.accType === "civ") {
       return <CivilianHome handleLogout={handleLogout} />;
     }
-    if (accType === "bus") {
+    if (userStore.accType === "bus") {
       return <BusinessHome handleLogout={handleLogout} />;
     }
-    if (accType === "org") {
+    if (userStore.accType === "org") {
       return <OrganisationHome handleLogout={handleLogout} />;
     }
-    if (accType === "hea") {
+    if (userStore.accType === "hea") {
       return <HealthcareProfessionalHome handleLogout={handleLogout} />;
     }
   }
 
-  return <Login signUp={handleSignUp} login={handleLogin} accTypes={accTypes} setAccType={setAccType}/>;
+  return <Login userStore={userStore} />;
 }
+
+export default observer(AppRouting);

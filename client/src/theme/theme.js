@@ -21,8 +21,9 @@ const overrides = {
       bgGradient: "linear(to-br, #8BF3B5, #2FE562, )",
     },
     function: {
-      bg: "#efefef"
-  }
+      bg: "#efefef",
+    },
+    ...layerStyles,
   },
   components: {
     Button,
