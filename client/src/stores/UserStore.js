@@ -7,6 +7,7 @@ class UserStoreImpl {
   accType = "civ";
   firstName = "";
   lastName = "";
+  dependants = [];
   certIDs = [];
   infections = ["covid", "tetanus"];
   alerts = [];
