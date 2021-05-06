@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const extend = require('mongoose-schema-extend');
 const Schema = mongoose.Schema;
 
 const user_schema = new Schema({
@@ -23,10 +22,8 @@ const user_schema = new Schema({
         required: true,
         enum: ['CIVILIANS', 'HEALTHCARE_PROFESSIONAL', 'GOVERNMENT', 'BUSINESS','ORGANISATION']
     }
-},
-    {
-        collection: 'users'
-    }
-)
+})
 
-module.exports = user = mongoose.model("user", user_schema);
+
+
+module.exports = user = mongoose.model('user', user_schema);
