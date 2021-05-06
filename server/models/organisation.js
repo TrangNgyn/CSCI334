@@ -13,7 +13,7 @@ const organisation_schema = user.extend({
     }
 },
 {
-    collection: "organisations"
+    collection: "organisation"
 })
 
 module.exports = organisation = mongoose.model("organistion", organisation_schema);
