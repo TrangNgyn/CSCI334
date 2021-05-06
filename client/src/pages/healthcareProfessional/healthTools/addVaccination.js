@@ -15,8 +15,14 @@ import viruses from "../components/viruses";
 function AddVacination({ back }) {
   const [virusName, setVirusName] = useState(false);
   const handleVirusName = (id) => {
-    setVirusName(id);
-    document.getElementById("vaccineName").removeAttribute("disabled");
+    console.log("id " + id + " type " + typeof(id))
+    if (id === "") {
+      setVirusName(false);
+      document.getElementById("vaccineName").setAttribute("disabled","true");
+    } else {
+      setVirusName(id);
+      document.getElementById("vaccineName").removeAttribute("disabled");
+    }
   };
 
   return (
@@ -40,7 +46,8 @@ function AddVacination({ back }) {
               <option value={el.id} key={el.id}>
                 {el.name}
               </option>
-            ))}
+            ))
+            }
           </Select>
           <Select
             name="vaccineName"
