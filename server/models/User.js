@@ -20,7 +20,7 @@ const user_schema = new Schema({
     acc_type: {
         type: String,
         required: true,
-        enum: ['CIVILIANS', 'HEALTHCARE_PROFESSIONAL', 'GOVERNMENT', 'BUSINESS','ORGANISATION']
+        enum: ['CIVILIAN', 'HEALTHCARE_PROFESSIONAL', 'GOVERNMENT', 'BUSINESS','ORGANISATION']
     }
 })
 

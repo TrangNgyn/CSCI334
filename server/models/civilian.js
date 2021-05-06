@@ -27,10 +27,16 @@ const civilian_schema =  new Schema({
         type: [Schema.Types.ObjectId],
         ref: "alerts",
         default: []
+    },
+
+    // for finding the places an infected person has been to
+    checked_in_places: {
+        type: [Schema.Types.ObjectId],
+        default: [],
     }
 },
 {
-    collection: 'civilians'
+    collection: 'civilian'
 })
 
 civilian_schema.plugin(plug)
