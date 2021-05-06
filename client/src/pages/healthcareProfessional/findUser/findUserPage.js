@@ -8,9 +8,9 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-const findUser = ({ handleFindingUser }) => {
+const FindUserPage = ({ handleFindingUser }) => {
   const navigate = useNavigate();
   return (
     <Flex h="100vh" layerStyle="function">
@@ -59,4 +59,4 @@ const findUser = ({ handleFindingUser }) => {
   );
 };
 
-export default findUser;
+export default FindUserPage;
