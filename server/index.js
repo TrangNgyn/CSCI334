@@ -1,24 +1,24 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 const express = require('express'),
     app = express(),
     cors = require('cors'),
     bodyParser = require('body-parser'),
-    mysql = require('mysql'); // import mysql module
+    mongoose = require('mongoose')
 
 // import routers
 const civilian_router = require('./routes/civilians');
 
 // setup database
-db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',       // running as root
-  password: '',
-  database: 'csci334' // what should I name the database?
-});
-
+mongoose
+  .connect(process.env.MONGODB_STRING, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
+  .then(() => console.log('MongoDB connected...'))
+  .catch(err => console.log(err));
 
 // make server object that contain port property and the value for our server.
-var server = {
-  port: 4040
+const server = {
+  port: process.env.PORT || 5000
 };
 
 // use the modules
