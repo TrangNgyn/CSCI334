@@ -15,8 +15,13 @@ import viruses from "../components/viruses";
 function UpdateVacination({ back }) {
   const [virusName, setVirusName] = useState(false);
   const handleVirusName = (id) => {
-    setVirusName(id);
-    document.getElementById("vaccineName").removeAttribute("disabled");
+    if (id === "") {
+      setVirusName(false);
+      document.getElementById("vaccineName").setAttribute("disabled","true");
+    } else {
+      setVirusName(id);
+      document.getElementById("vaccineName").removeAttribute("disabled");
+    }
   };
 
   return (
