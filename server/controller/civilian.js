@@ -12,10 +12,7 @@ class Civilian{
             }]
 
             const new_civ = new civilian_model({
-                user_id: 1,
-                password: "password",
-                email: "email",
-                acc_type: "civilian",
+                user_id: 4,
                 name: name
             })
 

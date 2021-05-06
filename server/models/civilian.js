@@ -14,20 +14,21 @@ const civilian_schema =  new Schema({
                 required: true
             }
         }]
-    },
-    cert_ids: {
-        type: [String],
-        default: []
-    },
-    infections: {
-        type: [String],
-        default: []
-    },
-    alerts: {
-        type: [Schema.Types.ObjectId],
-        ref: "alerts",
-        default: []
     }
+    // ,
+    // cert_ids: {
+    //     type: [String],
+    //     default: []
+    // },
+    // infections: {
+    //     type: [String],
+    //     default: []
+    // },
+    // alerts: {
+    //     type: [Schema.Types.ObjectId],
+    //     ref: "alerts",
+    //     default: []
+    // }
 },
 {
     collection: 'civilians'
@@ -35,4 +36,4 @@ const civilian_schema =  new Schema({
 
 civilian_schema.plugin(plug)
 
-module.exprots =  civilian = mongoose.model('civilian', civilian_schema);
+module.exports =  civilian = mongoose.model('civilian', civilian_schema);
