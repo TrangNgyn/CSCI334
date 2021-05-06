@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const extend = require('mongoose-schema-extend');
 const Schema = mongoose.Schema;
 
 const user_schema = new Schema({
-    userID: {
+    user_id: {
         type: String,
         required: true,
         unique: true,
@@ -17,23 +18,15 @@ const user_schema = new Schema({
         required: true,
         unique: true
     },
-    name: {
-        type: [{
-            firstName: {
-            type: String,
-            required: true
-            },
-            otherNames: {
-                type: String,
-                default: null
-            },
-            lastName: {
-                type: String,
-                required: true
-            }
-        }]   
-    },
-    certIDs: {
-        type: array
+    acc_type: {
+        type: String,
+        required: true,
+        enum: ['CIVILIANS', 'HEALTHCARE_PROFESSIONAL', 'GOVERNMENT', 'BUSINESS','ORGANISATION']
     }
-})
+},
+    {
+        collection: 'users'
+    }
+)
+
+module.exports = user = mongoose.model("user", user_schema);
