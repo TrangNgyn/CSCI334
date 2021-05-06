@@ -13,7 +13,7 @@ class Civilian{
 
             const new_civ = new civilian_model({
                 user_id: 4,
-                name: name
+                name: "name"
             })
 
             var saved_civ = await new_civ.save()
