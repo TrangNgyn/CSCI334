@@ -19,7 +19,7 @@ const HealthTools = () => {
     // finding user
     const email = document.getElementById("email");
     const id = document.getElementById("userID");
-    console.log(email.value, id.value);
+
     setUserName("Greg Nolls");
     setUserID("195667");
   };

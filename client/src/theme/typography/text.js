@@ -9,6 +9,7 @@ const Text = {
       fontFamily: "Raleway",
       color: "#171717",
       fontSize: { base: "1.8rem", md: "3rem" },
+      my: "6",
     },
   },
 };

@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 const App = () => {
   const userStore = UserStore;
-  console.log(userStore.isLoggedIn);
+
   if (!userStore.isLoggedIn) {
     return <Login userStore={userStore} />;
   } else {

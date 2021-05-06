@@ -1,6 +1,5 @@
 import { Flex, Stack, Text, Spacer, Button } from "@chakra-ui/react";
-import React, { useState } from "react";
-import Tab from "../../../components/StatisticTab";
+import React from "react";
 
 function ViewStatistics({ back }) {
   return (

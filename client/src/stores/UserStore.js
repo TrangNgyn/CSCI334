@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
+import { action, makeAutoObservable } from "mobx";
 
 class UserStoreImpl {
   id = "";
@@ -7,7 +7,8 @@ class UserStoreImpl {
   accType = "civ";
   firstName = "";
   lastName = "";
-  dependants = [];
+  newDependant = "";
+  dependants = ["Matt Goghurt", "Jake Cool"];
   certIDs = [];
   infections = ["covid", "tetanus"];
   alerts = [];
@@ -27,15 +28,34 @@ class UserStoreImpl {
   orgName = "";
   employees = [];
 
+  // Check in Form
+  checkedIn = false;
+  scanned = false;
+
   constructor() {
     makeAutoObservable(this, {
       setProperty: action,
       resetState: action,
+      addDependant: action,
+      removeDependant: action,
     });
   }
 
   setProperty = (key, value) => {
     this[key] = value;
+  };
+
+  addDependant = () => {
+    if (this.newDependant !== "") {
+      if (!this.dependants.includes(this.newDependant)) {
+        this.dependants.push(this.newDependant);
+        this.newDependant = "";
+      }
+    }
+  };
+
+  removeDependant = (name) => {
+    this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
 
   resetState = () => {

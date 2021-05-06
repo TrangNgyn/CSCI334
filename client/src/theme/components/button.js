@@ -2,7 +2,7 @@ const Button = {
   baseStyle: {
     borderRadius: "md",
     border: "none",
-    shadow: "base",
+    shadow: "md",
     width: "100%",
     py: "26px",
     textTransform: "uppercase",

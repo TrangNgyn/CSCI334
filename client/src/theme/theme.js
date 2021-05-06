@@ -17,12 +17,6 @@ const overrides = {
   styles,
   borders,
   layerStyles: {
-    mainBG: {
-      bgGradient: "linear(to-br, #8BF3B5, #2FE562, )",
-    },
-    function: {
-      bg: "#efefef",
-    },
     ...layerStyles,
   },
   components: {

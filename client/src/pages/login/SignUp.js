@@ -1,15 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Center, Text, VStack } from "@chakra-ui/layout";
-import {
-  Select,
-  Input,
-  Flex,
-  Spacer,
-  Stack,
-  Image,
-  InputGroup,
-  FormControl,
-} from "@chakra-ui/react";
+import { Select, Input, Spacer, Stack, InputGroup } from "@chakra-ui/react";
 import React from "react";
 import { observer } from "mobx-react";
 
