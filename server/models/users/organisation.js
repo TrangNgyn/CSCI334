@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const user = require('./user');
 
-const organisation_schema = user.extend({
+const organisation = user.discriminator('organisation', new Schema({
     organisation_name: {
         type: String,
         required: true
@@ -15,5 +15,6 @@ const organisation_schema = user.extend({
 {
     collection: "organisation"
 })
+)
 
-module.exports = organisation = mongoose.model("organistion", organisation_schema);
+module.exports = mongoose.model("organistion");

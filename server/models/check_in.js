@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const extend = require('mongoose-schema-extend');
 const Schema = mongoose.Schema;
 
 const check_in_schema = new Schema({

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const user = require('./user')
 
-const business_schema = user.extend({
+const business = user.discriminator('business', new Schema({
     business_name: {
         required: true,
         type: String,
@@ -53,6 +53,7 @@ const business_schema = user.extend({
         type: [Schema.Types.ObjectId],
         default: []
     }
-});
+    })
+);
 
-module.exports = business = mongoose.model("business", business_schema);
+module.exports = mongoose.model("business");

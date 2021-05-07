@@ -8,7 +8,9 @@ const express = require('express'),
     mongoose = require('mongoose')
 
 // import routers
-const civilian_router = require('./routes/civilians');
+const civilian_router = require('./routes/civilian');
+const business_router = require('./routes/business');
+
 
 // setup database
 mongoose
@@ -26,7 +28,8 @@ app.use(cors())
 app.use(bodyParser.json());
 
 // use router
-app.use('/civilians', civilian_router);
+app.use('/civilians', civilian_router)
+app.use('/business', business_router)
 
 // starting the server
 app.listen( server.port , () => console.log(`Server started, listening port: ${server.port}`));

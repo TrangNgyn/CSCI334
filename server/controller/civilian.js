@@ -1,4 +1,4 @@
-const civilian_model = require('../models/civilian')
+const civilian_model = require('../models/users/civilian')
 
 class Civilian{
 
@@ -6,14 +6,13 @@ class Civilian{
         try{
             let {first_name, last_name} = req.body
 
-            var name = [{
-                first_name: first_name, 
-                last_name: last_name
-            }]
-
             const new_civ = new civilian_model({
-                user_id: 4,
-                name: "name"
+                first_name: first_name,
+                last_name: last_name,
+                acc_type: "CIVILIAN",
+                password: "password",
+                email: "email2",
+                user_id: 2
             })
 
             var saved_civ = await new_civ.save()
@@ -33,16 +32,6 @@ class Civilian{
             console.log(err)
         }
     }
-
-
-    // @route   POST civilians/check-in
-    // @desc    Check in a civilian
-    // @access  Public
-    // async check_in(req, res){
-    //     console.log("Check in a civilian");
-
-    //     res.send({message: "Civilian checked in successfully!"});
-    // }
 
 }
 
