@@ -30,6 +30,12 @@ class Business {
             console.log(err)
         }
     }
+
+    async get_bus(req,res) {
+
+        business_model.find({})
+            .then(result => res.json(result))
+    }
 }
 
 const business_controller = new Business
