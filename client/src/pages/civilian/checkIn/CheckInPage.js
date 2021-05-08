@@ -1,4 +1,12 @@
-import { Flex, Center, Text, Spacer, VStack, Box } from "@chakra-ui/layout";
+import {
+  Select,
+  Center,
+  Text,
+  Spacer,
+  Stack,
+  VStack,
+  Box,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import QRScan from "./QRScan";
 import GrayContainer from "../../../components/GrayContainer";
@@ -16,19 +24,37 @@ function CheckInPage() {
   if (!userStore.scanned) {
     return (
       <Box h="100vh">
-        <Center w="100%" position="absolute" bg="gray.100">
-          <Text variant="heading">Safe Check In</Text>
-          <Button
-            borderRadius="full"
-            variant="green"
-            w="20"
-            ml="5"
-            onClick={() => userStore.setProperty("scanned", true)}
-          >
-            scan
-          </Button>
-        </Center>
-        <QRScan />
+        <Stack w="100%" position="absolute">
+          <Stack spacing={7} bg="gray.100">
+            <Center>
+              <Text variant="heading" mb={0}>Safe Check In</Text>
+              <Button
+                borderRadius="full"
+                variant="green"
+                w="20"
+                ml="5"
+                id="startButton"
+                // onClick={() => userStore.setProperty("scanned", true)}
+              >
+                scan
+              </Button>
+            </Center>
+            <div id="sourceSelectPanel">
+              <Select
+                w="90%"
+                maxW={{ base: "90%", md: "container.sm" }}
+                id="sourceSelect"
+                bg="white"
+                placeholder="Camera options"
+                mb={7}
+                mx="auto"
+              ></Select>
+            </div>
+          </Stack>
+          <Center>
+            <QRScan />
+          </Center>
+        </Stack>
         <GrayContainer>
           <VStack
             w="90%"
