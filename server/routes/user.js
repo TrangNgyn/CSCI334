@@ -26,4 +26,8 @@ module.exports = function(app) {
         auth_jwt.verify_token,
         auth_jwt.is_admin
     ], controller.adminBoard)
+    app.get("/api/test/business", [
+        auth_jwt.verify_token,
+        auth_jwt.is_business
+    ], controller.businessBoard)
 }

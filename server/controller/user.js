@@ -18,6 +18,10 @@ class User {
         res.status(200).send("Admin Content")
     }
 
+    businessBoard(req,res) {
+        res.status(200).send("Business Content")
+    }
+
 }
 
 const user = new User;

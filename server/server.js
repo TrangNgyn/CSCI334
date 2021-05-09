@@ -1,4 +1,5 @@
 const path = require('path');
+const role = require('./models/users/role');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const express = require('express'),
@@ -15,26 +16,17 @@ const express = require('express'),
 
 function initial() {
   db.role.estimatedDocumentCount((err, count)=> {
-    if(!err && count === 0) {
-      new role({
-        name: "user"
-      })
-      .save(err => {
-        if(err) {
-          console.log("error", err)
-        }
-        console.log("added 'user' to roles collection")
-      })
-
-      new role({
-        name: "admin"
-      })
-      .save(err => {
-        if(err) {
-          console.log("error", err)
-        }
-        console.log("added 'admin' to roles collection")
-      })
+    if(!err && count === 0) {  
+      for(let i = 0; i < db.ROLES.length; i++){
+        new role({
+          name: db.ROLES[i].toLowerCase()
+        }).save(err => {
+          if(err) {
+            console.log("error", err)
+          }
+          console.log(`added ${db.ROLES[i]} to roles collection`)
+        })
+      }
     }
   })
 }
@@ -50,9 +42,11 @@ db.mongoose
 
 app.use(cors())
 app.use(bodyParser.json());
+
   
 require('./routes/auth')(app)
 require('./routes/user')(app)
+// require('./routes/business')(app)
 
 // make server object that contain port property and the value for our server.
 const server = {

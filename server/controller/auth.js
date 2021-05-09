@@ -10,7 +10,6 @@ exports.sign_up = (req,res) => {
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, salt_rounds)
     });
-
     user.save((err, user) => {
         if(err) {
             console.log(err)
@@ -34,7 +33,7 @@ exports.sign_up = (req,res) => {
                 })
             })
         } else {
-            db.role.findOne({ name: "user" }), (err, role) => {
+            db.role.findOne({ name: "user" }, (err, role) => {
                 if(err) {
                     res.status(500).send({ message: err })
                     return
@@ -48,7 +47,7 @@ exports.sign_up = (req,res) => {
                     res.send({ message: "User was registered successfully" })
                     return
                 }) 
-            }
+            })
         }
     })
 }

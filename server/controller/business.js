@@ -8,10 +8,10 @@ class Business {
 
             const new_bussiness = new business_model({
                 business_name,
-                acc_type: "BUSINESS",
+                //acc_type: "BUSINESS",
                 password: "password",
                 email: "email",
-                user_id: 1
+                //user_id: 1
             })
 
             var saved_bus = await new_bussiness.save()

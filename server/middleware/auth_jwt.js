@@ -43,9 +43,34 @@ is_admin =  (req,res,next) => {
     })
 }
 
+is_business = (req,res,next) => {
+    db.user.findById(req.user_id).exec((err, user) => {
+        if(err){
+            res.status(500).send({ message: err })
+            return
+        }
+        db.role.find({
+            _id: { $in: user.roles }
+        }, (err, roles) => {
+            if(err) {
+                res.status(500).send({ message: err })
+            }
+            for(let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "business") {
+                    next();
+                    return
+                }
+            }
+            res.status(403).send({ message: "Require Business Role" })
+            return
+        })
+    })
+}
+
 const auth_jwt = {
     verify_token,
-    is_admin
+    is_admin,
+    is_business
 }
 
 module.exports = auth_jwt

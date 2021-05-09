@@ -9,12 +9,8 @@ const organisation = user.discriminator('organisation', new Schema({
     },
     employees: {
         type: [Schema.Types.ObjectId],
-        default: []
+        ref: 'user'
     }
-},
-{
-    collection: "organisation"
-})
-)
+}))
 
-module.exports = mongoose.model("organistion");
+module.exports = mongoose.model("organisation");
