@@ -36,7 +36,9 @@ export default function LogoMenu({ menuItems }) {
           bg="white"
           border="none"
           key={"logout"}
-          onClick={() => userStore.doLogout()}
+          onClick={() => {
+            userStore.doLogout();
+          }}
         >
           Logout
         </MenuItem>

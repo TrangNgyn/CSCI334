@@ -40,13 +40,13 @@ const FindUserPage = ({ handleFindingUser }) => {
               id="userID"
             ></Input>
           </InputGroup>
-          <Button variant="green" onClick={handleFindingUser} w="100%">
+          <Button variant="green" onClick={()=>navigate("/hea/healthtools")} w="100%">
             Find
           </Button>
         </Stack>
         <Button
           variant="gray"
-          onClick={() => navigate("/hea/home")}
+          onClick={() => navigate("/hea/healthtools")}
           position="fixed"
           bottom={8}
           maxW="lg"

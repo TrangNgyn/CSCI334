@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function MyCertsPage() {
+export default function MyCertsPage({ back }) {
   return <div></div>;
 }

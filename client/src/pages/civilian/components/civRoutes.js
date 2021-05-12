@@ -16,23 +16,23 @@ export const civRoutes = [
   },
   {
     path: "/civ/checkin",
-    element: <CheckInPage />,
+    element: <CheckInPage back="/civ/home"/>,
   },
   {
     path: "/civ/certs",
-    element: <MyCertsPage />,
+    element: <MyCertsPage back="/civ/home"/>,
   },
   {
     path: "/civ/hotspot",
-    element: <HotSpotsPage />,
+    element: <HotSpotsPage back="/civ/home"/>,
   },
   {
     path: "/civ/rollout",
-    element: <RolloutsPage />,
+    element: <RolloutsPage back="/civ/home"/>,
   },
   {
     path: "/civ/stats",
-    element: <StatsPage />,
+    element: <StatsPage back="/civ/home"/>,
   },
 ];
 

@@ -1,16 +1,21 @@
 import {
   Flex,
   Stack,
+  VStack,
   Text,
   InputGroup,
   Input,
   Button,
   Select,
 } from "@chakra-ui/react";
+import GrayContainer from "../../../components/GrayContainer";
+import { useNavigate } from "react-router";
 import React from "react";
 import viruses from "../components/viruses";
 
-function AddVacination({ back, name, userID }) {
+function AddVacination({ name, userID }) {
+  const navigate = useNavigate();
+
   return (
     <Flex h="100vh" layerStyle="function">
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
@@ -45,20 +50,28 @@ function AddVacination({ back, name, userID }) {
               id="date"
             />
           </InputGroup>
-          <Button variant="red" w="100%" onClick={back}>
+          <Button variant="red" w="100%" onClick={()=>navigate("/hea/healthtools")}>
             Confirm Positive Case
           </Button>
         </Stack>
-        <Button
-          variant="gray"
-          onClick={back}
-          position="fixed"
-          bottom={8}
-          maxW="lg"
-          w="90%"
-        >
-          BACK
-        </Button>
+        <GrayContainer>
+          <VStack
+            spacing="7"
+            w="90%"
+            maxW={{ base: "90%", md: "container.sm" }}
+          >
+            <Button
+              variant="gray"
+              onClick={() => navigate("/hea/healthtools")}
+              position="fixed"
+              bottom={8}
+              maxW="lg"
+              w="90%"
+            >
+              BACK
+            </Button>
+          </VStack>
+        </GrayContainer>
       </Stack>
     </Flex>
   );

@@ -5,8 +5,11 @@ import LogoMenu from "../../components/LogoMenu/LogoMenu";
 import { healthMenuRoutes } from "./components/HealthRoutes";
 import GrayContainer from "../../components/GrayContainer";
 import DotPattern from "../../components/DotPattern";
+import { useNavigate } from "react-router";
 
 export default function HealthLandingPage() {
+  const navigate = useNavigate();
+
   return (
     <Box h="100vh" layerStyle="mainBG">
       <DotPattern />
@@ -24,8 +27,8 @@ export default function HealthLandingPage() {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray">Home</Button>
-            <Button variant="green">Check In</Button>
+            <Button variant="gray" onClick={() => navigate("/hea/home")}>Home</Button>
+            <Button variant="green" onClick={()=>navigate("/hea/checkin")}>Check In</Button>
           </VStack>
         </VStack>
       </GrayContainer>

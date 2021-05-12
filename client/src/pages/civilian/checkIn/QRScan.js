@@ -3,15 +3,18 @@ import { BrowserMultiFormatReader, NotFoundException } from "@zxing/library";
 import { Button, VStack, Select } from "@chakra-ui/react";
 
 export default class QRScan extends React.Component {
+  constructor() {
+    super();
+    this.codeReader = new BrowserMultiFormatReader();
+  }
+
   componentDidMount() {
-    let selectedDeviceId;
-    const codeReader = new BrowserMultiFormatReader();
     console.log("ZXing code reader initialized");
-    codeReader
+    this.codeReader
       .listVideoInputDevices()
       .then((videoInputDevices) => {
         const sourceSelect = document.getElementById("sourceSelect");
-        selectedDeviceId = videoInputDevices[0].deviceId;
+        this.selectedDeviceId = videoInputDevices[0].deviceId;
         if (videoInputDevices.length >= 1) {
           videoInputDevices.forEach((element) => {
             const sourceOption = document.createElement("option");
@@ -21,7 +24,7 @@ export default class QRScan extends React.Component {
           });
 
           sourceSelect.onchange = () => {
-            selectedDeviceId = sourceSelect.value;
+            this.selectedDeviceId = sourceSelect.value;
           };
 
           const sourceSelectPanel = document.getElementById(
@@ -32,8 +35,8 @@ export default class QRScan extends React.Component {
 
         document.getElementById("startButton").addEventListener("click", () => {
           console.log("start");
-          codeReader.decodeFromVideoDevice(
-            selectedDeviceId,
+          this.codeReader.decodeFromVideoDevice(
+            this.selectedDeviceId,
             "video",
             (result, err) => {
               if (result) {
@@ -46,14 +49,14 @@ export default class QRScan extends React.Component {
             }
           );
           console.log(
-            `Started continous decode from camera with id ${selectedDeviceId}`
+            `Started continous decode from camera with id ${this.selectedDeviceId}`
           );
         });
-
-        // document.getElementById("resetButton").addEventListener("click", () => {
-        //   codeReader.reset();
-        //   console.log("Reset.");
-        // });
+        
+        document.getElementById("back").addEventListener("click", () => {
+          this.codeReader.reset();
+          console.log("Reset.");
+        });
       })
       .catch((err) => {
         console.error(err);

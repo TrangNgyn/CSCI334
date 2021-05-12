@@ -17,7 +17,7 @@ import CheckInSuccess from "./CheckInSuccess";
 import { UserStore } from "../../../stores/UserStore";
 import { observer } from "mobx-react";
 
-function CheckInPage() {
+function CheckInPage({ back }) {
   const userStore = UserStore;
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ function CheckInPage() {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray" onClick={() => navigate("/civ/home")}>
+            <Button variant="gray" id="back" onClick={() => navigate(back)}>
               Back
             </Button>
           </VStack>

@@ -2,17 +2,21 @@ import {
   Flex,
   Stack,
   Text,
-  Box,
+  VStack,
   InputGroup,
   Input,
   Button,
   Select,
   Checkbox,
 } from "@chakra-ui/react";
+import GrayContainer from "../../../components/GrayContainer";
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import viruses from "../components/viruses";
 
-function AddVacination({ back }) {
+function AddVacination() {
+  const navigate = useNavigate();
+
   const [virusName, setVirusName] = useState(false);
   const handleVirusName = (id) => {
     console.log("id " + id + " type " + typeof(id))
@@ -80,20 +84,28 @@ function AddVacination({ back }) {
           <Checkbox defaultIsChecked display="block">
             Requires follow-up?
           </Checkbox>
-          <Button variant="green" w="100%" onClick={back}>
+          <Button variant="green" w="100%" onClick={()=>navigate("/hea/healthtools")}>
             Add Vaccination
           </Button>
         </Stack>
-        <Button
-          variant="gray"
-          onClick={back}
-          position="fixed"
-          bottom={8}
-          maxW="lg"
-          w="90%"
-        >
-          BACK
-        </Button>
+        <GrayContainer>
+          <VStack
+            spacing="7"
+            w="90%"
+            maxW={{ base: "90%", md: "container.sm" }}
+          >
+            <Button
+              variant="gray"
+              onClick={() => navigate("/hea/healthtools")}
+              position="fixed"
+              bottom={8}
+              maxW="lg"
+              w="90%"
+            >
+              BACK
+            </Button>
+          </VStack>
+        </GrayContainer>
       </Stack>
     </Flex>
   );

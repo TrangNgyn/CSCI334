@@ -17,7 +17,7 @@ const hotspots = [
   }
 ];
 
-export default function HotSpotsPage() {
+export default function HotSpotsPage({ back }) {
   const navigate = useNavigate();
 
   window.google.charts.load("current", {
@@ -78,7 +78,7 @@ export default function HotSpotsPage() {
           <Box id="map_div" maxW="3xl" w="90%"></Box>
           <Button variant="gray" 
           maxW="lg"
-          w="90%" onClick={() => navigate("/civ/home")}>BACK</Button>
+          w="90%" onClick={() => navigate(back)}>BACK</Button>
         </VStack>
       </GrayContainer>
     </Box>
