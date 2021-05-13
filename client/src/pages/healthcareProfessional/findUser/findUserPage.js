@@ -1,6 +1,7 @@
 import {
   Flex,
   Stack,
+  VStack,
   Text,
   Box,
   Button,
@@ -8,20 +9,32 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import React from "react";
+import { healthMenuRoutes } from "../components/HealthRoutes";
+import LogoMenu from "../../../components/LogoMenu/LogoMenu";
+import GrayContainer from "../../../components/GrayContainer";
+import DotPattern from "../../../components/DotPattern";
+
 import { useNavigate } from "react-router-dom";
 
 const FindUserPage = ({ handleFindingUser }) => {
   const navigate = useNavigate();
   return (
-    <Flex h="100vh" layerStyle="function">
-      <Stack spacing="10" mx="auto" maxW="lg" w="90%">
-        <Text as="h1" mt={10} mx="auto">
-          Health Tools
-        </Text>
+    <Box h="100vh" layerStyle="mainBG">
+      <Box position="absolute" top="5" left="5">
+        <LogoMenu menuItems={healthMenuRoutes} />
+      </Box>
+      <DotPattern></DotPattern>
+      <Stack
+        spacing={10}
+        mx="auto"
+        maxW="lg"
+        w="90%"
+        position="absolute"
+        top="140px"
+        left={0}
+        right={0}
+      >
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
-          <Text as="h2" m={0}>
-            Find User
-          </Text>
           <InputGroup>
             <Input
               name="email"
@@ -40,22 +53,32 @@ const FindUserPage = ({ handleFindingUser }) => {
               id="userID"
             ></Input>
           </InputGroup>
-          <Button variant="green" onClick={()=>navigate("/hea/healthtools")} w="100%">
-            Find
-          </Button>
         </Stack>
-        <Button
-          variant="gray"
-          onClick={() => navigate("/hea/healthtools")}
-          position="fixed"
-          bottom={8}
-          maxW="lg"
-          w="90%"
-        >
-          BACK
-        </Button>
       </Stack>
-    </Flex>
+
+      <GrayContainer>
+        <VStack spacing="7" w="100%">
+          <Text variant="heading" as="h2" m={0}>
+            Find User
+          </Text>
+          <VStack
+            w="90%"
+            maxW={{ base: "90%", md: "container.sm" }}
+            spacing="5"
+          >
+            <Button variant="gray" onClick={() => navigate("/hea/home")}>
+              BACK
+            </Button>
+            <Button
+              variant="green"
+              onClick={() => navigate("/hea/healthtools")}
+            >
+              Search
+            </Button>
+          </VStack>
+        </VStack>
+      </GrayContainer>
+    </Box>
   );
 };
 
