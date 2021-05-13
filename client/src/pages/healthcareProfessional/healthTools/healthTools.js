@@ -1,12 +1,12 @@
 import { Flex, Stack, VStack, Text, Spacer, Button } from "@chakra-ui/react";
 import GrayContainer from "../../../components/GrayContainer";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
+import { UserStore } from "../../../stores/UserStore";
 
 const HealthTools = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("Gregethy Knowles");
-  const [userID, setUserID] = useState("123456");
+  const userStore = UserStore;
 
   return (
     <Flex h="100vh" layerStyle="function">
@@ -16,12 +16,12 @@ const HealthTools = () => {
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg">
           <Text as="h2" m={0}>
-            {userName}
+            {userStore.foundUser.name}
           </Text>
           <Flex>
             <Text>User ID: </Text>
             <Spacer />
-            <Text>{userID}</Text>
+            <Text>{userStore.foundUser.id}</Text>
           </Flex>
           <Stack spacing={4}>
             <Button

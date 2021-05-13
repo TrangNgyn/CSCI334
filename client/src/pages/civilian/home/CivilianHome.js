@@ -6,7 +6,7 @@ import { civMenuRoutes } from "../components/civRoutes";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import { menuOptions, healthMenuOption } from "./menuOptions";
-import Option from "./Option";
+import Option from "../../../components/Option";
 import { UserStore } from "../../../stores/UserStore";
 
 export default function CivilianHome() {

@@ -6,54 +6,60 @@ import {
   Button,
   Input,
   InputGroup,
+  Flex,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { civMenuRoutes } from "../../civilian/components/civRoutes";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../../components/GrayContainer";
 import DotPattern from "../../../components/DotPattern";
-
 import { useNavigate } from "react-router-dom";
+import { UserStore } from "../../../stores/UserStore";
 
-const FindUserPage = ({ handleFindingUser }) => {
+const FindUserPage = () => {
+  const [userId, setUserId] = useState("");
+  const userStore = UserStore;
   const navigate = useNavigate();
+
+  const handleFindUser = () => {
+    userStore.findUser(userId);
+    navigate("/hea/healthtools");
+  };
+
   return (
-    <Box h="100vh" layerStyle="mainBG">
+    <Box h="100vh" w="100%" layerStyle="mainBG">
       <Box position="absolute" top="5" left="5">
         <LogoMenu menuItems={civMenuRoutes} />
       </Box>
-      <DotPattern></DotPattern>
-      <Stack
-        spacing={10}
-        mx="auto"
-        maxW="lg"
-        w="90%"
+      <DotPattern />
+      <Flex
+        h="60%"
+        align="center"
+        w="100%"
+        justify="center"
         position="absolute"
         top="140px"
-        left={0}
-        right={0}
       >
-        <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
+        <Box
+          bg="white"
+          w="80%"
+          maxW={{ base: "90%", md: "container.sm" }}
+          rounded="lg"
+          p="3"
+          boxShadow="lg"
+        >
           <InputGroup>
             <Input
-              name="email"
-              variant="filled"
-              bg="#efefef"
-              placeholder="Email"
-              id="email"
-            ></Input>
-          </InputGroup>
-          <InputGroup>
-            <Input
-              name="userID"
+              name="userId"
               variant="filled"
               bg="#efefef"
               placeholder="User ID"
-              id="userID"
-            ></Input>
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+            />
           </InputGroup>
-        </Stack>
-      </Stack>
+        </Box>
+      </Flex>
 
       <GrayContainer>
         <VStack spacing="7" w="100%">
@@ -68,10 +74,7 @@ const FindUserPage = ({ handleFindingUser }) => {
             <Button variant="gray" onClick={() => navigate("/civ/home")}>
               BACK
             </Button>
-            <Button
-              variant="green"
-              onClick={() => navigate("/hea/healthtools")}
-            >
+            <Button variant="green" onClick={() => handleFindUser()}>
               Search
             </Button>
           </VStack>

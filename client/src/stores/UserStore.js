@@ -4,7 +4,7 @@ class UserStoreImpl {
   id = "";
   email = "email@email.com";
   password = "pass123";
-  accType = "civ";
+  accType = "org";
   firstName = "";
   lastName = "";
   newDependant = "";
@@ -24,6 +24,7 @@ class UserStoreImpl {
 
   // Healthcare worker user type
   isHealthCare = true;
+  foundUser = { name: "Gregethy Knowles", id: "123456" };
 
   // Response from sign in
   isLoggedIn = false;
@@ -35,7 +36,12 @@ class UserStoreImpl {
 
   // Organisation Account
   orgName = "";
-  employees = [];
+  emps = ["123", "125", "474", "221"]; // ID's of employees
+  orgStats = [
+    { key: "Total Employees", value: 97 },
+    { key: "Acc's Registered", value: 64 },
+    { key: "Vaccinated", value: 22 },
+  ];
 
   // Check in Form
   checkedIn = false;
@@ -47,6 +53,7 @@ class UserStoreImpl {
       resetState: action,
       addDependant: action,
       removeDependant: action,
+      findUser: action,
     });
   }
 
@@ -65,6 +72,10 @@ class UserStoreImpl {
 
   removeDependant = (name) => {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
+  };
+
+  findUser = (userId) => {
+    console.log("searching for " + userId);
   };
 
   resetState = () => {

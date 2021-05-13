@@ -1,13 +1,5 @@
-import {
-  Select,
-  Center,
-  Text,
-  Spacer,
-  Stack,
-  VStack,
-  Box,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Select, Center, Text, Stack, VStack, Box } from "@chakra-ui/react";
+import React from "react";
 import QRScan from "./QRScan";
 import GrayContainer from "../../../components/GrayContainer";
 import { Button } from "@chakra-ui/button";

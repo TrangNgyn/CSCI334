@@ -3,6 +3,7 @@ import { Center, Text, VStack } from "@chakra-ui/layout";
 import { Select, Input, Spacer, Stack, InputGroup } from "@chakra-ui/react";
 import React from "react";
 import { observer } from "mobx-react";
+import DotPattern from "../../components/DotPattern";
 
 const accTypes = [
   { name: "Civilian", id: "civ" },
@@ -19,6 +20,7 @@ const SignUp = ({ userStore, setSignUp }) => {
 
   return (
     <Center h="100vh" layerStyle="mainBG">
+      <DotPattern />
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
         <Stack align="center"></Stack>
         <form onSubmit={handleSignUp}>

@@ -6,6 +6,7 @@ import ViewEmployeesPage from "../viewEmps/ViewEmployeesPage";
 
 export const orgRoutes = [
   {
+    path: "/",
     element: <OrgLandingPage />,
   },
   {
@@ -27,10 +28,6 @@ export const orgRoutes = [
 ];
 
 export const orgMenuRoutes = [
-  {
-    title: "Home",
-    path: "org/home",
-  },
   {
     title: "Add Employee",
     path: "org/addemp",

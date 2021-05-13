@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  Input,
-  Portal,
-  Center,
-} from "@chakra-ui/react";
+import { Button, Input, Portal, Center } from "@chakra-ui/react";
 import { UserStore } from "../../../stores/UserStore";
 import Icon from "@chakra-ui/icon";
 import { HiOutlinePlusCircle } from "react-icons/hi";
@@ -18,7 +9,6 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";

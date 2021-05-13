@@ -1,27 +1,82 @@
-import { Flex, Stack, Text, Spacer, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/button";
+import { Box, Flex, Spacer, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
+import GrayContainer from "../../../components/GrayContainer";
+import { useNavigate } from "react-router";
+import { UserStore } from "../../../stores/UserStore";
+import Icon from "@chakra-ui/icon";
+import { HiUserGroup } from "react-icons/hi";
 
-function ViewStatistics({ back }) {
+export default function StatsPage() {
+  const navigate = useNavigate();
+  const userStore = UserStore;
+
   return (
-    <Flex h="100vh" layerStyle="function" minW="sm">
-      <Stack spacing="10" mx="auto" maxW="lg" p="10" w="90%">
-        <Text as="h1" align="center">
-          Statistics
-        </Text>
-        <Stack bg="white" rounded="lg" p={8} boxShadow="lg">
-          <Flex>
-            <Text as="h2" m={0}>
-              Employee Stats
+    <Box h="100vh" layerStyle="grayBG">
+      <Box position="absolute" h="100%" w="100%" top="40px">
+        <Flex justifyContent="center" alignItems="flex-start">
+          <VStack
+            spacing="3"
+            w="90%"
+            minH="80%"
+            maxW={{ base: "90%", md: "container.sm" }}
+          >
+            <Text variant="heading" mb="3">
+              Statistics
             </Text>
-            <Spacer />
-          </Flex>
-        </Stack>
-        <Button variant="gray" onClick={back}>
-          BACK
-        </Button>
-      </Stack>
-    </Flex>
+            <Box d="flex" w="90%">
+              <Text as="h3" my="0" color="gray.500">
+                Employee Stats
+              </Text>
+              <Spacer />
+              <Icon as={HiUserGroup} boxSize="6" color="gray.500" />
+            </Box>
+
+            {userStore.orgStats.map(
+              (item, i) =>
+                i < 3 && (
+                  <Box
+                    key={item.key}
+                    px="3"
+                    w="90%"
+                    maxW={{ base: "90%", md: "container.sm" }}
+                    bg="white"
+                    borderRadius="xl"
+                    shadow="base"
+                  >
+                    <Box d="flex" px="3">
+                      <Text as="h3" color="gray.800">
+                        {item.key}
+                      </Text>
+                      <Spacer />
+                      <Text as="h3">{item.value}</Text>
+                    </Box>
+                  </Box>
+                )
+            )}
+
+            <Box d="flex" w="90%" pr="8">
+              <Spacer />
+              <Text variant="link">View Employees</Text>
+            </Box>
+            <Box
+              px="3"
+              w="90%"
+              maxW={{ base: "90%", md: "container.sm" }}
+              bg="white"
+              borderRadius="xl"
+              shadow="2xl"
+            ></Box>
+          </VStack>
+        </Flex>
+      </Box>
+      <GrayContainer>
+        <VStack spacing="7" w="90%" maxW={{ base: "90%", md: "container.sm" }}>
+          <Button variant="gray" onClick={() => navigate("/org/home")}>
+            Back
+          </Button>
+        </VStack>
+      </GrayContainer>
+    </Box>
   );
 }
-
-export default ViewStatistics;

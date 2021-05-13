@@ -30,7 +30,7 @@ export default function Certificate({ content }) {
               pl="1"
               textAlign="start"
               display="inline-block"
-              color={status == "complete" ? "green.500" : "red.400"}
+              color={status === "complete" ? "green.500" : "red.400"}
             >
               {status}
             </Text>

@@ -42,7 +42,7 @@ export default function StatsPage() {
                     maxW={{ base: "90%", md: "container.sm" }}
                     bg="white"
                     borderRadius="xl"
-                    shadow="2xl"
+                    shadow="base"
                   >
                     <Box d="flex" px="3">
                       <Text as="h3" color="gray.800">

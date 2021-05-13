@@ -12,6 +12,13 @@ const Text = {
       fontWeight: "bold",
       my: "6",
     },
+    link: {
+      color: "green.400",
+      _hover: {
+        textDecoration: "underline",
+        cursor: "pointer",
+      },
+    },
   },
 };
 
