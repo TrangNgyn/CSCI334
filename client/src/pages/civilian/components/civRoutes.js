@@ -1,3 +1,4 @@
+// Civilian
 import CivLandingPage from "../CivLandingPage";
 import CivilianHome from "../home/CivilianHome";
 import CheckInPage from "../checkIn/CheckInPage";
@@ -6,8 +7,16 @@ import MyCertsPage from "../myCerts/MyCertsPage";
 import RolloutsPage from "../rollout/RolloutsPage";
 import StatsPage from "../stats/StatsPage";
 
+// Health
+import FindUserPage from "../../healthcareProfessional/findUser/findUserPage";
+import Healthtools from "../../healthcareProfessional/healthTools/healthTools";
+import UpdateVaccination from "../../healthcareProfessional/healthTools/updateVaccination";
+import AddVaccination from "../../healthcareProfessional/healthTools/addVaccination";
+import AddCase from "../../healthcareProfessional/healthTools/addCase";
+
 export const civRoutes = [
   {
+    path: "/",
     element: <CivLandingPage />,
   },
   {
@@ -16,23 +25,43 @@ export const civRoutes = [
   },
   {
     path: "/civ/checkin",
-    element: <CheckInPage back="/civ/home"/>,
+    element: <CheckInPage back="/civ/home" />,
   },
   {
     path: "/civ/certs",
-    element: <MyCertsPage back="/civ/home"/>,
+    element: <MyCertsPage back="/civ/home" />,
   },
   {
     path: "/civ/hotspot",
-    element: <HotSpotsPage back="/civ/home"/>,
+    element: <HotSpotsPage back="/civ/home" />,
   },
   {
     path: "/civ/rollout",
-    element: <RolloutsPage back="/civ/home"/>,
+    element: <RolloutsPage back="/civ/home" />,
   },
   {
     path: "/civ/stats",
-    element: <StatsPage back="/civ/home"/>,
+    element: <StatsPage back="/civ/home" />,
+  },
+  {
+    path: "/hea/finduser",
+    element: <FindUserPage />,
+  },
+  {
+    path: "/hea/healthtools",
+    element: <Healthtools />,
+  },
+  {
+    path: "/hea/healthtools/updatevaccination",
+    element: <UpdateVaccination />,
+  },
+  {
+    path: "/hea/healthtools/addvaccination",
+    element: <AddVaccination />,
+  },
+  {
+    path: "/hea/healthtools/addcase",
+    element: <AddCase />,
   },
 ];
 

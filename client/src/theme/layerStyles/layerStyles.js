@@ -4,6 +4,9 @@ const layerStyles = {
   mainBG: {
     bgGradient: "linear(to-br, #8BF3B5, #2FE562, )",
   },
+  grayBG: {
+    bg: "#EFEFEF",
+  },
   function: {
     bg: "#efefef",
   },

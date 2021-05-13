@@ -1,15 +1,17 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Center, Text, VStack } from "@chakra-ui/layout";
+import { Box, Center, VStack } from "@chakra-ui/layout";
 import React from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import { civMenuRoutes } from "../components/civRoutes";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
-import { menuOptions } from "./menuOptions";
+import { menuOptions, healthMenuOption } from "./menuOptions";
 import Option from "./Option";
+import { UserStore } from "../../../stores/UserStore";
 
 export default function CivilianHome() {
   const navigate = useNavigate();
+  const userStore = UserStore;
 
   return (
     <Box h="100vh" layerStyle="mainBG">
@@ -19,13 +21,14 @@ export default function CivilianHome() {
       <Box position="absolute" w="100%" top="140px">
         <Center>
           <VStack
-            spacing="3"
+            spacing="2"
             w="90%"
             maxW={{ base: "90%", md: "container.sm" }}
           >
             {menuOptions.map((item) => (
-              <Option content={item} />
+              <Option key={item.title} content={item} />
             ))}
+            {userStore.isHealthCare && <Option content={healthMenuOption} />}
           </VStack>
         </Center>
       </Box>

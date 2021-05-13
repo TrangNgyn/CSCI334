@@ -27,14 +27,17 @@ function CheckInPage({ back }) {
         <Stack w="100%" position="absolute">
           <Stack spacing={7} bg="gray.100">
             <Center>
-              <Text variant="heading" mb={0}>Safe Check In</Text>
+              <Text variant="heading" mb={0}>
+                Safe Check In
+              </Text>
               <Button
                 borderRadius="full"
                 variant="green"
                 w="20"
                 ml="5"
                 id="startButton"
-                // onClick={() => userStore.setProperty("scanned", true)}
+                mt="3"
+                onClick={() => userStore.setProperty("scanned", true)}
               >
                 scan
               </Button>

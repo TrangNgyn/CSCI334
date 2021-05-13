@@ -2,15 +2,13 @@ import React from "react";
 import BusRouting from "./business/components/BusRouting";
 import CivilianRouting from "./civilian/components/CivilianRouting";
 import OrgRouting from "./organisation/components/OrgRouting";
-import HealthRouting from "./healthcareProfessional/components/HealthRouting";
 import { observer } from "mobx-react";
+import { useNavigate } from "react-router";
 
 function AppRouting({ userStore }) {
-  if (userStore.accType === "civ") {
+  useNavigate("/");
+  if (userStore.accType === "civ" || userStore.accType === "hea") {
     return <CivilianRouting />;
-  }
-  if (userStore.accType === "hea") {
-    return <HealthRouting />;
   }
   if (userStore.accType === "bus") {
     return <BusRouting />;

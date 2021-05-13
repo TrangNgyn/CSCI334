@@ -1,8 +1,6 @@
 import { BsPeople } from "react-icons/bs";
 import { BsPersonPlus } from "react-icons/bs";
-import { FiMapPin } from "react-icons/fi";
 import { BiStats } from "react-icons/bi";
-import { GiHealthNormal } from "react-icons/gi"
 
 export const menuOptions = [
   {

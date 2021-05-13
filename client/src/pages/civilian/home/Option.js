@@ -10,7 +10,7 @@ export default function Option({ content }) {
   return (
     <Box
       bg="white"
-      py="4"
+      py="2"
       px="4"
       borderRadius="xl"
       shadow="2xl"
@@ -20,7 +20,7 @@ export default function Option({ content }) {
       _hover={{ bg: "gray.200", cursor: "pointer" }}
     >
       <HStack>
-        <Icon as={icon} boxSize="10" pr="2" />
+        <Icon as={icon} boxSize="12%" pr="2" />
         <VStack>
           <Text as="h3" color="gray.800" textAlign="start" my="1" w="100%">
             {title}

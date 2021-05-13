@@ -1,33 +1,12 @@
-import {
-  Flex,
-  Stack,
-  VStack,
-  Text,
-  Spacer,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, Stack, VStack, Text, Spacer, Button } from "@chakra-ui/react";
 import GrayContainer from "../../../components/GrayContainer";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 const HealthTools = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("ABCDEF");
+  const [userName, setUserName] = useState("Gregethy Knowles");
   const [userID, setUserID] = useState("123456");
-
-  // const handleFindingUser = () => {
-  //   // finding user
-  //   const email = document.getElementById("email");
-  //   const id = document.getElementById("userID");
-
-  //   setUserName("Greg Nolls");
-  //   setUserID("195667");
-  // };
-
-  // const handleReset = () => {
-  //   setUserName(null);
-  //   setUserID(null);
-  // };
 
   return (
     <Flex h="100vh" layerStyle="function">
@@ -73,7 +52,7 @@ const HealthTools = () => {
           >
             <Button
               variant="gray"
-              onClick={() => navigate("/hea/home")}
+              onClick={() => navigate("/civ/home")}
               position="fixed"
               bottom={8}
               maxW="lg"

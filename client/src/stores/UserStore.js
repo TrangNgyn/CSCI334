@@ -9,12 +9,21 @@ class UserStoreImpl {
   lastName = "";
   newDependant = "";
   dependants = ["Matt Goghurt", "Jake Cool"];
-  certIDs = [];
+  certs = [
+    { title: "Covid-19", status: "complete" },
+    { title: "Tetanus", status: "pending" },
+  ];
   infections = ["covid", "tetanus"];
   alerts = [];
+  stats = [
+    { key: "Australia", value: 138 },
+    { key: "NSW", value: 74 },
+    { key: "Shellharbour", value: 0 },
+    { key: "totalImmunised", value: 600349 },
+  ];
 
   // Healthcare worker user type
-  isHealthCare = false;
+  isHealthCare = true;
 
   // Response from sign in
   isLoggedIn = false;
@@ -65,7 +74,7 @@ class UserStoreImpl {
     this.accType = "civ";
     this.firstName = "";
     this.lastName = "";
-    this.certIDs = [];
+    this.certs = [];
     this.infections = ["covid", "tetanus"];
     this.alerts = [];
     this.isHealthCare = false;
@@ -141,28 +150,31 @@ class UserStoreImpl {
       return;
     }
 
-    // fetch('/api/account/createaccount', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     accType: this.accType,
-    //     email: this.email,
-    //     password: this.password,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     if (json.success) {
-    //       this.resetState();
-    //       this.errorMsg = json.message;
-    //       this.isLoading = false;
-    //     } else {
-    //       this.errorMsg = json.message;
-    //       this.isLoading = false;
-    //     }
-    //   });
+    // Example fetch call below
+    // {
+    //   // fetch('/api/account/createaccount', {
+    //   //   method: 'POST',
+    //   //   headers: {
+    //   //     'Content-Type': 'application/json',
+    //   //   },
+    //   //   body: JSON.stringify({
+    //   //     accType: this.accType,
+    //   //     email: this.email,
+    //   //     password: this.password,
+    //   //   }),
+    //   // })
+    //   //   .then((res) => res.json())
+    //   //   .then((json) => {
+    //   //     if (json.success) {
+    //   //       this.resetState();
+    //   //       this.errorMsg = json.message;
+    //   //       this.isLoading = false;
+    //   //     } else {
+    //   //       this.errorMsg = json.message;
+    //   //       this.isLoading = false;
+    //   //     }
+    //   //   });
+    // }
   };
 }
 

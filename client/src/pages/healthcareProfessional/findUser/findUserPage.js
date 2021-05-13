@@ -1,5 +1,4 @@
 import {
-  Flex,
   Stack,
   VStack,
   Text,
@@ -9,7 +8,7 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import React from "react";
-import { healthMenuRoutes } from "../components/HealthRoutes";
+import { civMenuRoutes } from "../../civilian/components/civRoutes";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../../components/GrayContainer";
 import DotPattern from "../../../components/DotPattern";
@@ -21,7 +20,7 @@ const FindUserPage = ({ handleFindingUser }) => {
   return (
     <Box h="100vh" layerStyle="mainBG">
       <Box position="absolute" top="5" left="5">
-        <LogoMenu menuItems={healthMenuRoutes} />
+        <LogoMenu menuItems={civMenuRoutes} />
       </Box>
       <DotPattern></DotPattern>
       <Stack
@@ -66,7 +65,7 @@ const FindUserPage = ({ handleFindingUser }) => {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray" onClick={() => navigate("/hea/home")}>
+            <Button variant="gray" onClick={() => navigate("/civ/home")}>
               BACK
             </Button>
             <Button
