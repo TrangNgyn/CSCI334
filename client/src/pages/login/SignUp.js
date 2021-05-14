@@ -70,6 +70,9 @@ const SignUp = ({ userStore, setSignUp }) => {
               />
             </InputGroup>
             <VStack pt="3">
+              <Text variant="link" align="center">
+                Request an organisation account here
+              </Text>
               <Button variant="green" borderRadius="md" type="submit">
                 Sign Up
               </Button>
@@ -83,11 +86,6 @@ const SignUp = ({ userStore, setSignUp }) => {
                 Back
               </Button>
             </VStack>
-            <a href="">
-              <Text fontSize="sm" mt={3} mb={0} align="center">
-                Sign Up for your organization
-              </Text>
-            </a>
           </Stack>
         </form>
       </Stack>

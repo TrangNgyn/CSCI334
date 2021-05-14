@@ -1,4 +1,4 @@
-import { Box, Center, Text, VStack } from "@chakra-ui/layout";
+import { Box, Center, VStack } from "@chakra-ui/layout";
 import React from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import { orgMenuRoutes } from "../components/OrgRoutes";
@@ -8,10 +8,10 @@ import Option from "../../../components/Option";
 export default function OrgHomePage() {
   return (
     <Box h="100vh" layerStyle="mainBG">
-      <Box position="absolute" top="5" left="5">
+      <Box position="absolute" top="5" left="5" zIndex="2">
         <LogoMenu menuItems={orgMenuRoutes} />
       </Box>
-      <Box position="absolute" w="100%" top="140px">
+      <Box position="absolute" w="100%" h="100%">
         <Center h="100%">
           <VStack
             spacing="3"

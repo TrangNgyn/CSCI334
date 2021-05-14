@@ -5,9 +5,16 @@ import LogoMenu from "../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../components/GrayContainer";
 import DotPattern from "../../components/DotPattern";
 import { useNavigate } from "react-router";
+import { UserStore } from "../../stores/UserStore";
 
 export default function HealthLandingPage() {
   const navigate = useNavigate();
+  const userStore = UserStore;
+
+  const handleLogout = () => {
+    userStore.doLogout();
+    navigate("/");
+  };
 
   return (
     <Box h="100vh" layerStyle="mainBG">
@@ -26,6 +33,9 @@ export default function HealthLandingPage() {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
+            <Button variant="gray" onClick={handleLogout}>
+              Log Out
+            </Button>
             <Button variant="green" onClick={() => navigate("/bus/checkin")}>
               Check In
             </Button>

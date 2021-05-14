@@ -6,8 +6,10 @@ import { useNavigate } from "react-router";
 import { UserStore } from "../../../stores/UserStore";
 import Icon from "@chakra-ui/icon";
 import { HiUserGroup } from "react-icons/hi";
+import UpdateTotalEmpsMenu from "./UpdateTotalEmpsMenu";
+import { observer } from "mobx-react";
 
-export default function StatsPage() {
+function StatsPage() {
   const navigate = useNavigate();
   const userStore = UserStore;
 
@@ -32,32 +34,46 @@ export default function StatsPage() {
               <Icon as={HiUserGroup} boxSize="6" color="gray.500" />
             </Box>
 
-            {userStore.orgStats.map(
-              (item, i) =>
-                i < 3 && (
-                  <Box
-                    key={item.key}
-                    px="3"
-                    w="90%"
-                    maxW={{ base: "90%", md: "container.sm" }}
-                    bg="white"
-                    borderRadius="xl"
-                    shadow="base"
-                  >
-                    <Box d="flex" px="3">
-                      <Text as="h3" color="gray.800">
-                        {item.key}
-                      </Text>
-                      <Spacer />
-                      <Text as="h3">{item.value}</Text>
-                    </Box>
-                  </Box>
-                )
-            )}
+            <Box
+              px="3"
+              w="90%"
+              maxW={{ base: "90%", md: "container.sm" }}
+              bg="white"
+              borderRadius="xl"
+              shadow="base"
+            >
+              <Box d="flex" px="3">
+                <Text as="h3" color="gray.800">
+                  Total Employees
+                </Text>
+                <Spacer />
+                <Text as="h3">{userStore.totalEmps}</Text>
+              </Box>
+            </Box>
+
+            {userStore.orgStats.map((item) => (
+              <Box
+                key={item.key}
+                px="3"
+                w="90%"
+                maxW={{ base: "90%", md: "container.sm" }}
+                bg="white"
+                borderRadius="xl"
+                shadow="base"
+              >
+                <Box d="flex" px="3">
+                  <Text as="h3" color="gray.800">
+                    {item.key}
+                  </Text>
+                  <Spacer />
+                  <Text as="h3">{item.value}</Text>
+                </Box>
+              </Box>
+            ))}
 
             <Box d="flex" w="90%" pr="8">
               <Spacer />
-              <Text variant="link">View Employees</Text>
+              <UpdateTotalEmpsMenu />
             </Box>
             <Box
               px="3"
@@ -80,3 +96,5 @@ export default function StatsPage() {
     </Box>
   );
 }
+
+export default observer(StatsPage);

@@ -8,6 +8,11 @@ export default function LogoMenu({ menuItems }) {
   let navigate = useNavigate();
   const userStore = UserStore;
 
+  const handleLogout = () => {
+    userStore.doLogout();
+    navigate("/");
+  };
+
   return (
     <Menu>
       <MenuButton
@@ -36,9 +41,7 @@ export default function LogoMenu({ menuItems }) {
           bg="white"
           border="none"
           key={"logout"}
-          onClick={() => {
-            userStore.doLogout();
-          }}
+          onClick={handleLogout}
         >
           Logout
         </MenuItem>

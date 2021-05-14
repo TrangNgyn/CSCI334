@@ -8,27 +8,27 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { civMenuRoutes } from "../../civilian/components/civRoutes";
+import { orgMenuRoutes } from "../components/OrgRoutes";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../../components/GrayContainer";
 import DotPattern from "../../../components/DotPattern";
 import { useNavigate } from "react-router-dom";
 import { UserStore } from "../../../stores/UserStore";
 
-const FindUserPage = () => {
-  const [userId, setUserId] = useState("");
+const AddEmployeeManualPage = () => {
+  const [empId, setEmpId] = useState("");
   const userStore = UserStore;
   const navigate = useNavigate();
 
-  const handleFindUser = () => {
-    userStore.findUser(userId);
-    navigate("/hea/healthtools");
+  const handleAddEmployee = () => {
+    userStore.addEmployee(empId);
+    navigate("/org/home");
   };
 
   return (
     <Box h="100vh" w="100%" layerStyle="mainBG">
       <Box position="absolute" top="5" left="5">
-        <LogoMenu menuItems={civMenuRoutes} />
+        <LogoMenu menuItems={orgMenuRoutes} />
       </Box>
       <DotPattern />
       <Flex
@@ -49,12 +49,13 @@ const FindUserPage = () => {
         >
           <InputGroup>
             <Input
+              type="number"
               name="userId"
               variant="filled"
               bg="#efefef"
               placeholder="User ID"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              value={empId}
+              onChange={(e) => setEmpId(e.target.value)}
             />
           </InputGroup>
         </Box>
@@ -70,11 +71,11 @@ const FindUserPage = () => {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray" onClick={() => navigate("/civ/home")}>
+            <Button variant="gray" onClick={() => navigate("/org/addemp")}>
               BACK
             </Button>
-            <Button variant="green" onClick={() => handleFindUser()}>
-              Search
+            <Button variant="green" onClick={handleAddEmployee}>
+              ADD EMPLOYEE
             </Button>
           </VStack>
         </VStack>
@@ -83,4 +84,4 @@ const FindUserPage = () => {
   );
 };
 
-export default FindUserPage;
+export default AddEmployeeManualPage;

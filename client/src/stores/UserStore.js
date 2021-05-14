@@ -4,7 +4,7 @@ class UserStoreImpl {
   id = "";
   email = "email@email.com";
   password = "pass123";
-  accType = "org";
+  accType = "hea";
   firstName = "";
   lastName = "";
   newDependant = "";
@@ -31,14 +31,18 @@ class UserStoreImpl {
   errorMSG = "";
   isLoading = false;
 
+  // URL address to qr img for both business and organisation
+  QRCodeUrl =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png";
+
   // Business Account
   businessName = "";
 
   // Organisation Account
   orgName = "";
+  totalEmps = "77";
   emps = ["123", "125", "474", "221"]; // ID's of employees
   orgStats = [
-    { key: "Total Employees", value: 97 },
     { key: "Acc's Registered", value: 64 },
     { key: "Vaccinated", value: 22 },
   ];
@@ -54,6 +58,7 @@ class UserStoreImpl {
       addDependant: action,
       removeDependant: action,
       findUser: action,
+      updateTotalEmps: action,
     });
   }
 
@@ -78,6 +83,17 @@ class UserStoreImpl {
     console.log("searching for " + userId);
   };
 
+  updateTotalEmps = () => {
+    console.log("Updating DB with new total emp count");
+
+    // Update database with this
+    //this.orgStats[0].value;
+  };
+
+  addEmployee = (empId) => {
+    console.log("Adding Employee " + empId + " to the organisation");
+  };
+
   resetState = () => {
     this.id = "";
     this.email = "";
@@ -91,6 +107,7 @@ class UserStoreImpl {
     this.isHealthCare = false;
     this.errorMSG = "";
     this.businessName = "";
+    //this.QRCodeUrl = "";
     this.orgName = "";
     this.employees = [];
   };
