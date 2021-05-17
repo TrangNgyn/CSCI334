@@ -21,7 +21,8 @@ const civilian = user.discriminator('civilian', new Schema({
     },
     alerts: {
         type: [Schema.Types.ObjectId],
-        default: []
+        default: [],
+        ref: "alert"
     },
     check_ins: {
         type: [Schema.Types.ObjectId],

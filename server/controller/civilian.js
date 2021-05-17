@@ -1,4 +1,4 @@
-const civilian_model = require('../models/users/civilian')
+const db = require('../models/db.js')
 
 const empty_field = {
     success: false,

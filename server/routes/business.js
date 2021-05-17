@@ -1,17 +1,7 @@
-// const express = require('express');
-// const router = express.Router();
-// const business_controller = require('../controller/business')
-// const { auth_jwt } = require('../middleware')
-
-// router.get("/api/business/all", [
-//     auth_jwt.verify_token,
-//     auth_jwt.is_business
-// ], business_controller.add_business)
-
-// module.exports = router
-
-const { auth_jwt } = require('../middleware')
+const express = require('express');
+const router = express.Router();
 const controller = require('../controller/business')
+const { auth_jwt } = require('../middleware')
 
 module.exports = function(app) {
     app.use(function(req,res,next) {
@@ -27,3 +17,8 @@ module.exports = function(app) {
     auth_jwt.is_business
     ], controller.add_business)
 }
+
+
+router.get('')
+
+module.exports = router

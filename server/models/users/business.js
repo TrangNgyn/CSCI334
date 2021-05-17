@@ -7,53 +7,60 @@ const business = user.discriminator('business', new Schema({
         required: true,
         type: String,
     },
-    // address: {
-    //     required: true,
-    //     type: {
-    //         country: {
-    //             type: String,
-    //             default: 'Australia',
-    //         },
-    //         state: {
-    //             type: String,
-    //             deafult: 'NSW',
-    //         },
-    //         city: {
-    //             type: String,
-    //             default: 'Sydney',
-    //         },
-    //         street: {
-    //             type: String, 
-    //             required: true,
-    //         },
-    //         street_num: {
-    //             type: Number,
-    //             required: true,
-    //         },
-    //         unit: {
-    //             type: String,
-    //             required: false,
-    //         },
-    //     }
-    // },
-    // gps: {
-    //     required: true,
-    //     type: {
-    //         long: {
-    //             required: true,
-    //             type: Number,
-    //         },
-    //         lat: {
-    //             required: true,
-    //             type: Number,
-    //         },
-    //     }
-    // },
-    // alerts: {
-    //     type: [Schema.Types.ObjectId],
-    //     default: []
-    // }
-    })
-);
+    business_id: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    address: {
+        required: true,
+        type: {
+            country: {
+                type: String,
+                default: 'Australia',
+            },
+            state: {
+                type: String,
+                deafult: 'NSW',
+            },
+            city: {
+                type: String,
+                default: 'Sydney',
+            },
+            street: {
+                type: String, 
+                required: true,
+            },
+            street_num: {
+                type: Number,
+                required: true,
+            },
+            unit: {
+                type: String,
+                required: false,
+            },
+        }
+    },
+    gps: {
+        required: true,
+        type: {
+            long: {
+                required: true,
+                type: Number,
+            },
+            lat: {
+                required: true,
+                type: Number,
+            },
+        }
+    },
+    alerts: {
+        type: [Schema.Types.ObjectId],
+        default: []
+    }
+}))
+
+// post save bussines
+// generate new bus_id
 
 module.exports = mongoose.model("business");

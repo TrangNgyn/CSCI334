@@ -2,14 +2,20 @@ const config = require('../config/auth_config'),
     db = require('../models/db'),
     jwt = require('jsonwebtoken'),
     bcrypt = require('bcrypt');
+    user_controllers = require('./user_controllers')
 
 var salt_rounds = 8;
 
 exports.sign_up = (req,res) => {
-    const user = new db.user({
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, salt_rounds)
-    });
+
+    const user;
+    if(req.body.acc_type == "CIVILIAN")
+        user = user_controllers.civilian.post_add_civ(req,res)
+    if(req.body.acc_type == "BUSINESS")
+        user =  user_controllers.businss.post_add_business(req,res)
+    if(req.body.acc_type == "ORGANISATION")
+        user = user_controllers.healthcare_organisation.post_add_org(req,res)
+    
     user.save((err, user) => {
         if(err) {
             console.log(err)
@@ -61,7 +67,7 @@ exports.sign_in = (req,res) => {
             return
         }
         if(!user) 
-            return res.status(404).sned({ message: "User not found." })
+            return res.status(404).send({ message: "User not found." })
 
         var password_is_valid = bcrypt.compareSync(req.body.password, user.password)
 
