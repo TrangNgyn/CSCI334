@@ -6,16 +6,15 @@ import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 
 const accTypes = [
-  { name: "Civilian", id: "civ" },
-  { name: "Business", id: "bus" },
-  { name: "Healthcare Professional", id: "hea" },
-  { name: "Organization", id: "org" },
+  { name: "Civilian", id: "civilian" },
+  { name: "Business", id: "business" },
 ];
 
 const SignUp = ({ userStore, setSignUp }) => {
   const handleSignUp = (e) => {
     e.preventDefault();
-    setSignUp(false);
+    userStore.doSignUp();
+    //setSignUp(false);
   };
 
   return (
@@ -69,6 +68,34 @@ const SignUp = ({ userStore, setSignUp }) => {
                 }
               />
             </InputGroup>
+            <InputGroup size="md">
+              <Input
+                isRequired
+                name="first_name"
+                value={userStore.first_name}
+                placeholder="First Name"
+                variant="filled"
+                bg="#efefef"
+                onChange={(e) =>
+                  userStore.setProperty(e.target.name, e.target.value)
+                }
+              />
+            </InputGroup>
+            <InputGroup size="md">
+              <Input
+                isRequired
+                name="last_name"
+                value={userStore.last_name}
+                placeholder="Last Name"
+                variant="filled"
+                bg="#efefef"
+                onChange={(e) =>
+                  userStore.setProperty(e.target.name, e.target.value)
+                }
+              />
+            </InputGroup>
+            {/* display error message returned by API if one is returned */}
+            {userStore.errorMSG.length > 0 && <div>{userStore.errorMSG}</div>}
             <VStack pt="3">
               <Text variant="link" align="center">
                 Request an organisation account here
