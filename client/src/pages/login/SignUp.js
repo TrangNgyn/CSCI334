@@ -4,6 +4,8 @@ import { Select, Input, Spacer, Stack, InputGroup } from "@chakra-ui/react";
 import React from "react";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
+import LocationSearchInput from '../../components/GoogleMapsAutoComplete';
+import ChakraToastStatus from '../../components/ChakraToastStatus';
 
 const accTypes = [
   { name: "Civilian", id: "civilian" },
@@ -20,6 +22,10 @@ const SignUp = ({ userStore, setSignUp }) => {
   return (
     <Center h="100vh" layerStyle="mainBG">
       <DotPattern />
+            
+      {/* display error message returned by API if one is returned, currently disabled, few bugs */}
+      {/* userStore.errorMSG.length > 0 && <ChakraToastStatus status={'error'} message={userStore.errorMSG} /> */}
+
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
         <Stack align="center"></Stack>
         <form onSubmit={handleSignUp}>
@@ -68,34 +74,59 @@ const SignUp = ({ userStore, setSignUp }) => {
                 }
               />
             </InputGroup>
-            <InputGroup size="md">
-              <Input
-                isRequired
-                name="first_name"
-                value={userStore.first_name}
-                placeholder="First Name"
-                variant="filled"
-                bg="#efefef"
-                onChange={(e) =>
-                  userStore.setProperty(e.target.name, e.target.value)
-                }
-              />
-            </InputGroup>
-            <InputGroup size="md">
-              <Input
-                isRequired
-                name="last_name"
-                value={userStore.last_name}
-                placeholder="Last Name"
-                variant="filled"
-                bg="#efefef"
-                onChange={(e) =>
-                  userStore.setProperty(e.target.name, e.target.value)
-                }
-              />
-            </InputGroup>
-            {/* display error message returned by API if one is returned */}
-            {userStore.errorMSG.length > 0 && <div>{userStore.errorMSG}</div>}
+
+            {/* Display required fields for signing up as a user */}
+            {userStore.accType === 'civilian' &&
+              <>
+                <InputGroup size="md">
+                  <Input
+                    isRequired
+                    name="first_name"
+                    value={userStore.first_name}
+                    placeholder="First Name"
+                    variant="filled"
+                    bg="#efefef"
+                    onChange={(e) =>
+                      userStore.setProperty(e.target.name, e.target.value)
+                    }
+                  />
+                </InputGroup>
+                <InputGroup size="md">
+                  <Input
+                    isRequired
+                    name="last_name"
+                    value={userStore.last_name}
+                    placeholder="Last Name"
+                    variant="filled"
+                    bg="#efefef"
+                    onChange={(e) =>
+                      userStore.setProperty(e.target.name, e.target.value)
+                    }
+                  />
+                </InputGroup>
+              </>
+            }
+
+            {/* Display required fields for signing up as a business */}
+            {userStore.accType === 'business' &&
+              <>
+                <InputGroup size="md">
+                  <Input
+                    isRequired
+                    name="business_name"
+                    value={userStore.business_name}
+                    placeholder="Business Name"
+                    variant="filled"
+                    bg="#efefef"
+                    onChange={(e) =>
+                      userStore.setProperty(e.target.name, e.target.value)
+                    }
+                  />
+                </InputGroup>
+                <LocationSearchInput address={userStore.address} setProperty={userStore.setProperty} />
+              </>
+            }
+
             <VStack pt="3">
               <Text variant="link" align="center">
                 Request an organisation account here

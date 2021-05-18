@@ -43,7 +43,9 @@ class UserStoreImpl {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png";
 
   // Business Account
-  businessName = "";
+  business_name = "";
+  address = "";
+  gps = {};
 
   // Organisation Account
   orgName = "";
@@ -197,8 +199,9 @@ class UserStoreImpl {
           role: this.accType,
           email: this.email,
           password: this.password,
-          first_name: this.first_name,
-          last_name: this.last_name,
+          business_name: this.business_name,
+          address: this.address,
+          gps: this.gps,
         }),
       })
         .then((res) => res.json())
