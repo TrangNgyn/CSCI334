@@ -66,6 +66,10 @@ function Login({ userStore }) {
                   }
                 />
               </InputGroup>
+              
+              {/* display error message returned by API if one is returned, currently not working, something with the observer, not sure */}
+              {userStore.errorMSG.length > 0 && <div>{userStore.errorMSG}</div>}
+
               <VStack pt="3">
                 <Button
                   variant="gray"

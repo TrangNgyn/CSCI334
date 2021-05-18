@@ -7,13 +7,13 @@ import { useNavigate } from "react-router";
 
 function AppRouting({ userStore }) {
   useNavigate("/");
-  if (userStore.accType === "civ" || userStore.accType === "hea") {
+  if (userStore.accType === "civilian") {
     return <CivilianRouting />;
   }
-  if (userStore.accType === "bus") {
+  if (userStore.accType === "business") {
     return <BusRouting />;
   }
-  if (userStore.accType === "org") {
+  if (userStore.accType === "organisation") {
     return <OrgRouting />;
   }
 

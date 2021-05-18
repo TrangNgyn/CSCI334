@@ -4,9 +4,16 @@ class UserStoreImpl {
   id = "";
   email = "email@email.com";
   password = "pass123";
-  accType = "hea";
-  firstName = "";
-  lastName = "";
+  accType = "civilian";
+  first_name = "";
+  last_name = "";
+
+  // token variables recieved after succesful login
+  access_token = "";
+  expires_in = "";
+  roles = [];
+  token_type = "";
+
   newDependant = "";
   dependants = ["Matt Goghurt", "Jake Cool"];
   certs = [
@@ -98,9 +105,9 @@ class UserStoreImpl {
     this.id = "";
     this.email = "";
     this.password = "";
-    this.accType = "civ";
-    this.firstName = "";
-    this.lastName = "";
+    this.accType = "";
+    this.first_name = "";
+    this.last_name = "";
     this.certs = [];
     this.infections = ["covid", "tetanus"];
     this.alerts = [];
@@ -113,31 +120,32 @@ class UserStoreImpl {
   };
 
   doLogin = () => {
-    this.isLoggedIn = true;
 
-    // fetch("/api/account/signin", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: this.email,
-    //     password: this.password,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     if (json.success) {
-    //       this.errorMsg = "";
-    //       this.isLoggedIn = true;
-    //       this.isLoading = false;
-    //       this.token = json.token;
-    //       this.resetState();
-    //     } else {
-    //       this.errorMsg = json.message;
-    //       this.isLoading = false;
-    //     }
-    //   });
+    fetch("http://localhost:5000/api/auth/sign_in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: this.email,
+        password: this.password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.access_token = json.access_token;
+          this.expires_in = json.expires_in;
+          this.roles = json.roles;
+          this.token_type = json.token_type;
+          this.isLoading = false;
+          this.isLoggedIn = true;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
   };
 
   doLogout = () => {
@@ -170,38 +178,41 @@ class UserStoreImpl {
 
   doSignUp = () => {
     //this.isLoading = true;
-    this.isLoggedIn = true;
+    //this.isLoggedIn = true;
 
     if (!validateEmail(this.email)) {
-      this.errorMsg = "Email format is incorrect";
+      this.errorMSG = "Email format is incorrect";
       this.isLoading = false;
       return;
     }
 
     // Example fetch call below
     // {
-    //   // fetch('/api/account/createaccount', {
-    //   //   method: 'POST',
-    //   //   headers: {
-    //   //     'Content-Type': 'application/json',
-    //   //   },
-    //   //   body: JSON.stringify({
-    //   //     accType: this.accType,
-    //   //     email: this.email,
-    //   //     password: this.password,
-    //   //   }),
-    //   // })
-    //   //   .then((res) => res.json())
-    //   //   .then((json) => {
-    //   //     if (json.success) {
-    //   //       this.resetState();
-    //   //       this.errorMsg = json.message;
-    //   //       this.isLoading = false;
-    //   //     } else {
-    //   //       this.errorMsg = json.message;
-    //   //       this.isLoading = false;
-    //   //     }
-    //   //   });
+      fetch("http://localhost:5000/api/auth/sign_up", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          role: this.accType,
+          email: this.email,
+          password: this.password,
+          first_name: this.first_name,
+          last_name: this.last_name,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json);
+          if (json.success) {
+            this.resetState();
+            this.errorMSG = "";
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
     // }
   };
 }
