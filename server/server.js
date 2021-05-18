@@ -51,7 +51,7 @@ app.use(function(req, res, next) {
   next(); 
 });
 
-require('./routes/user')(app)
+//require('./routes/user')(app)
 // require('./routes/business')(app)
 
 app.use('/api/auth',auth);

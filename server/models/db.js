@@ -18,6 +18,7 @@ db.check_in = require('./check_in')
 db.counters = require('./counters')
 
 
+db.passwordRegex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 db.ROLES = ["business", "civilian", "healthcare", "organisation", "admin"]
 
 module.exports =  db

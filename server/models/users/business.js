@@ -7,9 +7,9 @@ const business = user.discriminator('business', new Schema({
         required: true,
         type: String,
     },
+    // this needs to be generated
     business_id: {
         type: String,
-        required: true,
         unique: true
     },
     address: {
@@ -17,15 +17,15 @@ const business = user.discriminator('business', new Schema({
         type: {
             country: {
                 type: String,
-                default: 'Australia',
+                required: true,
             },
             state: {
                 type: String,
-                deafult: 'NSW',
+                required: true,
             },
             city: {
                 type: String,
-                default: 'Sydney',
+                required: true,
             },
             street: {
                 type: String, 
