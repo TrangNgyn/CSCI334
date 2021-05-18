@@ -1,49 +1,24 @@
-import React, { useState } from "react";
-import Login from "./login/Login";
-import BusinessHome from "./business/BusinessHome";
-import CivilianHome from "./civilian/CivilianHome";
-import OrganisationHome from "./organisation/OrganisationHome";
-import HealthcareProfessionalHome from "./healthcareProfessional/healthcareProfessionalHome";
+import React from "react";
+import BusRouting from "./business/components/BusRouting";
+import CivilianRouting from "./civilian/components/CivilianRouting";
+import OrgRouting from "./organisation/components/OrgRouting";
+import { observer } from "mobx-react";
+import { useNavigate } from "react-router";
 
-const accTypes = [
-  { name: "Civilian", id: "civ" },
-  { name: "Business", id: "bus" },
-  { name: "Healthcare Professional", id: "hea" },
-  { name: "Organization", id: "org" },
-];
-
-export default function AppRouting() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accType, setAccType] = useState("civ");
-  
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(!isLoggedIn);
-  };
-
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(!isLoggedIn);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
-  if (isLoggedIn) {
-    if (accType === "civ") {
-      return <CivilianHome handleLogout={handleLogout} />;
-    }
-    if (accType === "bus") {
-      return <BusinessHome handleLogout={handleLogout} />;
-    }
-    if (accType === "org") {
-      return <OrganisationHome handleLogout={handleLogout} />;
-    }
-    if (accType === "hea") {
-      return <HealthcareProfessionalHome handleLogout={handleLogout} />;
-    }
+function AppRouting({ userStore }) {
+  useNavigate("/");
+  if (userStore.accType === "civ" || userStore.accType === "hea") {
+    return <CivilianRouting />;
+  }
+  if (userStore.accType === "bus") {
+    return <BusRouting />;
+  }
+  if (userStore.accType === "org") {
+    return <OrgRouting />;
   }
 
-  return <Login signUp={handleSignUp} login={handleLogin} accTypes={accTypes} setAccType={setAccType}/>;
+  // Plan type not found
+  userStore.doLogout();
 }
+
+export default observer(AppRouting);

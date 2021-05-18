@@ -1,31 +1,34 @@
 const Button = {
   baseStyle: {
-    borderRadius: "sm",
+    borderRadius: "md",
     border: "none",
-    shadow: "base",
+    shadow: "md",
+    width: "100%",
+    py: "26px",
+    textTransform: "uppercase",
+    _hover: {
+      cursor: "pointer",
+      opacity: ".8",
+    },
   },
   sizes: {},
   variants: {
     green: {
       bg: "#47cf6d",
       color: "white",
-      borderRadius: "md",
     },
     gray: {
       bg: "#dadada",
-      color: "gray.700",
-      borderRadius: "md",
+      color: "gray.600",
     },
     orange: {
       bg: "#ef8421",
       color: "white",
-      borderRadius: "md",
     },
     red: {
       bg: "#ea525b",
       color: "white",
-      borderRadius: "md",
-    }
+    },
   },
 };
 
