@@ -1,33 +1,12 @@
-// const express = require('express')
-// const router = express.Router();
-// const user_controller = require('../controller/user');
+const express = require('express')
+const router = express.Router();
+const controller = require('../controller/user')
+const { auth_jwt } =  require('../middleware')
 
-// router.get('/get-civs', user_controller.get_all);
+router.post('/forgot-password', controller.post_forgot_password)
+router.post('/change-password', auth_jwt.verify_token, controller.post_reset_password_request)
+router.post('/reset-password-email', controller.post_reset_password_email)
 
-// module.exports = router;
+router.get('/',auth_jwt.verify_token,controller.get_user_info)
 
-// const { auth_jwt } = require('../middleware') 
-// const controller = require('../controller/user')
-
-// module.exports = function(app) {
-//     app.use(function(req,res,next) {
-//         res.header(
-//             "Access-Control-Allow-Headers",
-//             "x-access-token, Origin, Content-Type, Accept"  
-//         )
-//         next()
-//     })
-
-//     app.get("/api/test/all", controller.allAccess)
-//     app.get("/api/test/user", [
-//         auth_jwt.verify_token
-//     ], controller.userBoard)
-//     app.get("/api/test/admin", [
-//         auth_jwt.verify_token,
-//         auth_jwt.is_admin
-//     ], controller.adminBoard)
-//     app.get("/api/test/business", [
-//         auth_jwt.verify_token,
-//         auth_jwt.is_business
-//     ], controller.businessBoard)
-// }
+module.exports = router

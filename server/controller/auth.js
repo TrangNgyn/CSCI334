@@ -109,6 +109,7 @@ exports.sign_in = (req,res) => {
         }
         if(!user) 
             return res.status(404).send({ message: "User not found." })
+        
 
         var password_is_valid = bcrypt.compareSync(req.body.password, user.password)
 
@@ -117,16 +118,19 @@ exports.sign_in = (req,res) => {
                 access_token: null,
                 message: "Invalid Password"
             })
-        
-        var token = jwt.sign({ id: user._id }, config.secret , { 
-            expiresIn: "30m" 
-        })
-        
+
         var authorities = [];
 
         for (let i = 0; i < user.roles.length; i++) {
+            if(user.roles[i].name == "organisation" && user.verified == false)
+                return res.status(403).send({
+                    message: "Account not verified"
+                })
             authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-        }
+        }        
+        var token = jwt.sign({ _id: user._id }, config.secret , { 
+            expiresIn: "30m" 
+        })
 
         res.status(200).send({
             access_token: token,

@@ -33,6 +33,13 @@ verify_token = (req,res, next) => {
                         message: "Unauthorized"
                     })
                 }
+                if(err.message=='jwt malformed'){
+                    res.setHeader("WWW-Authenticate","Bearer error='jwt malformed',error_description='The access token was malformed'")
+                    return res.send({
+                        success: false,
+                        message: "Unauthorized"
+                    })
+                }
                 res.setHeader("WWW-Authenticate","Bearer error='invalid_token',error_description='Unexpected validation error'")
                 return res.send({
                     success: false,
