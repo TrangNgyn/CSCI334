@@ -31,6 +31,8 @@ function initial() {
   })
 }
 
+const auth = require('./routes/auth')
+
 // setup database
 db.mongoose
   .connect(process.env.MONGODB_STRING, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
@@ -43,10 +45,16 @@ db.mongoose
 app.use(cors())
 app.use(bodyParser.json());
 
-  
-require('./routes/auth')(app)
-require('./routes/user')(app)
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000")
+  res.header("Access-Control-Allow-Headers", "Authorization Origin, X-Requested-With, Content-Type, Accept")
+  next(); 
+});
+
+//require('./routes/user')(app)
 // require('./routes/business')(app)
+
+app.use('/api/auth',auth);
 
 // make server object that contain port property and the value for our server.
 const server = {

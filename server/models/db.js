@@ -4,14 +4,21 @@ const db = {}
 
 db.mongoose = mongoose
 
+// user models
 db.user = require('./users/user')
 db.business = require('./users/business')
 db.civilian = require('./users/civilian')
-db.government = require('./users/government')
-db.organisation = require('./users/organisation')
-db.healthcare = require('./users/healthcare')
+db.organisation = require('./users/healthcare_organisation')
 db.role = require('./users/role')
+db.admin = require('./users/admin')
 
-db.ROLES = ["user", "admin", "business", "civilian", "government", "healthcare", "organisation"]
+// other models
+db.alert = require('./alerts')
+db.check_in = require('./check_in')
+db.counters = require('./counters')
+
+
+db.passwordRegex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+db.ROLES = ["business", "civilian", "healthcare", "organisation", "admin"]
 
 module.exports =  db

@@ -1,4 +1,7 @@
-const government_controller = require('../models/users/organisation')
+const empty_field = {
+    success: false,
+    message: "All fields must be filled"
+}
 
 class Organisation {
 

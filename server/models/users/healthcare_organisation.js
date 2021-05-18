@@ -10,7 +10,15 @@ const organisation = user.discriminator('organisation', new Schema({
     employees: {
         type: [Schema.Types.ObjectId],
         ref: 'user'
+    },
+    qr: {
+        type: String
+    },
+    verifed: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }))
 
-module.exports = mongoose.model("organisation");
+module.exports = mongoose.model("organisation")

@@ -2,54 +2,101 @@ const config = require('../config/auth_config'),
     db = require('../models/db'),
     jwt = require('jsonwebtoken'),
     bcrypt = require('bcrypt');
+    user_controllers = require('./user_controllers')
 
-var salt_rounds = 8;
+var salt_rounds = 12;
+
+const empty_field = {
+    success: false,
+    message: "All fields must be filled"
+}
 
 exports.sign_up = (req,res) => {
-    const user = new db.user({
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, salt_rounds)
-    });
+
+    try{
+    let { email, role } =  req.body
+
+    if(!email | !req.body.password | !role)
+        return res.status(400).send(empty_field)
+
+    let found = req.body.password.match(db.passwordRegex)
+    if(found == null) {
+        return res.status(400).send({
+            success: false,
+            message: "Password does not meet the criteria"
+        })
+    }
+    let user
+    if(role == "civilian") {
+        let { first_name, last_name } = req.body
+        if(!first_name | !last_name)
+            return res.status(400).send(empty_field)
+        user =  new db.civilian({
+            email: email,
+            first_name: first_name,
+            last_name: last_name,
+            password: bcrypt.hashSync(req.body.password, salt_rounds),
+        }) 
+    } 
+    
+    if(role == "business"){
+        let { business_name, address, gps } = req.body
+        if(!business_name | !address | !gps)
+            return res.status(400).send(empty_field)
+        if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
+            return res.status(400).send({
+                message: "Incorrecet address object"
+            })
+        user = new db.business({
+            business_name,
+            address,
+            gps,
+            email,
+            password: bcrypt.hashSync(req.body.password,salt_rounds)
+        })
+    }
+        
+    if(role == "organisation"){
+        let { organisation_name } = req.body
+        if(!organisation_name)
+            return res.status(400).send(empty_field)
+        user = new db.organisation({
+            organisation_name,
+            email,
+            password: bcrypt.hashSync(req.body.password,salt_rounds)
+        })
+    }
+
     user.save((err, user) => {
+
         if(err) {
             console.log(err)
             res.status(500).send({ message: err })
             return
         }
-        if(req.body.roles) {
-            db.role.find({name: { $in: req.body.roles }},(err, roles) => {
-                if(err) {
-                    res.status(500).send({ message: err })
-                    return;
-                }
-                user.roles = roles.map(role => role._id)
-                user.save(err => {
-                    if(err) {
-                        res.status(500).send({ message: err })
-                        return
-                    }
-                    res.send({ message: "User was registered successfully" })
-                    return
-                })
-            })
-        } else {
-            db.role.findOne({ name: "user" }, (err, role) => {
+        db.role.findOne({name: req.body.role },(err, roles) => {
+            if(err) {
+                res.status(500).send({ message: err })
+                return;
+            }
+            user.roles = roles._id
+            user.save(err => {
                 if(err) {
                     res.status(500).send({ message: err })
                     return
                 }
-                user.roles =  [role._id]
-                user.save(err => {
-                    if(err) {
-                        res.status(500).send({ message: err })
-                        return
-                    }
-                    res.send({ message: "User was registered successfully" })
-                    return
-                }) 
+                res.send({ message: "User was registered successfully" })
+                return
             })
-        }
+        })
+        
     })
+    } catch(err) {
+        return res.status(500).send({
+            message: err.message
+        })
+    }
+
 }
 
 exports.sign_in = (req,res) => {
@@ -61,7 +108,7 @@ exports.sign_in = (req,res) => {
             return
         }
         if(!user) 
-            return res.status(404).sned({ message: "User not found." })
+            return res.status(404).send({ message: "User not found." })
 
         var password_is_valid = bcrypt.compareSync(req.body.password, user.password)
 
@@ -72,7 +119,7 @@ exports.sign_in = (req,res) => {
             })
         
         var token = jwt.sign({ id: user._id }, config.secret , { 
-            expiresIn: 21600 // 6 hours
+            expiresIn: "30m" 
         })
         
         var authorities = [];
@@ -82,10 +129,10 @@ exports.sign_in = (req,res) => {
         }
 
         res.status(200).send({
-            user_id: user._id,
-            email: user.email,
+            access_token: token,
+            token_type: "Bearer",
             roles: authorities,
-            access_token: token
+            expires_in: ":1800"
         })
     })
 }

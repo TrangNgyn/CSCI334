@@ -3,66 +3,164 @@ const  jwt = require('jsonwebtoken'),
     db = require('../models/db')
 
 verify_token = (req,res, next) => {
-    let token = req.headers["x-access-token"]
+    let auth_header = req.headers.authorization
+    let token
 
-    if(!token) 
-        return res.status(403).send({ message: "No token provided" })
-    
-    
-    jwt.verify(token, config.secret, (err,decoded) => {
-        if(err) 
-            return res.status(401).send({ message: "Unauthorized" })
-        req.user_id = decoded.id
-        next()
-    })
+    if(!auth_header){
+        res.setHeader("WWW-Authenticate","Bearer")
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized"
+        })
+    }
+    else 
+        token = auth_header.split(' ')[1]
+        
+        jwt.verify(token,config.secret,(err,decoded) => {
+            if(err) {
+                res.status(401)
+                if(err.message=="jwt expired") {
+                    res.setHeader("WWW-Authenticate","Bearer error='invalid_token',error_description='The access token has expired'")
+                    return res.send({
+                        success: false,
+                        message: "Unauthorized"
+                    })
+                }
+                if(err.message=='invalid token'){
+                    res.setHeader("WWW-Authenticate","Bearer error='invalid_token',error_description='The access token failed verification'")
+                    return res.send({
+                        success: false,
+                        message: "Unauthorized"
+                    })
+                }
+                res.setHeader("WWW-Authenticate","Bearer error='invalid_token',error_description='Unexpected validation error'")
+                return res.send({
+                    success: false,
+                    message: "Unauthorized"
+                })
+                    
+            }
+            req.user_id =  decoded._id
+            next()
+        })
 }
 
-is_admin =  (req,res,next) => {
-    db.user.findById(req.user_id).exec((err,user) => {
-        if(err){
-            res.status(500).send({ message: err })
-            return
-        }
+is_admin = (req,res,next) => {
+    db.admin.findById(req.user_id).exec((err,user) => {
+        if(err)
+            return res.status(500).send({
+                message: err
+            })
+        if(!user) 
+            return res.status(404).send({
+                message: "No user found"
+            })
         db.role.find({
-            _id: { $in: user.roles }
-            },
-            (err, roles) => {
-                if(err) {
-                    res.status(500).send({ message: err })
+            _id: {$in: user.roles }
+        },(err, roles) => {
+            if(err)
+                return res.status(500).send({
+                    message: err
+                })
+            for(let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "admin"){
+                    return next()
                 }
-                for (let i = 0; i < roles.length; i++) {
-                    if(roles[i].name === "admin") {
-                        next();
-                        return
-                    }
-                }
-                res.status(403).send({ message: "Require Admin Role" })
-                return
             }
-        )
+            res.setHeader("WWW-Authenticate","Bearer realm='is_admin',error='insufficient_scope',error_description='Access token not valid for this resource'")
+            res.status(403).send({
+                message: "Require Admin Role, unauthorized"
+            })
+        })
     })
 }
 
 is_business = (req,res,next) => {
-    db.user.findById(req.user_id).exec((err, user) => {
-        if(err){
-            res.status(500).send({ message: err })
-            return
-        }
+    db.business.findById(req.user_id).exec((err,user) => {
+        if(err)
+            return res.status(500).send({
+                message: err
+            })
+        if(!user) 
+            return res.status(404).send({
+                message: "No user found"
+            })
         db.role.find({
-            _id: { $in: user.roles }
-        }, (err, roles) => {
-            if(err) {
-                res.status(500).send({ message: err })
-            }
+            _id: {$in: user.roles }
+        },(err, roles) => {
+            if(err)
+                return res.status(500).send({
+                    message: err
+                })
             for(let i = 0; i < roles.length; i++) {
-                if(roles[i].name === "business") {
-                    next();
-                    return
+                if(roles[i].name === "business"){
+                    return next()
                 }
             }
-            res.status(403).send({ message: "Require Business Role" })
-            return
+            res.setHeader("WWW-Authenticate","Bearer realm='is_business',error='insufficient_scope',error_description='Access token not valid for this resource'")
+            res.status(403).send({
+                message: "Require Business Role, unauthorized"
+            })
+        })
+    })
+}
+
+is_healthcare = (req,res,next) => {
+    db.civilian.findById(req.user_id).exec((err,user) => {
+        if(err)
+            return res.status(500).send({
+                message: err
+            })
+        if(!user) 
+            return res.status(404).send({
+                message: "No user found"
+            })
+        db.role.find({
+            _id: {$in: user.roles }
+        },(err, roles) => {
+            if(err)
+                return res.status(500).send({
+                    message: err
+                })
+            for(let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "healthcare"){
+                    return next()
+                }
+            }
+            res.setHeader("WWW-Authenticate","Bearer realm='is_healthcare',error='insufficient_scope',error_description='Access token not valid for this resource'")
+            res.status(403).send({
+                message: "Require Healthcare Role, unauthorized"
+            })
+        })
+    })
+}
+
+is_civilian = (req,res,next) => {
+    db.civilian.findById(req.user_id).exec((err,user) => {
+        if(err)
+            return res.status(500).send({
+                message: err
+            })
+        if(!user) 
+            return res.status(404).send({
+                message: "No user found"
+            })
+        db.role.find({
+            _id: {$in: user.roles }
+        },(err, roles) => {
+            if(err)
+                return res.status(500).send({
+                    message: err
+                })
+            for(let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "healthcare"){
+                    return next()
+                }
+            }
+            res.setHeader("WWW-Authenticate","Bearer realm='is_civilian',error='insufficient_scope',error_description='Access token not valid for this resource'")
+            res.status(403).send({
+                message: "Require Civilian Role, unauthorized"
+            })
         })
     })
 }
