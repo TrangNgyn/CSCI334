@@ -60,7 +60,7 @@ is_admin = (req,res,next) => {
             })
         if(!user) 
             return res.status(404).send({
-                message: "No user found"
+                message: "No user found, Unauthorized"
             })
         db.role.find({
             _id: {$in: user.roles }
@@ -90,7 +90,7 @@ is_business = (req,res,next) => {
             })
         if(!user) 
             return res.status(404).send({
-                message: "No user found"
+                message: "No user found, Unauthorized"
             })
         db.role.find({
             _id: {$in: user.roles }
@@ -120,7 +120,7 @@ is_healthcare = (req,res,next) => {
             })
         if(!user) 
             return res.status(404).send({
-                message: "No user found"
+                message: "No user found, Unauthorized"
             })
         db.role.find({
             _id: {$in: user.roles }
@@ -150,7 +150,7 @@ is_civilian = (req,res,next) => {
             })
         if(!user) 
             return res.status(404).send({
-                message: "No user found"
+                message: "No user found, Unauthorized"
             })
         db.role.find({
             _id: {$in: user.roles }
@@ -160,7 +160,7 @@ is_civilian = (req,res,next) => {
                     message: err
                 })
             for(let i = 0; i < roles.length; i++) {
-                if(roles[i].name === "healthcare"){
+                if(roles[i].name === "civilian"){
                     return next()
                 }
             }
@@ -172,10 +172,43 @@ is_civilian = (req,res,next) => {
     })
 }
 
+is_organisation = (req,res,next) => {
+    db.civilian.findById(req.user_id).exec((err,user) => {
+        if(err)
+            return res.status(500).send({
+                message: err
+            })
+        if(!user) 
+            return res.status(404).send({
+                message: "No user found, Unauthorized"
+            })
+        db.role.find({
+            _id: {$in: user.roles }
+        },(err, roles) => {
+            if(err)
+                return res.status(500).send({
+                    message: err
+                })
+            for(let i = 0; i < roles.length; i++) {
+                if(roles[i].name === "organisation"){
+                    return next()
+                }
+            }
+            res.setHeader("WWW-Authenticate","Bearer realm='is_organisation',error='insufficient_scope',error_description='Access token not valid for this resource'")
+            res.status(403).send({
+                message: "Require Organisation Role, unauthorized"
+            })
+        })
+    })
+}
+
 const auth_jwt = {
     verify_token,
     is_admin,
-    is_business
+    is_business,
+    is_civilian,
+    is_healthcare,
+    is_organisation
 }
 
 module.exports = auth_jwt
