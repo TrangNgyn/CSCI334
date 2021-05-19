@@ -9,7 +9,8 @@ import { observer } from "mobx-react";
 function AppRouting({ userStore }) {
   //const navigate = useNavigate();
   //navigate("../");
-  if (userStore.roles[0] === "ROLE_CIVILIAN") {
+  console.log(userStore.roles)
+  if (userStore.roles.length === 0) {
     return <CivilianRouting />;
   }
   if (userStore.roles[0] === "ROLE_BUSINESS") {
