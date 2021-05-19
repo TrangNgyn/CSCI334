@@ -11,3 +11,10 @@ export const busRoutes = [
     element: <CheckInPage />,
   },
 ];
+
+export const busMenuRoutes = [
+  {
+    title: "Check in",
+    path: "/bus/checkin",
+  },
+];

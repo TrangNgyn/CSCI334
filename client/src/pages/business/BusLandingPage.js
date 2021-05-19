@@ -2,22 +2,31 @@ import { Button } from "@chakra-ui/button";
 import { Box, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
 import LogoMenu from "../../components/LogoMenu/LogoMenu";
+import { busMenuRoutes } from "./components/BusRoutes";
 import GrayContainer from "../../components/GrayContainer";
 import DotPattern from "../../components/DotPattern";
 import { useNavigate } from "react-router";
 import { UserStore } from "../../stores/UserStore";
+import {
+  useDisclosure,
+} from "@chakra-ui/react";
+import Notifications from "../civilian/components/Notifications";
 
 export default function HealthLandingPage() {
   const navigate = useNavigate();
   const userStore = UserStore;
+  const alerts = userStore.alerts;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleLogout = () => {
-    userStore.doLogout();
-    navigate("/");
+  const handleNotificationClicked = () => {
+    onOpen();
   };
 
   return (
     <Box h="100vh" layerStyle="mainBG">
+      <Box position="absolute" top="5" left="5" zIndex="2">
+        <LogoMenu menuItems={busMenuRoutes} notification={handleNotificationClicked}/>
+      </Box>
       <DotPattern />
       <GrayContainer>
         <VStack spacing="7" w="100%">
@@ -33,15 +42,14 @@ export default function HealthLandingPage() {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray" onClick={handleLogout}>
-              Log Out
-            </Button>
             <Button variant="green" onClick={() => navigate("/bus/checkin")}>
               Check In
             </Button>
           </VStack>
         </VStack>
       </GrayContainer>
+      <Notifications onClose={onClose} isOpen={isOpen} alerts={alerts}></Notifications>
+
     </Box>
   );
 }

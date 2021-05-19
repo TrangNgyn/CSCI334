@@ -26,7 +26,7 @@ exports.sign_up = (req,res) => {
             message: "Password does not meet the criteria"
         })
     }
-    let user
+    let user;
     if(role == "civilian") {
         let { first_name, last_name } = req.body
         if(!first_name | !last_name)
@@ -40,16 +40,17 @@ exports.sign_up = (req,res) => {
     } 
     
     if(role == "business"){
-        let { business_name, address, gps } = req.body
+        let { business_name, address, gps, place_id } = req.body
         if(!business_name | !address | !gps)
             return res.status(400).send(empty_field)
-        if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
-            return res.status(400).send({
-                message: "Incorrecet address object"
-            })
+        // if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
+        //     return res.status(400).send({
+        //         message: "Incorrect address object"
+        //     })
         user = new db.business({
             business_name,
             address,
+            place_id,
             gps,
             email,
             password: bcrypt.hashSync(req.body.password,salt_rounds)
@@ -133,6 +134,7 @@ exports.sign_in = (req,res) => {
         })
 
         res.status(200).send({
+            success: true,
             access_token: token,
             token_type: "Bearer",
             roles: authorities,
