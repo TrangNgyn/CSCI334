@@ -14,7 +14,7 @@ const CheckinPage = () => {
       <GrayContainer>
         <VStack spacing="7" w="100%">
           <Text variant="heading" as="h2" m={0}>
-            Momo kitchen
+            {userStore.business_name}
           </Text>
           <Text align="center" w="70%">
             Check in to our premises
@@ -24,7 +24,7 @@ const CheckinPage = () => {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <QRImage src={userStore.QRCodeUrl} />
+            <QRImage src={userStore.qr_code} />
             <Button variant="gray" onClick={() => navigate("/")}>
               BACK
             </Button>

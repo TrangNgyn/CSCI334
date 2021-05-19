@@ -1,4 +1,7 @@
 import { action, makeAutoObservable } from "mobx";
+import QRCode from 'qrcode';
+
+const hash = require('hash.js')
 
 class UserStoreImpl {
   id = "";
@@ -59,12 +62,10 @@ class UserStoreImpl {
   errorMSG = "";
   isLoading = false;
 
-  // URL address to qr img for both business and organisation
-  QRCodeUrl =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/330px-QR_code_for_mobile_English_Wikipedia.svg.png";
-
   // Business Account
   business_name = "";
+  business_id = "";
+  qr_code = "";
   address = "";
   gps = {};
   place_id = "";
@@ -190,7 +191,7 @@ class UserStoreImpl {
   };
 
   doLogin = () => {
-    // this.isLoggedIn = true;
+
     fetch("http://localhost:5000/api/auth/sign_in", {
       method: "POST",
       headers: {
@@ -203,13 +204,16 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
+        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.access_token = json.access_token;
           this.expires_in = json.expires_in;
           this.roles = json.roles;
-          console.log(json.roles);
           this.token_type = json.token_type;
+          this.business_name = json.business_name;
+          this.address = json.address;
+          this.qr_code = json.qr_cde;
           this.isLoading = false;
           this.isLoggedIn = true;
         } else {
@@ -257,23 +261,47 @@ class UserStoreImpl {
       return;
     }
 
-    // Example fetch call below
-    // {
-    fetch("http://localhost:5000/api/auth/sign_up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        role: this.accType,
-        email: this.email,
-        password: this.password,
-        business_name: this.business_name,
-        address: this.address,
-        gps: this.gps,
-        place_id: this.place_id,
-      }),
-    })
+    // QRCode.toDataURL(businessID)
+    // .then(url => {
+    //   console.log(url)
+    // })
+    // .catch(err => {
+    //   console.error(err)
+    // })
+
+    const generateQR = async (business_id) => {
+      try {
+        const qr_code_url = await QRCode.toDataURL(business_id);
+          signUpCallback(qr_code_url, business_id);
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    if(this.accType === 'business') {
+      const businessID = hash.sha256().update(this.email).digest('hex');
+      generateQR(businessID);
+    }
+
+    const signUpCallback = (qr_code_url, business_id) => {
+      console.log(qr_code_url);
+      fetch("http://localhost:5000/api/auth/sign_up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: this.accType,
+          email: this.email,
+          password: this.password,
+          business_name: this.business_name,
+          business_id: business_id,
+          qr_code: qr_code_url,
+          address: this.address,
+          gps: this.gps,
+          place_id: this.place_id,
+        }),
+      })
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
@@ -286,8 +314,10 @@ class UserStoreImpl {
           this.isLoading = false;
         }
       });
-    // }
+    }
+
   };
+  
 }
 
 // Utility
