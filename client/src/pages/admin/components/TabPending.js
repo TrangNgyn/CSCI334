@@ -19,22 +19,27 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const AccountTabPending = ({ civilians, handleVerify }) => {
-    const [civilian, setCivilian] = React.useState(civilians[0]);
+const AccountTabPending = ({ organisations, handleVerify, handleDeny }) => {
+    const [organisation, setOrganisation] = React.useState(organisations[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const handleClick = (civ) => {
-      setCivilian(civ);
+      setOrganisation(civ);
       onOpen();
     };
   
     const handleVerifyBtnClicked = () => {
-      handleVerify(civilian);
+      handleVerify(organisation);
+      onClose();
+    }
+
+    const handleDenyBtnClicked = () => {
+      handleDeny(organisation);
       onClose();
     }
   
     return (
     <VStack w="100%" p="0">
-      {civilians.map((el) => (
+      {organisations.map((el) => (
         <Flex
           bg="white"
           align="center"
@@ -56,10 +61,10 @@ const AccountTabPending = ({ civilians, handleVerify }) => {
       <Drawer onClose={onClose} isOpen={isOpen} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>{civilian.name}</DrawerHeader>
+          <DrawerHeader>{organisation.name}</DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="left">
-              <Text m={0}>#{civilian.userId}</Text>
+              <Text m={0}>#{organisation.userId}</Text>
             </VStack>
           </DrawerBody>
           <DrawerFooter>
@@ -67,6 +72,24 @@ const AccountTabPending = ({ civilians, handleVerify }) => {
               <Button variant="gray" onClick={onClose}>
                 Back
               </Button>
+              <Popover>
+                <PopoverTrigger>
+                  <Button variant="red">Deny</Button>
+                </PopoverTrigger>
+                <PopoverContent border={0}>
+                  <PopoverArrow />
+                  <PopoverHeader>Warning!</PopoverHeader>
+                  <PopoverCloseButton />
+                  <PopoverBody>
+                    <VStack spacing={4}>
+                      <Text m={0}>
+                        Are you sure you want to deny this organization?
+                      </Text>
+                      <Button variant="red" onClick={handleDenyBtnClicked}>Yes</Button>
+                    </VStack>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
               <Popover>
                 <PopoverTrigger>
                   <Button variant="green">verify</Button>

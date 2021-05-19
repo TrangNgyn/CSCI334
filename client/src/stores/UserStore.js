@@ -21,7 +21,28 @@ class UserStoreImpl {
     { title: "Tetanus", status: "pending" },
   ];
   infections = ["covid", "tetanus"];
-  alerts = [];
+  alerts = [
+    {
+      alertId: "alert123",
+      location: "Primby Diner",
+      businessId: "businessID123",
+      timeStart: "1:45pm",
+      timeFinish: "3:45pm",
+      date: "23/04/2021",
+      virus: "covid-19",
+      active: true,
+    },
+    {
+      alertId: "alert124",
+      location: "Primby Hotel",
+      businessId: "businessID124",
+      timeStart: "7:45pm",
+      timeFinish: "9:45pm",
+      date: "13/04/2021",
+      virus: "covid-19",
+      active: true,
+    },
+  ];
   stats = [
     { key: "Australia", value: 138 },
     { key: "NSW", value: 74 },
@@ -54,6 +75,36 @@ class UserStoreImpl {
   orgStats = [
     { key: "Acc's Registered", value: 64 },
     { key: "Vaccinated", value: 22 },
+  ];
+
+  // Admin Account
+  verifiedOrganisations = [
+    {
+      name: "UoW",
+      userId: "123141",
+    },
+    {
+      name: "UNSW",
+      userId: "121323",
+    },
+    {
+      name: "UTS",
+      userId: "121231",
+    },
+  ];
+  pendingOrganisations = [
+    {
+      name: "UCal",
+      userId: "233214",
+    },
+    {
+      name: "USyd",
+      userId: "234324",
+    },
+    {
+      name: "UCLA",
+      userId: "253212",
+    },
   ];
 
   // Check in Form
@@ -103,6 +154,22 @@ class UserStoreImpl {
     console.log("Adding Employee " + empId + " to the organisation");
   };
 
+  verifyOrganisation = (organisation) => {
+    this.pendingOrganisations.splice(this.pendingOrganisations.indexOf(organisation), 1);
+    this.verifiedOrganisations.push(organisation);
+    // Update database
+  };
+
+  denyOrganisation = (organisation) => {
+    this.pendingOrganisations.splice(this.pendingOrganisations.indexOf(organisation), 1);
+    // Update database
+  }
+
+  deleteOrganisation = (organisation) => {
+    this.verifiedOrganisations.splice(this.verifiedOrganisations.indexOf(organisation), 1);
+    // Update database
+  };
+
   resetState = () => {
     this.id = "";
     this.email = "";
@@ -122,7 +189,7 @@ class UserStoreImpl {
   };
 
   doLogin = () => {
-
+    // this.isLoggedIn = true;
     fetch("http://localhost:5000/api/auth/sign_in", {
       method: "POST",
       headers: {
@@ -190,32 +257,32 @@ class UserStoreImpl {
 
     // Example fetch call below
     // {
-      fetch("http://localhost:5000/api/auth/sign_up", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          role: this.accType,
-          email: this.email,
-          password: this.password,
-          business_name: this.business_name,
-          address: this.address,
-          gps: this.gps,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          console.log(json);
-          if (json.success) {
-            this.resetState();
-            this.errorMSG = "";
-            this.isLoading = false;
-          } else {
-            this.errorMSG = json.message;
-            this.isLoading = false;
-          }
-        });
+    fetch("http://localhost:5000/api/auth/sign_up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        role: this.accType,
+        email: this.email,
+        password: this.password,
+        business_name: this.business_name,
+        address: this.address,
+        gps: this.gps,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.resetState();
+          this.errorMSG = "";
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
     // }
   };
 }

@@ -8,68 +8,28 @@ import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../../components/GrayContainer";
 import DotPattern from "../../../components/DotPattern";
 import { useNavigate } from "react-router-dom";
+import { UserStore } from "../../../stores/UserStore";
+import {
+  useDisclosure,
+} from "@chakra-ui/react";
+import Notifications from "../components/AdminNotifications";
 
-// TO-DO: replace orgs and orgsPending by verified organizations,
-//and organisations that are seek verification
-const orgs = [
-  {
-    name: "UoW",
-    userId: "123141",
-  },
-  {
-    name: "UNSW",
-    userId: "121323",
-  },
-  {
-    name: "UTS",
-    userId: "121231",
-  },
-  {
-    name: "UoW",
-    userId: "123141",
-  },
-  {
-    name: "UNSW",
-    userId: "121323",
-  },
-  {
-    name: "UTS",
-    userId: "121231",
-  },
-];
-const orgsPending = [
-  {
-    name: "UCal",
-    userId: "233214",
-  },
-  {
-    name: "USyd",
-    userId: "234324",
-  },
-  {
-    name: "UCLA",
-    userId: "253212",
-  },
-];
-
-const FindUserPage = () => {
+const Organisations = () => {
+  const userStore = UserStore;
+  const orgs = userStore.verifiedOrganisations;
+  const orgsPending = userStore.pendingOrganisations;
   const navigate = useNavigate();
   const [organisations, setOrganisations] = useState(orgs);
   const [organisationsPending, setOrganisationsPending] = useState(orgsPending);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleDelete = (organisation) => {
-    organisations.splice(organisations.indexOf(organisation), 1);
-    setOrganisations(organisations);
-    //   TO-DO: Update database
+  const handleNotificationClicked = () => {
+    onOpen();
   };
-
-  const handleVerify = (organisation) => {
-    organisationsPending.splice(organisationsPending.indexOf(organisation), 1);
-    setOrganisationsPending(organisationsPending);
-    organisations.push(organisation);
-    setOrganisations(organisations);
-    //   TO-DO: Update database
-  };
+  
+  const handleDelete = userStore.deleteOrganisation;
+  const handleVerify = userStore.verifyOrganisation;
+  const handleDeny = userStore.denyOrganisation;
 
   const handleUserSearch = (e) => {
     if (e.target.value === "") {
@@ -85,8 +45,8 @@ const FindUserPage = () => {
 
   return (
     <Box h="100vh" w="100%" layerStyle="mainBG" position="relative" overflow="scroll">
-      <Box position="fixed" top="5" left="5">
-        <LogoMenu menuItems={adMenuRoutes} />
+      <Box position="fixed" top="5" left="5" zIndex="1">
+        <LogoMenu menuItems={adMenuRoutes} notification={handleNotificationClicked} />
       </Box>
       <DotPattern position="fixed"/>
       <VStack
@@ -141,8 +101,9 @@ const FindUserPage = () => {
             </TabPanel>
             <TabPanel p={0} pt={3} pb="180px">
                 {organisationsPending.length <= 0 ? "Empty":<AccountTabPending
-                civilians={organisationsPending}
+                organisations={organisationsPending}
                 handleVerify={handleVerify}
+                handleDeny={handleDeny}
               />}
             </TabPanel>
           </TabPanels>
@@ -156,14 +117,15 @@ const FindUserPage = () => {
             maxW={{ base: "90%", md: "container.sm" }}
             spacing="5"
           >
-            <Button variant="gray" onClick={() => navigate("/ad/home")}>
+            <Button variant="gray" onClick={() => navigate("/")}>
               BACK
             </Button>
           </VStack>
         </VStack>
       </GrayContainer>
+      <Notifications isOpen={isOpen} onClose={onClose}/>
     </Box>
   );
 };
 
-export default FindUserPage;
+export default Organisations;

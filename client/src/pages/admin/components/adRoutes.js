@@ -9,23 +9,23 @@ export const adRoutes = [
     path: "/",
     element: <AdLandingPage />,
   },
-  {
-    path: "/ad/home",
-    element: <Home />,
-  },
+  // {
+  //   path: "/ad/home",
+  //   element: <Home />,
+  // },
   {
     path: "/ad/org",
     element: <Organizations />,
   },
-  {
-    path: "/ad/civ",
-    element: <Civilians />,
-  },
+  // {
+  //   path: "/ad/civ",
+  //   element: <Civilians />,
+  // },
 ];
 
 export const adMenuRoutes = [
   {
-    title: "Home",
-    path: "/ad/home",
+    title: "Organisations",
+    path: "/ad/org",
   },
 ];

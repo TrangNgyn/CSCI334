@@ -2,23 +2,38 @@ import { Button } from "@chakra-ui/button";
 import { Box, Center, VStack } from "@chakra-ui/layout";
 import React from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
+import DotPattern from "../../../components/DotPattern";
 import { civMenuRoutes } from "../components/civRoutes";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import { menuOptions, healthMenuOption } from "./menuOptions";
 import Option from "../../../components/Option";
 import { UserStore } from "../../../stores/UserStore";
+import {
+  useDisclosure,
+} from "@chakra-ui/react";
+import Notifications from "../components/Notifications";
 
 export default function CivilianHome() {
   const navigate = useNavigate();
   const userStore = UserStore;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const alerts = userStore.alerts;
+
+  const handleNotificationClicked = () => {
+    onOpen();
+  };
 
   return (
-    <Box h="100vh" layerStyle="mainBG">
-      <Box position="absolute" top="5" left="5">
-        <LogoMenu menuItems={civMenuRoutes} />
+    <Box h="100vh" layerStyle="mainBG" position="relative" overflow="scroll">
+      <Box position="fixed" zIndex="1" top="5" left="5">
+        <LogoMenu
+          menuItems={civMenuRoutes}
+          notification={handleNotificationClicked}
+        />
       </Box>
-      <Box position="absolute" w="100%" top="140px">
+      <DotPattern position="fixed" />
+      <Box position="absolute" w="100%" top="140px" zIndex="0" pb="180px">
         <Center>
           <VStack
             spacing="2"
@@ -33,12 +48,18 @@ export default function CivilianHome() {
         </Center>
       </Box>
       <GrayContainer>
-        <VStack spacing="7" w="90%" maxW={{ base: "90%", md: "container.sm" }}>
+        <VStack
+          spacing="7"
+          w="90%"
+          maxW={{ base: "90%", md: "container.sm" }}
+          zIndex="2"
+        >
           <Button variant="green" onClick={() => navigate("/civ/checkin")}>
             Check In
           </Button>
         </VStack>
       </GrayContainer>
+      <Notifications onClose={onClose} isOpen={isOpen} alerts={alerts}></Notifications>
     </Box>
   );
 }
