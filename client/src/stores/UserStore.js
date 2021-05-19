@@ -67,6 +67,7 @@ class UserStoreImpl {
   business_name = "";
   address = "";
   gps = {};
+  place_id = "";
 
   // Organisation Account
   orgName = "";
@@ -207,6 +208,7 @@ class UserStoreImpl {
           this.access_token = json.access_token;
           this.expires_in = json.expires_in;
           this.roles = json.roles;
+          console.log(json.roles);
           this.token_type = json.token_type;
           this.isLoading = false;
           this.isLoggedIn = true;
@@ -269,6 +271,7 @@ class UserStoreImpl {
         business_name: this.business_name,
         address: this.address,
         gps: this.gps,
+        place_id: this.place_id,
       }),
     })
       .then((res) => res.json())
