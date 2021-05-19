@@ -7,17 +7,18 @@ import { observer } from "mobx-react";
 import { useNavigate } from "react-router";
 
 function AppRouting({ userStore }) {
-  useNavigate("/");
-  if (userStore.accType === "civilian") {
+  //const navigate = useNavigate();
+  //navigate("../");
+  if (userStore.roles[0] === "ROLE_CIVILIAN") {
     return <CivilianRouting />;
   }
-  if (userStore.accType === "business") {
+  if (userStore.roles[0] === "ROLE_BUSINESS") {
     return <BusRouting />;
   }
-  if (userStore.accType === "organisation") {
+  if (userStore.roles[0] === "ROLE_ORGANISATION") {
     return <OrgRouting />;
   }
-  if (userStore.accType === "admin") {
+  if (userStore.roles[0] === "ROLE_ADMIN") {
     return <AdRouting />;
   }
 

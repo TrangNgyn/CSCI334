@@ -5,7 +5,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 import LocationSearchInput from '../../components/GoogleMapsAutoComplete';
-import ChakraToastStatus from '../../components/ChakraToastStatus';
 
 const accTypes = [
   { name: "Civilian", id: "civilian" },
@@ -22,9 +21,6 @@ const SignUp = ({ userStore, setSignUp }) => {
   return (
     <Center h="100vh" layerStyle="mainBG">
       <DotPattern />
-            
-      {/* display error message returned by API if one is returned, currently disabled, few bugs */}
-      {/* userStore.errorMSG.length > 0 && <ChakraToastStatus status={'error'} message={userStore.errorMSG} /> */}
 
       <Stack spacing="10" mx="auto" maxW="lg" w="90%">
         <Stack align="center"></Stack>

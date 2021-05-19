@@ -40,16 +40,17 @@ exports.sign_up = (req,res) => {
     } 
     
     if(role == "business"){
-        let { business_name, address, gps } = req.body
+        let { business_name, address, gps, place_id } = req.body
         if(!business_name | !address | !gps)
             return res.status(400).send(empty_field)
-        if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
-            return res.status(400).send({
-                message: "Incorrect address object"
-            })
+        // if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
+        //     return res.status(400).send({
+        //         message: "Incorrect address object"
+        //     })
         user = new db.business({
             business_name,
             address,
+            place_id,
             gps,
             email,
             password: bcrypt.hashSync(req.body.password,salt_rounds)

@@ -14,41 +14,22 @@ const business = user.discriminator('business', new Schema({
     },
     address: {
         required: true,
-        type: {
-            country: {
-                type: String,
-                required: true,
-            },
-            state: {
-                type: String,
-                required: true,
-            },
-            city: {
-                type: String,
-                required: true,
-            },
-            street: {
-                type: String, 
-                required: true,
-            },
-            street_num: {
-                type: Number,
-                required: true,
-            },
-            unit: {
-                type: String,
-                required: false,
-            },
-        }
+        type: String,
+    },
+    // locations such as businesses, parks etc. may have a place id; It's possible for one location to have multiple place id's. Place id's may also change over time
+    // Because of this we should mainly rely on the lat/lng
+    place_id: { 
+        required: false,
+        type: String,
     },
     gps: {
         required: true,
         type: {
-            long: {
+            lat: {
                 required: true,
                 type: Number,
             },
-            lat: {
+            lng: {
                 required: true,
                 type: Number,
             },

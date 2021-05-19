@@ -15,11 +15,13 @@ export default function LocationSearchInput(props) {
  
     const handleSelect = (address) => {
         props.setProperty("address", address);
-        console.log(address);
+        console.log(geocodeByAddress(address));
         geocodeByAddress(address)
-        .then(results => getLatLng(results[0]))
-        .then(latLng => props.setProperty("gps", latLng))
-        .catch(error => console.error('Error', error));
+        .then(results => { props.setProperty("place_id", results[0].place_id); 
+                            getLatLng(results[0])
+                            .then(latLng => props.setProperty("gps", latLng))
+                            .catch(error => console.error('Error', error)); })
+        
     };
 
     return (
@@ -43,7 +45,7 @@ export default function LocationSearchInput(props) {
                     </InputGroup>
                     <div className="autocomplete-dropdown-container">
                     {loading && <div>Loading...</div>}
-                    {suggestions.map(suggestion => {
+                    {suggestions.map((suggestion, i) => {
                         const className = suggestion.active
                         ? 'suggestion-item--active'
                         : 'suggestion-item';
@@ -52,7 +54,7 @@ export default function LocationSearchInput(props) {
                         ? { backgroundColor: '#fafafa', cursor: 'pointer' }
                         : { backgroundColor: '#ffffff', cursor: 'pointer' };
                         return (
-                        <div
+                        <div key={i}
                             {...getSuggestionItemProps(suggestion, {
                             className,
                             style,
