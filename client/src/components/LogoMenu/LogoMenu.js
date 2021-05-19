@@ -4,13 +4,17 @@ import LogoIcon from "./LogoIcon";
 import { useNavigate } from "react-router-dom";
 import { UserStore } from "../../stores/UserStore";
 
-export default function LogoMenu({ menuItems }) {
+export default function LogoMenu({ menuItems, notification }) {
   let navigate = useNavigate();
   const userStore = UserStore;
 
   const handleLogout = () => {
     userStore.doLogout();
     navigate("/");
+  };
+
+  const handleNotificationClicked = () => {
+    notification();
   };
 
   return (
@@ -37,6 +41,14 @@ export default function LogoMenu({ menuItems }) {
             {item.title}
           </MenuItem>
         ))}
+        <MenuItem
+          bg="white"
+          border="none"
+          key={"notification"}
+          onClick={handleNotificationClicked}
+        >
+          Notification
+        </MenuItem>
         <MenuItem
           bg="white"
           border="none"
