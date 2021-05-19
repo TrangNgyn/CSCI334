@@ -48,9 +48,6 @@ exports.sign_up = (req,res) => {
         //         message: "Incorrect address object"
         //     })
 
-        console.log(qr_code);
-        console.log(business_id);
-
         user = new db.business({
             business_name,
             business_id,
