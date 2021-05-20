@@ -39,22 +39,25 @@ exports.sign_up = (req,res) => {
         }) 
     } 
     
-    if(role == "business"){
-        let { business_name, address, gps, place_id } = req.body
+    if(role == "business") {
+        let { business_name, qr_code, business_id, address, gps, place_id } = req.body
         if(!business_name | !address | !gps)
             return res.status(400).send(empty_field)
         // if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
         //     return res.status(400).send({
         //         message: "Incorrect address object"
         //     })
+
         user = new db.business({
             business_name,
+            business_id,
+            qr_code,
             address,
             place_id,
             gps,
             email,
             password: bcrypt.hashSync(req.body.password,salt_rounds)
-        })
+        });
     }
         
     if(role == "organisation"){
@@ -133,12 +136,26 @@ exports.sign_in = (req,res) => {
             expiresIn: "30m" 
         })
 
-        res.status(200).send({
-            success: true,
-            access_token: token,
-            token_type: "Bearer",
-            roles: authorities,
-            expires_in: ":1800"
-        })
+        // if there's a better/more readable solution can change, I did this for quick testing of business qr code etc.
+        if(authorities[0] === "ROLE_BUSINESS") {
+            res.status(200).send({
+                success: true,
+                access_token: token,
+                token_type: "Bearer",
+                roles: authorities,
+                expires_in: ":1800",
+                business_name: user.business_name,
+                qr_cde: user.qr_code,
+                address: user.address,
+            })
+        } else {
+            res.status(200).send({
+                success: true,
+                access_token: token,
+                token_type: "Bearer",
+                roles: authorities,
+                expires_in: ":1800"
+            })
+        }
     })
 }

@@ -15,7 +15,6 @@ export default function LocationSearchInput(props) {
  
     const handleSelect = (address) => {
         props.setProperty("address", address);
-        console.log(geocodeByAddress(address));
         geocodeByAddress(address)
         .then(results => { props.setProperty("place_id", results[0].place_id); 
                             getLatLng(results[0])
