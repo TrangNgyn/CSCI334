@@ -29,7 +29,6 @@ function CheckInPage({ back }) {
                 ml="5"
                 id="startButton"
                 mt="3"
-                onClick={() => userStore.setProperty("scanned", true)}
               >
                 scan
               </Button>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controller/business')
-const { auth_jwt } = require('../middleware')
+const controller = require('../controller/business');
+const { auth_jwt } = require('../middleware');
 
 // module.exports = function(app) {
 //     app.use(function(req,res,next) {
@@ -23,6 +23,5 @@ router.get('/',
 [
     auth_jwt.verify_token,
     auth_jwt.is_civilian
-], controller.get_specific_bus)
 
-module.exports = router
+module.exports = router;
