@@ -37,11 +37,12 @@ const alert_schema = new Schema({
 
 alert_schema.pre('save', function (next) {
     var doc = this
-    // set the time of the alert and the end time of the alert to be 2 weeks from now
+    // set teh time of the alert to the current time
     var t_date = new Date();
     t_date = new Date()
     t_date = Date.now()
     doc.alert_date = t_date
+    // add two weeks to the date object 
     doc.time_end = t_date + 60 * 60 * 24 * 14 * 1000
     next()
 })

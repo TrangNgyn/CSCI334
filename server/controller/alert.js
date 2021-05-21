@@ -6,6 +6,10 @@ var empty_field = {
 
 class Alert {
 
+    // @route   /api/alert/create-alert
+    // @desc    create an 
+    // @access  Public currently
+
     async post_create_alert(req,res) {
         try{
             let { place_id, gps, business_id, virus } = req.body
@@ -46,19 +50,6 @@ class Alert {
                         message: err.message
                     })
                 })
-            // new db.alert({
-            //     place_id,
-            //     gps,
-            //     business_id
-            // }).save((err,save) =>{
-            //     if(err)
-            //         return res.status(500).send({
-            //             message: err.message
-            //         })
-            //     return res.send({
-            //         message: "new alert was created and added to the db"
-            //     })
-            // })
             
             
         } catch(err) {
@@ -66,6 +57,31 @@ class Alert {
                 message: err.message
             })
         }
+    }
+
+    // @route   /api/alerts
+    // @desc    gets all alerts
+    // @access  Public currently (but who should access this?)
+
+    async get_all_alerts(req,res) {
+        try{
+            db.alert.find({})
+                .then(alerts => {
+                    res.send(alerts)
+                })
+        } catch (err) {
+            return res.status(500).send({
+                message: err.message
+            })
+        }
+    }
+
+    // @route   /api/alerts/update
+    // @desc    update the alerts in civ arrays?
+    // @access  Private?
+    
+    async put_update_alerts(req,res) {
+        
     }
 
 }
