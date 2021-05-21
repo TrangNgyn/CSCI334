@@ -3,7 +3,7 @@ const express = require('express'),
     controller = require('../controller/check_in'),
     { auth_jwt } = require('../middleware');
 
-
+// routes accessible by civilian
 router.post('/create-check-in', [
     auth_jwt.verify_token,
     auth_jwt.is_civilian
