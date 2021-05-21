@@ -6,7 +6,8 @@ const express = require('express'),
     app = express(),
     cors = require('cors'),
     bodyParser = require('body-parser'),
-    db = require('./models/db')
+    db = require('./models/db'),
+    cron_jobs = require('./middleware/cron_jobs')
 
 function initial() {
   db.counters.estimatedDocumentCount((err,count) => {
@@ -67,6 +68,8 @@ app.use('/api/auth',auth)
 app.use('/api/user',user)
 app.use('/api/alert',alert)
 app.use('/api/check-in',check_in)
+
+cron_jobs.task.start()
 
 // make server object that contain port property and the value for our server.
 const server = {
