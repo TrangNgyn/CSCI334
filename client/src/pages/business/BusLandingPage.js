@@ -43,7 +43,7 @@ export default function HealthLandingPage() {
             spacing="5"
           >
             <Button variant="green" onClick={() => navigate("/bus/checkin")}>
-              Check In
+              My QR Code
             </Button>
           </VStack>
         </VStack>
