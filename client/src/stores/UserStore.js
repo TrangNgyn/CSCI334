@@ -5,8 +5,8 @@ const hash = require('hash.js')
 
 class UserStoreImpl {
   id = "";
-  email = "email@email.com";
-  password = "pass123";
+  email = "someemail@email.com";
+  password = "somePass12@3";
   accType = "civilian";
   first_name = "";
   last_name = "";
@@ -18,7 +18,7 @@ class UserStoreImpl {
   token_type = "";
 
   newDependant = "";
-  dependants = ["Matt Goghurt", "Jake Cool"];
+  dependants = [];
   certs = [
     { title: "Covid-19", status: "complete" },
     { title: "Tetanus", status: "pending" },
@@ -120,6 +120,7 @@ class UserStoreImpl {
       addDependant: action,
       removeDependant: action,
       findUser: action,
+      getBusiness: action,
       updateTotalEmps: action,
     });
   }
@@ -188,6 +189,38 @@ class UserStoreImpl {
     //this.QRCodeUrl = "";
     this.orgName = "";
     this.employees = [];
+  };
+
+  // get business by id for check in
+  getBusiness = () => {
+    fetch("http://localhost:5000/api/business/get_business", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        business_id: this.business_id.text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          //this.access_token = json.access_token;
+          //this.expires_in = json.expires_in;
+          //this.roles = json.roles;
+          //this.token_type = json.token_type;
+          this.business_name = json.found.business_name;
+          this.address = json.found.address;
+          this.gps = json.found.gps; 
+          //this.qr_code = json.qr_cde;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
   };
 
   doLogin = () => {
@@ -277,14 +310,45 @@ class UserStoreImpl {
         console.error(err)
       }
     }
-
-    if(this.accType === 'business') {
-      const businessID = hash.sha256().update(this.email).digest('hex');
-      generateQR(businessID);
+    
+    // method used for user sign up
+    const signUp = () => {
+      fetch("http://localhost:5000/api/auth/sign_up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: this.accType,
+          email: this.email,
+          password: this.password,
+          first_name: this.first_name,
+          last_name: this.last_name,
+        }),
+      })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.resetState();
+          this.errorMSG = "";
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
     }
 
+    // if signing up for a business account generate qr code then run business sign up method, else run user sign up method
+    if(this.accType === 'business') {
+      const businessID = hash.sha256().update(this.email).digest('hex'); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
+      generateQR(businessID);
+    } else { 
+      signUp();
+    }
+
+    // method used for user business sign up
     const signUpCallback = (qr_code_url, business_id) => {
-      console.log(qr_code_url);
       fetch("http://localhost:5000/api/auth/sign_up", {
         method: "POST",
         headers: {
@@ -304,7 +368,6 @@ class UserStoreImpl {
       })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.resetState();
           this.errorMSG = "";

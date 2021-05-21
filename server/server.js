@@ -9,6 +9,7 @@ const express = require('express'),
     db = require('./models/db'),
     cron_jobs = require('./middleware/cron_jobs')
 
+
 function initial() {
   db.counters.estimatedDocumentCount((err,count) => {
     if(!err && count===0) {
@@ -44,6 +45,7 @@ const auth = require('./routes/auth')
 const user = require('./routes/user')
 const alert = require('./routes/alert')
 const check_in = require('./routes/check_in')
+const business = require('./routes/business')
 
 // setup database
 db.mongoose
@@ -55,7 +57,8 @@ db.mongoose
   .catch(err => console.log(err));
 
 app.use(cors())
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}))
 
 // this needs to be changed
 app.use(function(req, res, next) {
@@ -70,6 +73,8 @@ app.use('/api/alert',alert)
 app.use('/api/check-in',check_in)
 
 cron_jobs.task.start()
+app.use('/api/auth',auth);
+app.use('/api/business',business);
 
 // make server object that contain port property and the value for our server.
 const server = {

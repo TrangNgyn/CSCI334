@@ -123,6 +123,11 @@ exports.sign_in = (req,res) => {
                 message: "Invalid Password"
             })
 
+        
+        var token = jwt.sign({ _id: user._id }, config.secret , { 
+            expiresIn: "30m" 
+        })
+        
         var authorities = [];
 
         for (let i = 0; i < user.roles.length; i++) {
@@ -159,3 +164,5 @@ exports.sign_in = (req,res) => {
         }
     })
 }
+
+

@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controller/business')
-const { auth_jwt } = require('../middleware')
-
+const controller = require('../controller/business');
+const { auth_jwt } = require('../middleware');
 
 // all of this needs to be changed
 module.exports = function(app) {
@@ -20,7 +19,18 @@ module.exports = function(app) {
     ], controller.add_business)
 }
 
+//     app.get("/api/business/all", [
+//     auth_jwt.verify_token,
+//     auth_jwt.is_business
+//     ], controller.add_business)
+// }
 
-router.get('')
+router.get('/all',controller.get_bus);
+router.post('/get_business',controller.get_business_by_id);
+router.get('/',
+[
+    auth_jwt.verify_token,
+    auth_jwt.is_civilian
+]);
 
-module.exports = router
+module.exports = router;
