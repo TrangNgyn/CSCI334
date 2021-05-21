@@ -24,9 +24,6 @@ const alert_schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'business'
     },
-    time_end: {
-        type: Date,
-    },
     alert_date: {
         type: Date,
     }

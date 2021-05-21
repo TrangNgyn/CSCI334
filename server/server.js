@@ -73,6 +73,7 @@ app.use('/api/alert',alert)
 app.use('/api/check-in',check_in)
 
 cron_jobs.task.start()
+
 app.use('/api/auth',auth);
 app.use('/api/business',business);
 
