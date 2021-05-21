@@ -18,10 +18,12 @@ const { auth_jwt } = require('../middleware');
 //     ], controller.add_business)
 // }
 
-router.get('/all',controller.get_bus) 
+router.get('/all',controller.get_bus);
+router.post('/get_business',controller.get_business_by_id);
 router.get('/',
 [
     auth_jwt.verify_token,
     auth_jwt.is_civilian
+]);
 
 module.exports = router;

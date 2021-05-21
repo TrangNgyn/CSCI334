@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Button, AlertDialogCloseButton } from "@chakra-ui/react";
 
 export default function ConfirmScanPopup(props) {
     const { onClose } = useDisclosure();
-    const [ loading, setLoading ] = useState(false);
     const cancelRef = useRef();
   
     return (

@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 
 function AddDependants({ showDeps }) {
   const userStore = UserStore;
+
   return (
     <Box h="100vh" layerStyle="foodBG">
       <GrayContainer>
