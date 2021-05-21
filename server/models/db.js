@@ -20,5 +20,6 @@ db.counters = require('./counters')
 
 db.passwordRegex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 db.ROLES = ["business", "civilian", "healthcare", "organisation", "admin"]
+db.COUNTERS = ["alert_id"]
 
 module.exports =  db

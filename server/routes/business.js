@@ -3,6 +3,8 @@ const router = express.Router();
 const controller = require('../controller/business')
 const { auth_jwt } = require('../middleware')
 
+
+// all of this needs to be changed
 module.exports = function(app) {
     app.use(function(req,res,next) {
         res.header(
