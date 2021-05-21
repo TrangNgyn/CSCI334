@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: true}))
 // require('./routes/business')(app)
 
 app.use('/api/auth',auth);
-app.use('/api/business',business)
+app.use('/api/business',business);
 
 // make server object that contain port property and the value for our server.
 const server = {

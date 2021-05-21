@@ -1,4 +1,4 @@
-const db = require('../models/db')
+const db = require('../models/db');
 
 class Business {
 
@@ -32,20 +32,25 @@ class Business {
     }
 
     async get_bus(req,res) {
-        business_model.find({})
+        db.business.find({})
             .then(result => res.send(result))
     }
 
-    async get_specific_bus(req,res) {
+    async get_business_by_id(req,res) {
         try{
-            db.business.find({ _id: req.query.business_id })
+            const { business_id } = req.body;
+            db.business.findOne({ business_id: business_id }, 'address business_name gps' )
             .then(found => {
-                return res.send(found)
+                return res.send({
+                    found,
+                    success: true
+                });
             })
         } catch(err) {
             return res.send({
+                success: false,
                 message: err.message
-            })
+            });
         }
     }
 }
