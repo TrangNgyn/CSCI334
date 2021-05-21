@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controller/business')
-const { auth_jwt } = require('../middleware')
+const controller = require('../controller/business');
+const { auth_jwt } = require('../middleware');
 
 module.exports = function(app) {
     app.use(function(req,res,next) {
@@ -9,16 +9,21 @@ module.exports = function(app) {
             "Access-Control-Allow-Headers",
             "x-access-token, Origin, Content-Type, Accept" 
         )
-        next()
+        next();
     })
 
     app.get("/api/business/all", [
     auth_jwt.verify_token,
     auth_jwt.is_business
-    ], controller.add_business)
+    ], controller.add_business);
+
+    app.post("/get_business", [
+        auth_jwt.verify_token,
+        auth_jwt.is_civilian
+    ], controller.get_business);
 }
 
 
-router.get('')
+router.get('');
 
-module.exports = router
+module.exports = router;

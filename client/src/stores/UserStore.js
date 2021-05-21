@@ -190,6 +190,38 @@ class UserStoreImpl {
     this.employees = [];
   };
 
+  // get business by id for check in
+  getBusiness = () => {
+    fetch("http://localhost:5000/api/business/get_business", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        business_id: this.business_id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          // this.errorMSG = "";
+          // this.access_token = json.access_token;
+          // this.expires_in = json.expires_in;
+          // this.roles = json.roles;
+          // this.token_type = json.token_type;
+          // this.business_name = json.business_name;
+          // this.address = json.address;
+          // this.qr_code = json.qr_cde;
+          // this.isLoading = false;
+          // this.isLoggedIn = true;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  };
+
   doLogin = () => {
 
     fetch("http://localhost:5000/api/auth/sign_in", {

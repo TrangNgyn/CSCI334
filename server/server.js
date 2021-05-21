@@ -31,7 +31,8 @@ function initial() {
   })
 }
 
-const auth = require('./routes/auth')
+const auth = require('./routes/auth');
+const business = require('./routes/business');
 
 // setup database
 db.mongoose
@@ -54,7 +55,8 @@ app.use(function(req, res, next) {
 //require('./routes/user')(app)
 // require('./routes/business')(app)
 
-app.use('/api/auth',auth);
+app.use('/api/auth', auth);
+app.use('/api/business', business);
 
 // make server object that contain port property and the value for our server.
 const server = {
