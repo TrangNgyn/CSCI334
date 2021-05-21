@@ -14,7 +14,7 @@ const organisation = user.discriminator('organisation', new Schema({
     qr: {
         type: String
     },
-    verifed: {
+    verified: {
         type: Boolean,
         required: true,
         default: false
