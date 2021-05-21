@@ -159,10 +159,9 @@ exports.sign_in = (req,res) => {
                 access_token: token,
                 token_type: "Bearer",
                 roles: authorities,
-                expires_in: ":1800"
+                expires_in: ":1800",
+                is_healthcare_worker: user.is_healthcare_worker,
             })
         }
     })
 }
-
-

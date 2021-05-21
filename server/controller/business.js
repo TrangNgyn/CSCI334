@@ -39,7 +39,7 @@ class Business {
     async get_business_by_id(req,res) {
         try{
             const { business_id } = req.body;
-            db.business.findOne({ business_id: business_id }, 'address business_name gps' )
+            db.business.findOne({ business_id: business_id }, '_id address business_name gps' )
             .then(found => {
                 return res.send({
                     found,
