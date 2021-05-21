@@ -32,6 +32,11 @@ class ConfirmedCasesLocations {
             }))
     }
 
+    // get all confirmed cases by region
+    async get_cases_by_region(req, res){
+        
+    }
+
 }
 
 const confirmed_cases_locations_controller = new ConfirmedCasesLocations;
