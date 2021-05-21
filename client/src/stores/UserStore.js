@@ -54,7 +54,7 @@ class UserStoreImpl {
   ];
 
   // Healthcare worker user type
-  isHealthCare = true;
+  isHealthCare = false;
   foundUser = { name: "Gregethy Knowles", id: "123456" };
 
   // Response from sign in
@@ -63,6 +63,7 @@ class UserStoreImpl {
   isLoading = false;
 
   // Business Account
+  business_document_id = "";
   business_name = "";
   business_id = "";
   qr_code = "";
@@ -207,15 +208,37 @@ class UserStoreImpl {
         console.log(json);
         if (json.success) {
           this.errorMSG = "";
-          //this.access_token = json.access_token;
-          //this.expires_in = json.expires_in;
-          //this.roles = json.roles;
-          //this.token_type = json.token_type;
-          this.business_name = json.found.business_name;
-          this.address = json.found.address;
-          this.gps = json.found.gps; 
-          //this.qr_code = json.qr_cde;
+          this.business_document_id = json.found._id; // get mongoDB object id of document
+          this.business_name = json.found.business_name; // get name of business
+          this.address = json.found.address; // get human-readable address of business
+          this.gps = json.found.gps; // get coordinates of business
           this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  };
+
+  doCheckIn = () => {
+    fetch("http://localhost:5000/api/check-in/create-check-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        business: this.business_document_id,
+        dependant: this.dependants,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          this.isLoading = false;
+          this.checkedIn = true;
         } else {
           this.errorMSG = json.message;
           this.isLoading = false;
@@ -240,13 +263,16 @@ class UserStoreImpl {
         console.log(json);
         if (json.success) {
           this.errorMSG = "";
-          this.access_token = json.access_token;
-          this.expires_in = json.expires_in;
-          this.roles = json.roles;
+          this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time
+          this.expires_in = json.expires_in; // store time in seconds before token expires
+          this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
           this.token_type = json.token_type;
-          this.business_name = json.business_name;
+
+          this.business_name = json.business_name; 
           this.address = json.address;
           this.qr_code = json.qr_cde;
+
+          this.isHealthCare = json.is_healthcare_worker;
           this.isLoading = false;
           this.isLoggedIn = true;
         } else {
