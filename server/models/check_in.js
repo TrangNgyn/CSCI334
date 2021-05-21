@@ -20,8 +20,13 @@ const check_in_schema = new Schema({
     },
     date: { 
         type: Date, 
-        default: Date.now,
+        default: Date.now(),
     },
+    dependant: {
+        type: [String],
+        default: [],
+        required: false,
+    }
 },
     {
         collection: 'check_in'
