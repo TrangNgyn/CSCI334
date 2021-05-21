@@ -37,13 +37,6 @@ class Checkin{
         await new_check.save()
             // .then() for testing the doc has been saved and to see its contents
             .then(saved_check_in => {
-                console.log(saved_check_in)
-                // if(!saved_check_in){
-                //     return res.json({
-                //         success: false,
-                //         message: 'User is not checked in',
-                //     })
-                // }
 
                 return res.json({
                     success: true,
