@@ -15,6 +15,19 @@ const express = require('express'),
 
 
 function initial() {
+  db.counters.estimatedDocumentCount((err,count) => {
+    if(!err && count===0) {
+      for(let i = 0; i < db.COUNTERS.length; i++) {
+        new db.counters({
+          _id: db.COUNTERS[i].toLowerCase()
+        }).save(err => {
+          if(err) 
+            console.log("error", err)
+          console.log(`added ${db.COUNTERS[i]} to the counters collection`)
+        })
+      }
+    }
+  })
   db.role.estimatedDocumentCount((err, count)=> {
     if(!err && count === 0) {  
       for(let i = 0; i < db.ROLES.length; i++){
@@ -33,10 +46,11 @@ function initial() {
 
 const auth = require('./routes/auth')
 const user = require('./routes/user')
+const alert = require('./routes/alert')
 
 // setup database
 db.mongoose
-  .connect(process.env.MONGODB_STRING, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
+  .connect(process.env.MONGODB_STRING, { useFindAndModify: false, useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
   .then(() => {
     console.log('MongoDB connected...')
     initial()
@@ -57,6 +71,7 @@ app.use(function(req, res, next) {
 
 app.use('/api/auth',auth)
 app.use('/api/user',user)
+app.use('/api/alert',alert)
 
 // make server object that contain port property and the value for our server.
 const server = {
