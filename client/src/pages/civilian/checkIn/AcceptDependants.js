@@ -32,7 +32,7 @@ function AcceptDependants({ setProperty, showDeps }) {
             </Button>
             <Button
               variant="green"
-              onClick={() => setProperty("checkedIn", true)}
+              onClick={() => userStore.doCheckIn()}
             >
               Check In
             </Button>
