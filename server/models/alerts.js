@@ -35,14 +35,15 @@ const alert_schema = new Schema({
     collection: "alerts"
 })
 
-alert_schema.pre('save', (next) =>  {
+alert_schema.pre('save', function (next) {
     var doc = this
     // set the time of the alert and the end time of the alert to be 2 weeks from now
     var t_date = new Date();
+    t_date = new Date()
     t_date = Date.now()
     doc.alert_date = t_date
-    console.log(this)
-    //doc.time_end = new Date(new Date.now().getTime() + (60 * 60 * 24 * 1000 * 14))
+    doc.time_end = t_date + 60 * 60 * 24 * 14 * 1000
+    next()
 })
 
 module.exports = alerts = mongoose.model('alerts', alert_schema);

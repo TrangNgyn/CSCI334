@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const check_in_schema = new Schema({
-    checkin_id: {
-        type: String,
-        required: true,
-        unique: true,
-        index: true,
-    },
+    // checkin_id: {
+    //     type: String,
+    //     required: true,
+    //     unique: true,
+    //     index: true,
+    // },
     business: {
         type: Schema.Types.ObjectId,
         required: true,
