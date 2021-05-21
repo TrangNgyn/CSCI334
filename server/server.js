@@ -5,7 +5,6 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express'),
     app = express(),
     cors = require('cors'),
-    bodyParser = require('body-parser'),
     db = require('./models/db')
 
 // import routers
@@ -32,6 +31,7 @@ function initial() {
 }
 
 const auth = require('./routes/auth')
+const business = require('./routes/business')
 
 // setup database
 db.mongoose
@@ -43,18 +43,20 @@ db.mongoose
   .catch(err => console.log(err));
 
 app.use(cors())
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}))
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000")
-  res.header("Access-Control-Allow-Headers", "Authorization Origin, X-Requested-With, Content-Type, Accept")
-  next(); 
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000")
+//   res.header("Access-Control-Allow-Headers", "Authorization Origin, X-Requested-With, Content-Type, Accept")
+//   next(); 
+// });
 
 //require('./routes/user')(app)
 // require('./routes/business')(app)
 
 app.use('/api/auth',auth);
+app.use('/api/business',business)
 
 // make server object that contain port property and the value for our server.
 const server = {

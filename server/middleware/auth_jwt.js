@@ -153,7 +153,7 @@ is_civilian = (req,res,next) => {
                     message: err
                 })
             for(let i = 0; i < roles.length; i++) {
-                if(roles[i].name === "healthcare"){
+                if(roles[i].name === "civilian"){
                     return next()
                 }
             }
@@ -168,7 +168,8 @@ is_civilian = (req,res,next) => {
 const auth_jwt = {
     verify_token,
     is_admin,
-    is_business
+    is_business,
+    is_civilian
 }
 
 module.exports = auth_jwt

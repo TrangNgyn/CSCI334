@@ -1,4 +1,4 @@
-const business_model = require('../models/users/business')
+const db = require('../models/db')
 
 class Business {
 
@@ -32,9 +32,21 @@ class Business {
     }
 
     async get_bus(req,res) {
-
         business_model.find({})
-            .then(result => res.json(result))
+            .then(result => res.send(result))
+    }
+
+    async get_specific_bus(req,res) {
+        try{
+            db.business.find({ _id: req.query.business_id })
+            .then(found => {
+                return res.send(found)
+            })
+        } catch(err) {
+            return res.send({
+                message: err.message
+            })
+        }
     }
 }
 
