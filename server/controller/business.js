@@ -1,9 +1,4 @@
-const business_model = require('../models/users/business');
-
-const empty_field = {
-    success: false,
-    message: "All fields must be filled"
-}
+const db = require('../models/db')
 
 class Business {
 
@@ -36,22 +31,22 @@ class Business {
         }
     }
 
-    async get_business(req,res) {
-        const { business_id } = req.body;
+    async get_bus(req,res) {
+        business_model.find({})
+            .then(result => res.send(result))
+    }
 
-        if(!business_id)
-            return res.status(400).send(empty_field);
-
-        business_model.findOne({business_id})
-            .then(result => res.json({
-                result,
-                success: true
-            }))
-            .catch((err) => {
-                return res.status(500).send({
-                    message: err.message
-                })
-            });
+    async get_specific_bus(req,res) {
+        try{
+            db.business.find({ _id: req.query.business_id })
+            .then(found => {
+                return res.send(found)
+            })
+        } catch(err) {
+            return res.send({
+                message: err.message
+            })
+        }
     }
 }
 
