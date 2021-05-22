@@ -28,6 +28,10 @@ const civilian = user.discriminator('civilian', new Schema({
         type: [Schema.Types.ObjectId],
         default: [],
         ref: 'check_in'
+    },
+    is_healthcare_worker: {
+        type: Boolean,
+        default: false
     }
 }))
 

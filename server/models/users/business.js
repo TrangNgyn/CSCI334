@@ -7,7 +7,7 @@ const business = user.discriminator('business', new Schema({
         required: true,
         type: String,
     },
-    // currently generating by hashing (SHA256) the email, the plan is to use the business id in a get request when a QR code is scanned to be used for check in 
+    // currently generating by hashing (SHA256) the email, the plan is to use the business id in a post request when a QR code is scanned to be used for check in 
     business_id: {
         type: String,
         unique: true

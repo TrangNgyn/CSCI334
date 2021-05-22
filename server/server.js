@@ -46,6 +46,7 @@ const user = require('./routes/user')
 const alert = require('./routes/alert')
 const check_in = require('./routes/check_in')
 const business = require('./routes/business')
+const stats = require('./routes/stats')
 
 // setup database
 db.mongoose
@@ -67,7 +68,6 @@ app.use(function(req, res, next) {
   next(); 
 });
 
-app.use('/api/auth',auth)
 app.use('/api/user',user)
 app.use('/api/alert',alert)
 app.use('/api/check-in',check_in)
@@ -76,6 +76,8 @@ cron_jobs.task.start()
 
 app.use('/api/auth',auth);
 app.use('/api/business',business);
+
+app.use('/api/stats', stats);
 
 // make server object that contain port property and the value for our server.
 const server = {
