@@ -1,17 +1,17 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Spacer, Text, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
-import { UserStore } from "../../../stores/UserStore";
-import Icon from "@chakra-ui/icon";
 import { Accordion } from "@chakra-ui/react"
+import TotalCasesStats from './TotalCasesStats';
 import ActiveCasesStats from './ActiveCasesStats';
-import TotalImmunisedStats from './TotalImmunisedStats'
+import TotalImmunisedStats from './TotalImmunisedStats';
+import TotalDeathsStats from './TotalDeathsStats';
+import TotalTestsStats from './TotalTestsStats';
 
 export default function StatsPage() {
   const navigate = useNavigate();
-  const userStore = UserStore;
 
   return (
     <Box h="100vh" layerStyle="grayBG">
@@ -30,8 +30,17 @@ export default function StatsPage() {
             {/* statistics accordion */}
             <Accordion defaultIndex={[0]} allowMultiple>
 
-              {/* active cases accordion item */}
+              {/* total cases accordion item */}
+              <TotalCasesStats />
+
+              {/* active (last 14 days) cases accordion item */}
               <ActiveCasesStats />
+
+              {/* total number of covid-19 tests performed */}
+              <TotalTestsStats />
+              
+              {/* total deaths accordion item */}
+              <TotalDeathsStats />
               
               {/* vaccination accordion item */}
               <TotalImmunisedStats />

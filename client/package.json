@@ -26,7 +26,9 @@
     "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "4.0.3",
+    "react-simple-maps": "^2.3.0",
     "react-to-print": "^2.12.4",
+    "react-tooltip": "^4.2.19",
     "recharts": "^2.0.9",
     "sass": "^1.32.8",
     "web-vitals": "^1.1.1"
