@@ -24,6 +24,8 @@ class AusOWIDData {
             success: false,
             message: 'Error finding any records'
         }))
+
+        
     }
 
     async get_aus_total_vaccinations(req, res){

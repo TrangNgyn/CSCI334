@@ -4,7 +4,7 @@ class ConfirmedCasesLocations {
 
     // get all confirmed cases within the last 2 weeks (in milisecs)
     async get_cases_14days(req, res){
-        db.confirmed_cases_locations
+        db.confirmed_cases_locations            
             .find({
                 notification_date: {
                     $gte: Date.now() - 14*24*60*60*1000,
