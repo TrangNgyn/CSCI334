@@ -34,7 +34,7 @@ const alert_schema = new Schema({
 
 alert_schema.pre('save', function (next) {
     var doc = this
-    // set teh time of the alert to the current time
+    // set the time of the alert to the current time
     var t_date = new Date();
     t_date = Date.now()
     doc.alert_date = t_date

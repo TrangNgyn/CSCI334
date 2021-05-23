@@ -6,12 +6,10 @@ class Business {
         try{
             let { business_name } =  req.body
 
-            const new_bussiness = new business_model({
+            const new_bussiness = new db.business({
                 business_name,
-                //acc_type: "BUSINESS",
                 password: "password",
-                email: "email",
-                //user_id: 1
+                email: "email"
             })
 
             var saved_bus = await new_bussiness.save()
@@ -27,7 +25,7 @@ class Business {
             }
         }
         catch(err) {
-            console.log(err)
+            res.status(500).send(err.message)
         }
     }
 
