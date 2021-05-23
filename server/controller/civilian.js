@@ -21,7 +21,7 @@ class Civilian{
             }
             
             // find the civ by email
-            civilian_model.find({email: email})
+            db.civilian.find({email: email})
             .exec()
             .then((civ) => {
                 if (!civ) {
@@ -37,6 +37,36 @@ class Civilian{
         }
     }
 
+    // @route   POST api/civilian/search-civilian
+    // @desc    Find a civilian with a specific email
+    // @access  Protected
+
+    async post_search_civilian(req,res){
+        const {email} = req.body;
+
+        db.civilian
+            .find({
+                email: email
+            })
+            .then(doc => {
+                if(!doc){
+                    return res.status(404).send({
+                        success: true,
+                        message: 'No civilian found.'
+                    })
+                }
+
+                return res.json({
+                    success: true,
+                    civilian: doc
+                })
+
+            })
+            .catch(err => res.status(500).send({
+                success: false,
+                message: `Error finding the civilian with email ${email}`
+            }))
+    }
     
 }
 
