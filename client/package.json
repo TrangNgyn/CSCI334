@@ -16,6 +16,8 @@
     "history": "^5.0.0",
     "mobx": "^6.3.0",
     "mobx-react": "^7.1.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.10",
     "qrcode": "^1.4.4",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
@@ -25,6 +27,7 @@
     "react-router-dom": "^6.0.0-beta.0",
     "react-scripts": "4.0.3",
     "react-to-print": "^2.12.4",
+    "recharts": "^2.0.9",
     "sass": "^1.32.8",
     "web-vitals": "^1.1.1"
   },

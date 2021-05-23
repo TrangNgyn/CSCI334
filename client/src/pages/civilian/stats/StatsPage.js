@@ -5,8 +5,10 @@ import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import { UserStore } from "../../../stores/UserStore";
 import Icon from "@chakra-ui/icon";
-import { MdMoodBad } from "react-icons/md";
-import { GiLoveInjection } from "react-icons/gi";
+import { Accordion } from "@chakra-ui/react"
+import ActiveCasesStats from './ActiveCasesStats';
+import TotalImmunisedStats from './TotalImmunisedStats'
+
 export default function StatsPage() {
   const navigate = useNavigate();
   const userStore = UserStore;
@@ -24,60 +26,19 @@ export default function StatsPage() {
             <Text variant="heading" mb="3">
               Statistics
             </Text>
-            <Box d="flex" w="90%">
-              <Text as="h3" my="0" color="gray.500">
-                Active Cases
-              </Text>
-              <Spacer />
-              <Icon as={MdMoodBad} boxSize="6" color="gray.500" />
-            </Box>
+            
+            {/* statistics accordion */}
+            <Accordion defaultIndex={[0]} allowMultiple>
 
-            {userStore.stats.map(
-              (item, i) =>
-                i < 3 && (
-                  <Box
-                    key={item.key}
-                    px="3"
-                    w="90%"
-                    maxW={{ base: "90%", md: "container.sm" }}
-                    bg="white"
-                    borderRadius="xl"
-                    shadow="base"
-                  >
-                    <Box d="flex" px="3">
-                      <Text as="h3" color="gray.800">
-                        {item.key}
-                      </Text>
-                      <Spacer />
-                      <Text as="h3">{item.value}</Text>
-                    </Box>
-                  </Box>
-                )
-            )}
+              {/* active cases accordion item */}
+              <ActiveCasesStats />
+              
+              {/* vaccination accordion item */}
+              <TotalImmunisedStats />
 
-            <Box d="flex" w="90%" pt="7">
-              <Text as="h3" my="0" color="gray.500">
-                Active Cases
-              </Text>
-              <Spacer />
-              <Icon as={GiLoveInjection} boxSize="6" color="gray.500" />
-            </Box>
-            <Box
-              px="3"
-              w="90%"
-              maxW={{ base: "90%", md: "container.sm" }}
-              bg="white"
-              borderRadius="xl"
-              shadow="2xl"
-            >
-              <Box d="flex" px="3">
-                <Text as="h3" color="gray.800">
-                  {userStore.stats[3].key}
-                </Text>
-                <Spacer />
-                <Text as="h3">{userStore.stats[3].value}</Text>
-              </Box>
-            </Box>
+
+            </Accordion>
+
           </VStack>
         </Flex>
       </Box>
