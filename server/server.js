@@ -72,10 +72,10 @@ app.use('/api/user',user)
 app.use('/api/alert',alert)
 app.use('/api/check-in',check_in)
 
-cron_jobs.task.start();
+cron_jobs.task.start()
+
 app.use('/api/auth',auth);
 app.use('/api/business',business);
-
 app.use('/api/stats', stats);
 
 // make server object that contain port property and the value for our server.

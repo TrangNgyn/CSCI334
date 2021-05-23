@@ -28,7 +28,7 @@ class Alert {
             new_alert.save().then(saved_alert => {
                 db.check_in.find({ 
                     business: saved_alert.business_id, 
-                    date: {$gte: /*saved_alert.date (date doesn't work in the saved doc rn)*/Date.now() - 60 * 60 * 24 * 14 * 1000} // get where the checkin date was >= 2 weeks before the alert
+                    date: {$gte: saved_alert.date  - 60 * 60 * 24 * 21 * 1000} // get where the checkin date was >= 3 weeks before the alert
                 }).then( check_ins => {
                     // for each found check_in add the alert to the civilian 
                     check_ins.forEach(element => {
