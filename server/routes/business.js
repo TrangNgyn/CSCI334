@@ -23,11 +23,14 @@ const { auth_jwt } = require('../middleware');
 //     auth_jwt.verify_token,
 //     auth_jwt.is_business
 //     ], controller.add_business)
+//     router.post("/create",controller.add_business)
+  
 // }
 
 // public routes
 router.get('/all',controller.get_bus);
 router.post('/get_business',controller.get_business_by_id);
+
 
 // routes accessible by civilian
 router.get('/',
@@ -35,5 +38,7 @@ router.get('/',
     auth_jwt.verify_token,
     auth_jwt.is_civilian
 ]);
+
+
 
 module.exports = router;
