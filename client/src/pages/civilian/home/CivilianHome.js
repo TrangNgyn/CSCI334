@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Center, VStack } from "@chakra-ui/layout";
-import React from "react";
+import React, { useEffect } from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import DotPattern from "../../../components/DotPattern";
 import { civMenuRoutes } from "../components/civRoutes";
@@ -23,6 +23,14 @@ export default function CivilianHome() {
   const handleNotificationClicked = () => {
     onOpen();
   };
+
+  // fetch statistics from the DBMS afer succesful login
+  useEffect(() => {
+    userStore.getActiveCases();
+    userStore.getAusData();
+    userStore.getTotalVaccinations();
+    userStore.getAusData14Days();
+  }, []);
 
   return (
     <Box h="100vh" layerStyle="mainBG" position="relative" overflow="scroll">

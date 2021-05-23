@@ -70,6 +70,12 @@ class UserStoreImpl {
   address = "";
   gps = {};
   place_id = "";
+  
+  // active cases by timestamp, postcode and area e.g. Sydney, Northern Sydney, Wollongong etc.
+  activeCasesStats = [];
+  allAusData = []; // numerous australia-wide covid-19 related statistics
+  total_vaccinations = [];
+  ausData14Days = []; // all of Australia data over the last 14 days
 
   // Organisation Account
   orgName = "";
@@ -192,6 +198,91 @@ class UserStoreImpl {
     this.employees = [];
   };
 
+  getActiveCases = () => {
+    fetch("http://localhost:5000/api/stats/confirmed-cases-14days", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.activeCasesStats = json.confirmed_cases;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  };
+
+  getAusData = () => {
+    fetch("http://localhost:5000/api/stats/get-aus-data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.allAusData = json.aus_data;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  };
+
+  getAusData14Days = () => {
+    fetch("http://localhost:5000/api/stats/get-aus-confirmed-cases-14days", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          this.ausData14Days = json.aus_14days;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  }
+
+  getTotalVaccinations = () => {
+    fetch("http://localhost:5000/api/stats/get-aus-total-vaccinations", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.total_vaccinations = json.total_vaccinations;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  };
+
   // get business by id for check in
   getBusiness = () => {
     fetch("http://localhost:5000/api/business/get_business", {
@@ -205,7 +296,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.business_document_id = json.found._id; // get mongoDB object id of document
