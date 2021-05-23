@@ -30,6 +30,8 @@ export default function CivilianHome() {
     userStore.getAusData();
     userStore.getTotalVaccinations();
     userStore.getAusData14Days();
+    userStore.getEsriData();
+    userStore.getCurrentTotals();
   }, []);
 
   return (

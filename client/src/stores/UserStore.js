@@ -1,7 +1,7 @@
 import { action, makeAutoObservable } from "mobx";
 import QRCode from 'qrcode';
 
-const hash = require('hash.js')
+const hash = require('hash.js');
 
 class UserStoreImpl {
   id = "";
@@ -76,6 +76,8 @@ class UserStoreImpl {
   allAusData = []; // numerous australia-wide covid-19 related statistics
   total_vaccinations = [];
   ausData14Days = []; // all of Australia data over the last 14 days
+  esri_data = [];
+  esri_current_totals = [];
 
   // Organisation Account
   orgName = "";
@@ -254,6 +256,50 @@ class UserStoreImpl {
         if (json.success) {
           this.errorMSG = "";
           this.ausData14Days = json.aus_14days;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  }
+
+  getEsriData = () => {
+    fetch("http://localhost:5000/api/stats/get-esri-data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          this.esri_data = json.esri_data;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  }
+  
+  getCurrentTotals= () => {
+    fetch("http://localhost:5000/api/stats/get-current-totals-data", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          this.esri_current_totals = json.esri_data;
           this.isLoading = false;
         } else {
           this.errorMSG = json.message;

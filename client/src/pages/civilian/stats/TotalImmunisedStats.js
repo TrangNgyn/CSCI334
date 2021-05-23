@@ -18,12 +18,27 @@ export default function TotalImmunisedStats() {
         _id: vac._id,
         total_vaccinations: vac.total_vaccinations
     }});
-    
-    console.log(userStore.ausData14Days);
 
-    // get the last element in the array (today), convert to locale string to give commas to number
+    // get the last element in the array (today), convert to locale string to give commas to the number
     const totalVaccinations = userStore.total_vaccinations[(userStore.total_vaccinations.length - 1)].total_vaccinations.toLocaleString();
 
+    const vaccinationsToday = { 'date' : moment(userStore.ausData14Days[(userStore.ausData14Days.length - 1)].date).local().format('YYYY-MM-DD'), 'new_vaccinations' : userStore.ausData14Days[(userStore.ausData14Days.length - 1)].new_vaccinations.toLocaleString() }
+
+    // sum the total number of vaccinations over the past 14 days
+    function getRecentVaccinations() {
+        let temp = 0;
+        for(let i = 0; i < userStore.ausData14Days.length; i++) {
+            if(userStore.ausData14Days[i].new_vaccinations === undefined) { // if the new_vaccinations column doesn't exist skip the iteration
+                continue;
+            }
+            temp += userStore.ausData14Days[i].new_vaccinations;
+        }
+        return temp.toLocaleString();
+    }
+
+    const recentVaccinations = getRecentVaccinations();
+
+    
     return(
         <AccordionItem>
             {({ isExpanded }) => (
@@ -43,6 +58,7 @@ export default function TotalImmunisedStats() {
                         )}
                     </AccordionButton>
                     <AccordionPanel>
+
                         <Box
                             px="3"
                             w="90%"
@@ -59,6 +75,41 @@ export default function TotalImmunisedStats() {
                                 <Text as="h3">{totalVaccinations}</Text>
                             </Box>
                         </Box>
+
+                        <Box
+                            px="3"
+                            w="90%"
+                            maxW={{ base: "100%", md: "container.sm" }}
+                            bg="white"
+                            borderRadius="xl"
+                            shadow="2xl"
+                        >
+                            <Box d="flex" px="3">
+                                <Text as="h3" color="gray.800">
+                                    Vaccinations today
+                                </Text>
+                                <Spacer />
+                                <Text as="h3">{vaccinationsToday.new_vaccinations}</Text>
+                            </Box>
+                        </Box>
+
+                        <Box
+                            px="3"
+                            w="90%"
+                            maxW={{ base: "100%", md: "container.sm" }}
+                            bg="white"
+                            borderRadius="xl"
+                            shadow="2xl"
+                        >
+                            <Box d="flex" px="3">
+                                <Text as="h3" color="gray.800">
+                                    Recent vaccinations (14 days)
+                                </Text>
+                                <Spacer />
+                                <Text as="h3">{recentVaccinations}</Text>
+                            </Box>
+                        </Box>
+
                     </AccordionPanel>
                 </>
             )}
