@@ -5,6 +5,9 @@ const empty_field = {
 
 class Organisation {
 
+    async verify_org(req, res){
+        
+    }
 }
 
 const organisation_controller = new Organisation;
