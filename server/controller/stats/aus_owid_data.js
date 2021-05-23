@@ -30,7 +30,7 @@ class AusOWIDData {
 
     async get_aus_total_vaccinations(req, res){
         db.aus_owid_data
-        .find({total_vaccinations: {$exists: true, $ne: null}}, 'date total_vaccinations')
+        .find({total_vaccinations: {$exists: true, $ne: null}}, 'date total_vaccinations ')
         .sort({date: 1})
         .then(docs => {
             if(!docs){
