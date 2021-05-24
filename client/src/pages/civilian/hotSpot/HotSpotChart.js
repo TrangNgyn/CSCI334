@@ -3,13 +3,15 @@ import {
   ZoomableGroup,
   ComposableMap,
   Geographies,
-  Geography
+  Geography,
+  Marker
 } from "react-simple-maps";
 import { scaleLinear } from "d3-scale";
-//import { geoCentroid } from "d3-geo";
+import { geoCentroid } from "d3-geo";
 
 import geoUrl from "../../../assets/POA_2016_AUST.json";
-//import geoSuburbsUrl from "../../../assets/SED_2016_AUST.json";
+import { GiConsoleController } from "react-icons/gi";
+import geoSuburbsUrl from "../../../assets/TR_2016_AUST.json";
 
 const MapChart = ({ activeCases, setTooltipContent }) => {
 
@@ -22,7 +24,8 @@ const MapChart = ({ activeCases, setTooltipContent }) => {
       projectionConfig={{ 
         scale: 550,
         rotate: [-135, 16, 0],
-      }}>
+      }}
+      height={350}>
       <ZoomableGroup center={[0,0]} maxZoom={200} >
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
@@ -43,7 +46,7 @@ const MapChart = ({ activeCases, setTooltipContent }) => {
                       default: {
                         fill: activeCases[POST_CODE] > 0 ? colorScale(activeCases[POST_CODE]) : "#D6D6DA",
                         outline: "none",
-                        stroke: "#646464",
+                        stroke: "#000",
                         strokeWidth: "0.005px",
                       },
                       hover: {
@@ -61,6 +64,23 @@ const MapChart = ({ activeCases, setTooltipContent }) => {
             })
           }
         </Geographies>
+
+        <Geographies geography={geoSuburbsUrl}>
+          {({ geographies }) =>
+            geographies.map(geo => {
+              const centroid = geoCentroid(geo);
+              return (
+                <>
+                  <Marker coordinates={centroid}>
+                    <text style={{pointerEvents: "none"}} y="2" fontSize={1} textAnchor="middle">
+                      {geo.properties.TR_NAME16}
+                    </text>
+                  </Marker>
+                </>
+              );
+            })
+          }
+          </Geographies>
           
       </ZoomableGroup>
     </ComposableMap>
