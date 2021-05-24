@@ -1,8 +1,6 @@
 import {
-  Button,
   Center,
   Text,
-  Input,
   Spacer,
   Stack,
   InputGroup,
@@ -13,6 +11,10 @@ import SignUp from "./SignUp";
 import LogoIcon from "../../components/LogoMenu/LogoIcon";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
+import InputWrapper from "../../components/InputWrapper";
+import ButtonWrapper from "../../components/ButtonWrapper";
+import { useEffect } from 'react';
+import { useToast } from "@chakra-ui/react";
 
 function Login({ userStore }) {
   const [signUp, setSignUp] = useState(false);
@@ -21,6 +23,22 @@ function Login({ userStore }) {
     e.preventDefault();
     userStore.doLogin();
   };
+  
+
+  const toast = useToast();
+  // status can be "success", "error", "warning" or "info"
+  // display toast error message if an error is returned
+  useEffect(() => {
+    if(userStore.errorMSG.toString().length > 0) {
+      toast({
+        title: "Error",
+        description: userStore.errorMSG.toString(),
+        status: 'error',
+        duration: 9000,
+        isClosable: true
+      });
+    }
+  }, [userStore.errorMSG]);
 
   if (!signUp) {
     return (
@@ -40,7 +58,7 @@ function Login({ userStore }) {
               </Text>
 
               <InputGroup size="md">
-                <Input
+                <InputWrapper
                   isRequired
                   name="email"
                   placeholder="Email"
@@ -53,7 +71,7 @@ function Login({ userStore }) {
                 />
               </InputGroup>
               <InputGroup size="md">
-                <Input
+                <InputWrapper
                   isRequired
                   name="password"
                   type="password"
@@ -68,17 +86,17 @@ function Login({ userStore }) {
               </InputGroup>
 
               <VStack pt="3">
-                <Button
+                <ButtonWrapper
                   variant="gray"
                   type="button"
                   onClick={() => setSignUp(true)}
                 >
                   Sign Up
-                </Button>
+                </ButtonWrapper>
                 <Spacer />
-                <Button variant="green" type="submit">
+                <ButtonWrapper variant="green" type="submit">
                   Login
-                </Button>
+                </ButtonWrapper>
               </VStack>
             </Stack>
           </form>

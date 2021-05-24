@@ -7,11 +7,6 @@ export default function LocationSearchInput(props) {
     const handleChange = (address) => {
         props.setProperty("address", address);
     };
-
-    // DBMS schema has different object type to component/google api default return
-    // function parseLatLong() {
-    //     let longlat = {};
-    // }
  
     const handleSelect = (address) => {
         props.setProperty("address", address);

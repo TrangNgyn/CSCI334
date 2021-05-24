@@ -57,7 +57,7 @@ class UserStoreImpl {
   isHealthCare = false;
   foundUser = { name: "Gregethy Knowles", id: "123456" };
 
-  // Response from sign in
+  // Response from sign in/sign up
   isLoggedIn = false;
   errorMSG = "";
   isLoading = false;
@@ -202,6 +202,7 @@ class UserStoreImpl {
   };
 
   getActiveCases = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -219,10 +220,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   getAusData = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-aus-data", {
       method: "GET",
       headers: {
@@ -240,10 +246,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   getAusData14Days = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-aus-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -261,10 +272,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   }
 
   getEsriData = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-esri-data", {
       method: "GET",
       headers: {
@@ -282,10 +298,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   }
 
   getRecentVicCases = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-vic-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -303,10 +324,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   }
   
   getCurrentTotals= () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-current-totals-data", {
       method: "GET",
       headers: {
@@ -324,10 +350,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   }
 
   getTotalVaccinations = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-aus-total-vaccinations", {
       method: "GET",
       headers: {
@@ -345,11 +376,16 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   // get business by id for check in
   getBusiness = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/business/get_business", {
       method: "POST",
       headers: {
@@ -372,10 +408,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   doCheckIn = () => {
+    this.isLoading = true;
     fetch("http://localhost:5000/api/check-in/create-check-in", {
       method: "POST",
       headers: {
@@ -397,11 +438,15 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   doLogin = () => {
-
+    this.isLoading = true;
     fetch("http://localhost:5000/api/auth/sign_in", {
       method: "POST",
       headers: {
@@ -411,7 +456,7 @@ class UserStoreImpl {
         email: this.email,
         password: this.password,
       }),
-    })
+      })
       .then((res) => res.json())
       .then((json) => {
         if (json.success) {
@@ -432,54 +477,27 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
   };
 
   doLogout = () => {
     this.isLoggedIn = false;
     this.resetState();
-
-    // fetch("/api/account/logout", {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   query: JSON.stringify({
-    //     token: this.token,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     runInAction(() => {
-    //       if (json.success) {
-    //         this.resetState();
-    //         this.isLoggedIn = false;
-    //         this.token = "";
-    //         this.isLoading = false;
-    //       } else {
-    //         this.isLoading = false;
-    //       }
-    //     });
-    //   });
   };
 
   doSignUp = () => {
-    //this.isLoading = true;
-    //this.isLoggedIn = true;
+    this.isLoading = true;
+    this.accountSuccessMSG = "";
 
     if (!validateEmail(this.email)) {
       this.errorMSG = "Email format is incorrect";
       this.isLoading = false;
       return;
     }
-
-    // QRCode.toDataURL(businessID)
-    // .then(url => {
-    //   console.log(url)
-    // })
-    // .catch(err => {
-    //   console.error(err)
-    // })
 
     const generateQR = async (business_id) => {
       try {
@@ -515,6 +533,10 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
     }
 
@@ -555,6 +577,10 @@ class UserStoreImpl {
           this.errorMSG = json.message;
           this.isLoading = false;
         }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
       });
     }
 
