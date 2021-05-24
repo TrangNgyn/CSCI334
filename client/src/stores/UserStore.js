@@ -78,6 +78,7 @@ class UserStoreImpl {
   ausData14Days = []; // all of Australia data over the last 14 days
   esri_data = [];
   esri_current_totals = [];
+  vic_recent_confirmed_cases = [];
 
   // Organisation Account
   orgName = "";
@@ -252,7 +253,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.ausData14Days = json.aus_14days;
@@ -274,10 +274,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.esri_data = json.esri_data;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      });
+  }
+
+  getRecentVicCases = () => {
+    fetch("http://localhost:5000/api/stats/get-vic-confirmed-cases-14days", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.vic_recent_confirmed_cases = json.confirmed_cases;
           this.isLoading = false;
         } else {
           this.errorMSG = json.message;
@@ -296,7 +316,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.esri_current_totals = json.esri_data;
@@ -370,7 +389,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.isLoading = false;
@@ -396,7 +414,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time

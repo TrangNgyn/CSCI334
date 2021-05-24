@@ -21,6 +21,7 @@ db.counters = require('./counters')
 db.aus_owid_data = require('./stats/australia_owid_covid_data');
 db.confirmed_cases_locations = require('./stats/confirmed_covid_cases_locations');
 db.esri_aus_data = require('./stats/esri_australia_covid_cases');
+db.vic_confirmed_covid_locations_data = require('./stats/vic_confirmed_covid_cases');
 
 db.passwordRegex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 db.ROLES = ["business", "civilian", "healthcare", "organisation", "admin"]
