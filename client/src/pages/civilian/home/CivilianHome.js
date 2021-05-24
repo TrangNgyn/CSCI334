@@ -32,6 +32,7 @@ export default function CivilianHome() {
     userStore.getAusData14Days();
     userStore.getEsriData();
     userStore.getCurrentTotals();
+    userStore.getRecentVicCases();
   }, []);
 
   return (

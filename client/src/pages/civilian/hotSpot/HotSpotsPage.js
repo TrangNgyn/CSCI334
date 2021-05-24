@@ -28,6 +28,16 @@ export default function HotSpotsPage({ back }) {
 
       }
 
+      for(let i = 0; i < userStore.vic_recent_confirmed_cases.length; i++) {
+
+          if(temp[userStore.vic_recent_confirmed_cases[i].Postcode] === undefined) { // if key does not yet exist, define it as an empty array
+              temp[userStore.vic_recent_confirmed_cases[i].Postcode] = 0;
+          } 
+          
+          temp[userStore.vic_recent_confirmed_cases[i].Postcode] += 1;
+
+      }
+
       return temp;
   }
   
