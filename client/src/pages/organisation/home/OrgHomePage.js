@@ -20,7 +20,7 @@ import {
 
 export default function OrgHomePage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userStore = UserStore();
+  const userStore = UserStore;
   const alerts = userStore.alerts;
 
   const handleNotificationClicked = () => {
