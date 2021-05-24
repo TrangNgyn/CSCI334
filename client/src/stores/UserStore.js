@@ -79,6 +79,7 @@ class UserStoreImpl {
   esri_data = [];
   esri_current_totals = [];
   vic_recent_confirmed_cases = [];
+  vic_vaccine_locations = [];
 
   // Organisation Account
   orgName = "";
@@ -215,6 +216,33 @@ class UserStoreImpl {
         if (json.success) {
           this.errorMSG = "";
           this.activeCasesStats = json.confirmed_cases;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
+      });
+  };
+
+  // get vaccine locations for Victoria (only state to release a dataset with vaccine locations)
+  getVaccineLocations = () => {
+    this.isLoading = true;
+    fetch("http://localhost:5000/api/stats/get-vic-vaccine-locations", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.vic_vaccine_locations = json.vaccine_locations;
           this.isLoading = false;
         } else {
           this.errorMSG = json.message;

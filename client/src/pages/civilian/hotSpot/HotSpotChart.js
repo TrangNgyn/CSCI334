@@ -10,7 +10,7 @@ import { scaleLinear } from "d3-scale";
 import { geoCentroid } from "d3-geo";
 
 import geoUrl from "../../../assets/POA_2016_AUST.json";
-import { GiConsoleController } from "react-icons/gi";
+//import { GiConsoleController } from "react-icons/gi";
 import geoSuburbsUrl from "../../../assets/TR_2016_AUST.json";
 
 const MapChart = ({ activeCases, setTooltipContent }) => {
