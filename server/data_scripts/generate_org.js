@@ -19,6 +19,8 @@ function random_int(max) {
 
 async function generate() {
 
+    var healthcare_workers = await db.civilian.find({is_healtcare_worker: true})
+
     var org_id
     await db.role.findOne({name: 'organisation'})
     .then(role => {
@@ -36,6 +38,10 @@ async function generate() {
             password: password
         })
         var roles = [org_id]
+        var employees = []
+        for(let k=0;i<5;i++){
+            employees.push(healthcare_workers[k+i*5])
+        }
         const organisation = new db.organisation({
             email,
             organisation_name,

@@ -11,9 +11,6 @@ const organisation = user.discriminator('organisation', new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'user'
     },
-    qr: {
-        type: String
-    },
     verified: {
         type: Boolean,
         required: true,

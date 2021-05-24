@@ -27,17 +27,23 @@ async function generate() {
         civ_id = role._id
     })
 
-    for(let i = 0; i < 900; i++) {
+    for(let i = 0; i < 1000; i++) {
         var first_name = data.names[random_int(2000)]
         var last_name = data.names[random_int(2000)]
         var password = data.passwords[random_int(100)]
         var email = first_name + seperator + last_name + "@" + data.email
+        var is_healthcare_worker = false
+        if(i < 500)
+            is_healthcare_worker = true
         users.push({
             email: email,
-            password: password
+            password: password,
+            healthcare: is_healthcare_worker
         })
         var roles = [civ_id]
+        
         const user = new db.civilian({
+            is_healthcare_worker,
             email,
             first_name,
             last_name,
@@ -55,10 +61,11 @@ async function finish() {
     await db.civilian.insertMany(save_use)
     users.forEach(element => {
         fs.appendFileSync('./civ-logins', 'email:\t\t' + element.email + '\n'
-            + 'password:\t' + element.password + '\n----------\n')
+            + 'password:\t' + element.password + '\nHealthcare:\t\t' + element.healthcare +
+            '\n----------\n')
     })
     console.timeEnd('Execution Time')
     db.mongoose.connection.close()
 }
 
-finish()
+module.exports = finish()
