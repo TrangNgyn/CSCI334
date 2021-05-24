@@ -65,24 +65,24 @@ class Civilian{
             }
 
             db.civilian
-                .find({
+                .findOne({
                     email: email,
                     is_healthcare_worker: false
                 })
-                .then(doc => {
-                    if(!doc){
+                .then(civ => {
+                    if(!civ){
                         return res.status(404).send({
-                            success: true,
+                            success: false,
                             message: 'No civilian found.'
                         })
                     }
-
+                    
                     return res.json({
                         success: true,
                         civilian: {
-                            first_name: doc.first_name,
-                            last_name: doc.last_name,
-                            email: doc.email
+                            first_name: civ.first_name,
+                            last_name: civ.last_name,
+                            email: civ.email
                         }
                     })
 
@@ -104,7 +104,7 @@ class Civilian{
     // @desc    Find a healthcare worker with a specific email
     // @access  Protected
 
-    async post_search_civilian(req,res){
+    async post_search_healthcare(req,res){
         try{
             const {email} = req.body;
 
@@ -114,14 +114,14 @@ class Civilian{
             }
 
             db.civilian
-                .find({
+                .findOne({
                     email: email,
                     is_healthcare_worker: true
                 })
-                .then(doc => {
-                    if(!doc){
+                .then(civ => {
+                    if(!civ){
                         return res.status(404).send({
-                            success: true,
+                            success: false,
                             message: 'No healthcare worker found.'
                         })
                     }
@@ -129,9 +129,9 @@ class Civilian{
                     return res.json({
                         success: true,
                         civilian: {
-                            first_name: doc.first_name,
-                            last_name: doc.last_name,
-                            email: doc.email
+                            first_name: civ.first_name,
+                            last_name: civ.last_name,
+                            email: civ.email
                         }
                     })
 
@@ -162,11 +162,13 @@ class Civilian{
                 return res.json(empty_field);
             }
             
-            // find the civ by email
+            // set is healthcare to true
             db.civilian
-                .findOne({email: email, is_healthcare_worker: false})
-                .then((civ) => {
-                    console.log(civ)
+                .findOneAndUpdate(
+                    {email: civ.email, is_healthcare_worker: false},
+                    {is_healthcare_worker: true}
+                )
+                .then(civ => {
                     if (!civ) {
                         res.status(404)
                         return res.json({
@@ -175,33 +177,9 @@ class Civilian{
                         })
                     }
                     
-                    // set is healthcare to true
-                    db.civilian
-                        .findOneAndUpdate({email: civ.email}, {is_healthcare_worker: true})
-                        .then(doc => {
-                            if(!doc){
-                                res.status(404)
-                                return res.json({
-                                    success: false,
-                                    message: `Error promoting civilian with email ${email}`
-                                })
-                            }
-                            
-                            // return res.json({
-                            //     success: true,
-                            //     civilian: {
-                            //         first_name: doc.first_name,
-                            //         last_name: doc.last_name,
-                            //         email: doc.email,
-                            //         is_healthcare_worker: doc.is_healthcare_worker
-                            //     }
-                            // })       
-                        })
-                        .catch(err => res.status(500).json(err))
-                    
                     // add to org's employee list
                     db.organisation
-                        .findOne({ "_id": req.user_id }, function(error, org) {
+                        .findByIdAndUpdate(req.user_id, function(error, org) {
 
                             if (error) {
                                 res.status(404)
@@ -210,8 +188,19 @@ class Civilian{
                                     message: `Error promoting civilian with email ${email}`
                                 })
                             }
-
+                            
                             org.employees = [...org.employees, civ._id];
+
+                            return res.json({
+                                success: true,
+                                civilian: {
+                                    first_name: civ.first_name,
+                                    last_name: civ.last_name,
+                                    email: civ.email,
+                                    is_healthcare_worker: civ.is_healthcare_worker,
+                                    org: org.employees
+                                }
+                            }) 
                         })
                         .catch(err => res.status(500).json(err));
                 })
@@ -228,7 +217,7 @@ class Civilian{
     // @desc    Make a healthcare worker a civilian
     // @access  Protected
     
-    async post_demote_civilian(req,res){
+    async post_demote_healthcare(req,res){
         try{
             const {email} = req.body;
 
@@ -237,45 +226,50 @@ class Civilian{
                 return res.json(empty_field);
             }
             
-            // find the civ by email
+            // find the civ by email          
+            // and set is healthcare to fase
             db.civilian
-                .findOne({email: email, is_healthcare_worker: true})
-                .then((civ) => {
-                    console.log(civ)
-                    if (!civ) {
+                .findOneAndUpdate(
+                    {email: civ.email, is_healthcare_worker: true}, 
+                    {is_healthcare_worker: false}
+                )
+                .then(civ => {
+                    if(!civ){
                         res.status(404)
                         return res.json({
                             success: false,
-                            message: `No healthcare worker with email ${email} found`
+                            message: `Civilian with email ${email} not found`
                         })
                     }
-                    
-                    // set is healthcare to true
-                    db.civilian
-                        .findOneAndUpdate({email: civ.email }, {is_healthcare_worker: false})
-                        .then(doc => {
-                            if(!doc){
+                            
+                    // remove from org's employee list
+                    db.organisation
+                        .findByIdAndUpdate(req.user_id, function(error, org) {
+                            if (error) {
                                 res.status(404)
                                 return res.json({
                                     success: false,
                                     message: `Error demoting civilian with email ${email}`
                                 })
                             }
-                            
+
+                            org.employees = org.employees
+                                .filter(emp => emp !== civ._id);
+
                             return res.json({
                                 success: true,
                                 civilian: {
-                                    first_name: doc.first_name,
-                                    last_name: doc.last_name,
-                                    email: doc.email,
-                                    is_healthcare_worker: doc.is_healthcare_worker
+                                    first_name: civ.first_name,
+                                    last_name: civ.last_name,
+                                    email: civ.email,
+                                    is_healthcare_worker: civ.is_healthcare_worker,
+                                    org: org.employees
                                 }
-                            })       
-
+                            })  
                         })
-                        .catch(err => res.status(500).json(err))
-                    })
-                    .catch(err => res.status(500).json(err))            
+                        .catch(err => res.status(500).json(err));    
+                })
+                .catch(err => res.status(500).json(err))            
         }catch(err){
             res.status(500).send({
                 success: false,
