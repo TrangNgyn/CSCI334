@@ -16,19 +16,29 @@ export default function HotSpotsPage({ back }) {
 
   // group active cases across NSW by area
   function groupStats() {
-      let temp = [];
+    let temp = [];
 
-      for(let i = 0; i < userStore.activeCasesStats.length; i++) {
+    for(let i = 0; i < userStore.activeCasesStats.length; i++) {
 
-          if(temp[userStore.activeCasesStats[i].postcode] === undefined) { // if key does not yet exist, define it as an empty array
-              temp[userStore.activeCasesStats[i].postcode] = 0;
-          } 
-          
-          temp[userStore.activeCasesStats[i].postcode] += 1;
-
+      if(temp[userStore.activeCasesStats[i].postcode] === undefined) { // if key does not yet exist, define it as an empty array
+        temp[userStore.activeCasesStats[i].postcode] = 0;
       }
+      
+      temp[userStore.activeCasesStats[i].postcode] += 1;
 
-      return temp;
+    }
+
+    for(let i = 0; i < userStore.vic_recent_confirmed_cases.length; i++) {
+
+      if(temp[userStore.vic_recent_confirmed_cases[i].Postcode] === undefined) { // if key does not yet exist, define it as an empty array
+        temp[userStore.vic_recent_confirmed_cases[i].Postcode] = 0;
+      }
+      
+      temp[userStore.vic_recent_confirmed_cases[i].Postcode] += 1;
+
+    }
+
+    return temp;
   }
   
   useEffect(() => {
@@ -44,8 +54,10 @@ export default function HotSpotsPage({ back }) {
             Hotspot Map
           </Text>
           <Text pb={3}>View local viral activity on the map below</Text>
+          <Box width="75vw">
             <MapChart activeCases={groupedStats} setTooltipContent={setContent} />
             <ReactTooltip effect={"float"}>{content}</ReactTooltip>
+          </Box>
           <Button variant="gray" 
           maxW="lg"
           w="90%" onClick={() => navigate(back)}>BACK</Button>

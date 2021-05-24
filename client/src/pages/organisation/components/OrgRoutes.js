@@ -30,10 +30,10 @@ export const orgRoutes = [
 export const orgMenuRoutes = [
   {
     title: "Add Employee",
-    path: "org/addemp",
+    path: "/org/addemp",
   },
   {
     title: "View Statistics",
-    path: "org/stats",
+    path: "/org/stats",
   },
 ];

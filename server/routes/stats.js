@@ -5,6 +5,8 @@ const confirmed_cases_locations_controller
     = require('../controller/stats/confirmed_cases_locations');
 const aus_owid_data_controller = require('../controller/stats/aus_owid_data');
 const esri_australia_data_controller = require('../controller/stats/esri_australia_data');
+const vic_cases_data_controller = require('../controller/stats/vic_confirmed_covid_cases');
+const vic_vaccine_locations_controller = require('../controller/stats/vic_vaccine_locations');
 
 // =========== Confirm Cases by Location dataset =========== //
 
@@ -40,5 +42,17 @@ router.get('/get-current-totals-data', [
     auth_jwt.verify_token,
     auth_jwt.is_civilian
 ], esri_australia_data_controller.get_current_totals);
+
+// =========== VIC confirmed COVID-19 cases Data =========== //
+router.get('/get-vic-confirmed-cases-14days', [
+    auth_jwt.verify_token,
+    auth_jwt.is_civilian
+], vic_cases_data_controller.get_vic_confirmed_cases_14days);
+
+// =========== VIC COVID-19 vaccine locations Data =========== //
+router.get('/get-vic-vaccine-locations', [
+    auth_jwt.verify_token,
+    auth_jwt.is_civilian
+], vic_vaccine_locations_controller.get_vic_vaccine_locations);
 
 module.exports = router

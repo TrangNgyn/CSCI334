@@ -1,10 +1,13 @@
 import { Button } from "@chakra-ui/button";
 import { Center, Text, VStack } from "@chakra-ui/layout";
 import { Select, Input, Spacer, Stack, InputGroup } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 import LocationSearchInput from '../../components/GoogleMapsAutoComplete';
+import InputWrapper from "../../components/InputWrapper";
+import ButtonWrapper from "../../components/ButtonWrapper";
+import { useToast } from "@chakra-ui/react";
 
 const accTypes = [
   { name: "Civilian", id: "civilian" },
@@ -12,6 +15,7 @@ const accTypes = [
 ];
 
 const SignUp = ({ userStore, setSignUp }) => {
+
   const handleSignUp = (e) => {
     e.preventDefault();
     userStore.doSignUp();
@@ -36,6 +40,7 @@ const SignUp = ({ userStore, setSignUp }) => {
                 userStore.setProperty(e.target.name, e.target.value)
               }
               bg="#efefef"
+              disabled={userStore.isLoading}
             >
               {accTypes.map((el) => (
                 <option value={el.id} key={el.id}>
@@ -44,7 +49,7 @@ const SignUp = ({ userStore, setSignUp }) => {
               ))}
             </Select>
             <InputGroup size="md">
-              <Input
+              <InputWrapper
                 isRequired
                 name="email"
                 placeholder="Email"
@@ -57,7 +62,7 @@ const SignUp = ({ userStore, setSignUp }) => {
               />
             </InputGroup>
             <InputGroup size="md">
-              <Input
+              <InputWrapper
                 isRequired
                 name="password"
                 type="password"
@@ -75,7 +80,7 @@ const SignUp = ({ userStore, setSignUp }) => {
             {userStore.accType === 'civilian' &&
               <>
                 <InputGroup size="md">
-                  <Input
+                  <InputWrapper
                     isRequired
                     name="first_name"
                     value={userStore.first_name}
@@ -88,7 +93,7 @@ const SignUp = ({ userStore, setSignUp }) => {
                   />
                 </InputGroup>
                 <InputGroup size="md">
-                  <Input
+                  <InputWrapper
                     isRequired
                     name="last_name"
                     value={userStore.last_name}
@@ -107,7 +112,7 @@ const SignUp = ({ userStore, setSignUp }) => {
             {userStore.accType === 'business' &&
               <>
                 <InputGroup size="md">
-                  <Input
+                  <InputWrapper
                     isRequired
                     name="business_name"
                     value={userStore.business_name}
@@ -127,18 +132,18 @@ const SignUp = ({ userStore, setSignUp }) => {
               <Text variant="link" align="center">
                 Request an organisation account here
               </Text>
-              <Button variant="green" borderRadius="md" type="submit">
+              <ButtonWrapper variant="green" borderRadius="md" type="submit">
                 Sign Up
-              </Button>
+              </ButtonWrapper>
               <Spacer />
-              <Button
+              <ButtonWrapper
                 variant="gray"
                 type="button"
                 borderRadius="md"
                 onClick={() => setSignUp(false)}
               >
                 Back
-              </Button>
+              </ButtonWrapper>
             </VStack>
           </Stack>
         </form>

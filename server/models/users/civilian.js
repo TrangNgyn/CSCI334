@@ -11,9 +11,14 @@ const civilian = user.discriminator('civilian', new Schema({
         type: String, 
         require: true
     },
-    cert_ids: {
-        type: [String],
-        default: []
+    vaccine: {
+        type: {
+            vaccine_type:{type: String},
+            date: {type: Date},
+            recommended_doses: {type:Number},
+            doses_recieved: {type:Number}
+        },
+        default: {}
     },
     alerts: {
         type: [Schema.Types.ObjectId],
@@ -29,13 +34,9 @@ const civilian = user.discriminator('civilian', new Schema({
         type: Boolean,
         default: false
     },
-    current_dependents: {
-        type: [String],
-        default: []
-    },
     infected: {
         type: Boolean,
-        defualt: false
+        default: false
     }
 }))
 
