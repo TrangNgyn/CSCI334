@@ -48,6 +48,7 @@ const check_in = require('./routes/check_in')
 const business = require('./routes/business')
 const civilian = require('./routes/civilian')
 const stats = require('./routes/stats')
+const org = require('./routes/organisation')
 
 // setup database
 db.mongoose
@@ -79,19 +80,12 @@ app.use('/api/auth',auth);
 app.use('/api/business',business);
 app.use('/api/civilian', civilian);
 app.use('/api/stats', stats);
+app.use('/api/organisation', org)
 
 // make server object that contain port property and the value for our server.
 const server = {
   port: process.env.PORT || 5000
 };
-
-// use the modules
-
-
-// use router
-// app.use('/civilians', civilian_router)
-// app.use('/business', business_router)
-// app.use('/user', user_router);
 
 // starting the server
 app.listen( server.port , () => console.log(`Server started, listening port: ${server.port}`));

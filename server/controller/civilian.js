@@ -246,60 +246,6 @@ class Civilian{
                         })
                     })
             })
-
-
-            // await db.civilian.findOne({email: email, is_healthcare_worker: true})
-            //     .orFail(new Error('No civilian found'))
-            //     .then((user) => {
-            //         user.is_healthcare_worker = false
-            //         user.save()
-            //     })
-            // await db.organisation.findById(req.user_id)
-            //     .orFail(new Error('No organisation found'))
-            //     .then(async (org) => {
-            //         await db.civilian.find({email: email})
-            //             .then(user => {
-            //                 org.employees.push(user._id)
-            //                 console.log(org)
-            //             })
-            //     })
-            
-            // set is healthcare to true
-        //     await db.civilian
-        //         .findOneAndUpdate(
-        //             {email: email, is_healthcare_worker: false},
-        //             {is_healthcare_worker: true}
-        //         )
-        //         .then(async civ => {
-        //             if (!civ) {
-        //                 res.status(404)
-        //                 return res.json({
-        //                     success: false,
-        //                     message: `No civilian with email ${email} found`
-        //                 })
-        //             }
-        //             await db.organisation
-        //                 .findOneAndUpdate(
-        //                     {'_id' : req.user_id},
-        //                     {
-        //                         $pull: { '_employees': civ._id }
-        //                     },
-        //                     {'new': true}
-        //                 )
-        //                 .populate({ path:'_employees', select:'_id', model: 'civilian' })
-        //                 .exec(function(err,post) {
-        //                     if (err) 
-        //                         res.send("there was an error")
-        //                     res.send(post)
-        //                 })
-        //         })
-        //         .catch(err => res.status(500).json(err))            
-        // }catch(err){
-        //     res.status(500).send({
-        //         success: false,
-        //         message: err.message
-        //     })
-        // }
         }catch(err){
             res.status(500).send({
                 success: false,
