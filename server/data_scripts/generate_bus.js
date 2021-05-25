@@ -44,7 +44,7 @@ async function generate() {
         bus_id = role._id
     })
 
-    for(let i = 0; i< 400; i++) {
+    for(let i = 0; i< 1000; i++) {
         var password = data.passwords[random_int(100)]
         var first_name = data.names[random_int(2000)]
         var last_name = data.names[random_int(2000)]
