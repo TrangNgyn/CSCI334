@@ -5,11 +5,16 @@ import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import Certificate from "./Certificate";
 import { UserStore } from "../../../stores/UserStore";
+import { observer } from "mobx-react";
 
-export default function MyCertsPage() {
+function MyCertsPage() {
   const navigate = useNavigate();
   const userStore = UserStore;
 
+  const noCertificates = () => {
+    return Object.keys(userStore.vaccination_certificate).length === 0 && userStore.vaccination_certificate.constructor === Object;
+  }
+  
   return (
     <Box h="100vh" layerStyle="grayBG">
       <Box position="absolute" h="100%" w="100%" top="40px">
@@ -20,10 +25,12 @@ export default function MyCertsPage() {
             minH="80%"
             maxW={{ base: "90%", md: "container.sm" }}
           >
-            <Text variant="heading">My Certificates</Text>
-            {userStore.certs.map((item) => (
-              <Certificate key={item.title} content={item} />
-            ))}
+            <Text variant="heading">My Covid-19 Vaccination Certificate</Text>
+            {noCertificates() ?
+              <>No certificates</>
+            :
+              <Certificate content={userStore.vaccination_certificate} />
+            }
           </VStack>
         </Flex>
       </Box>
@@ -37,3 +44,5 @@ export default function MyCertsPage() {
     </Box>
   );
 }
+
+export default observer(MyCertsPage);

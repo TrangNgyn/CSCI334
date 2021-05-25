@@ -2,12 +2,10 @@ import {
   Flex,
   Stack,
   Text,
-  Box,
   InputGroup,
   Input,
   Button,
-  Select,
-  Checkbox,
+  Select
 } from "@chakra-ui/react";
 import React from "react";
 import viruses from "../viruses";

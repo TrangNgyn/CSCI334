@@ -4,7 +4,6 @@ import React from "react";
 import { BiAward } from "react-icons/bi";
 
 export default function Certificate({ content }) {
-  let { title, status } = content;
 
   return (
     <Box
@@ -20,8 +19,19 @@ export default function Certificate({ content }) {
         <Icon as={BiAward} boxSize="12" pr="2" />
         <VStack spacing={0} pt="2">
           <Text as="h2" color="gray.800" textAlign="start" my="0" w="100%">
-            {title}
+            {content.vaccine_type}
           </Text>
+          <Box>
+            <Text textAlign="start" display="inline-block">
+            </Text>
+            <Text
+              pl="1"
+              textAlign="start"
+              display="inline-block"
+            >
+              {content.doses_received} of {content.recommended_doses} doses received.
+            </Text>
+          </Box>
           <Box>
             <Text textAlign="start" display="inline-block">
               status:
@@ -30,9 +40,9 @@ export default function Certificate({ content }) {
               pl="1"
               textAlign="start"
               display="inline-block"
-              color={status === "complete" ? "green.500" : "red.400"}
+              color={content.doses_received === content.recommended_doses ? "green.500" : "red.400"}
             >
-              {status}
+              {content.doses_received === content.recommended_doses ? "Completed" : "Ongoing"}
             </Text>
           </Box>
         </VStack>

@@ -319,17 +319,17 @@ class Civilian{
     // @desc    Add a cert to a civilian
     // @access  Protected
 
-    async post_update_vaccine_status(req, res){
+    async put_update_vaccine_status(req, res){
         let { 
             email, 
             vaccine_type, 
             date, 
             recommended_doses, 
-            doses_recieved 
+            doses_received 
         } = req.body;
 
         // check for empty field
-        if(!email || !vaccine_type || !recommended_doses || !doses_recieved){
+        if(!email || !vaccine_type || !recommended_doses || !doses_received){
             return res.json(empty_field);
         }
 
@@ -358,7 +358,7 @@ class Civilian{
             vaccine_type, 
             date, 
             recommended_doses, 
-            doses_recieved
+            doses_received
         };
 
         // update the certification of user with specified email
@@ -409,7 +409,6 @@ class Civilian{
                 return res.json({
                     success: true,
                     data: {
-                        email: user.email,
                         vaccine: user.vaccine
                     }
                 });
