@@ -1,5 +1,5 @@
 import React from "react";
-import { Center, VStack, Text, Box } from "@chakra-ui/react";
+import { Center, VStack, Text } from "@chakra-ui/react";
 import QRImage from "../../../components/QRImage";
 
 // react-to-print must be class based components
