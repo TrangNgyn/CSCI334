@@ -213,7 +213,7 @@ class Civilian{
                             },
                             {'new': true}
                         )
-                        .populate({path:'_employees', select:'_id', model: 'civilian' })
+                        .populate({ path:'_employees', select:'_id', model: 'civilian' })
                         .exec(function(err,post) {
                             if (err) throw err; // or something
                             res.send(post)
