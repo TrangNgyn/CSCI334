@@ -30,8 +30,6 @@ export default function ActiveCasesStats() {
 
         return temp;
     }
-
-    console.log(userStore.activeCasesStats);
     
     useEffect(() => {
         setGroupedStats(groupStats());
