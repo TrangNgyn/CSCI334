@@ -173,7 +173,7 @@ is_civilian = (req,res,next) => {
 }
 
 is_organisation = (req,res,next) => {
-    db.civilian.findById(req.user_id).exec((err,user) => {
+    db.organisation.findById(req.user_id).exec((err,user) => {
         if(err)
             return res.status(500).send({
                 message: err

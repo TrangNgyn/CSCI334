@@ -165,7 +165,7 @@ class Civilian{
             // set is healthcare to true
             db.civilian
                 .findOneAndUpdate(
-                    {email: civ.email, is_healthcare_worker: false},
+                    {email: email, is_healthcare_worker: false},
                     {is_healthcare_worker: true}
                 )
                 .then(civ => {
@@ -176,33 +176,48 @@ class Civilian{
                             message: `No civilian with email ${email} found`
                         })
                     }
-                    
+
                     // add to org's employee list
-                    db.organisation
-                        .findByIdAndUpdate(req.user_id, function(error, org) {
-
-                            if (error) {
-                                res.status(404)
-                                return res.json({
-                                    success: false,
-                                    message: `Error promoting civilian with email ${email}`
-                                })
-                            }
+                    // db.organisation
+                    //     .findByIdAndUpdate(req.user_id, function(error, org) {
+                    //         console.log("here")
+                    //         if (error) {
+                    //             res.status(404)
+                    //             return res.json({
+                    //                 success: false,
+                    //                 message: `Error promoting civilian with email ${email}`
+                    //             })
+                    //         }
                             
-                            org.employees = [...org.employees, civ._id];
+                    //         org.employees = [...org.employees, civ._id];
 
-                            return res.json({
-                                success: true,
-                                civilian: {
-                                    first_name: civ.first_name,
-                                    last_name: civ.last_name,
-                                    email: civ.email,
-                                    is_healthcare_worker: civ.is_healthcare_worker,
-                                    org: org.employees
-                                }
-                            }) 
+                            
+                    //         return res.json({
+                    //             success: true,
+                    //             civilian: {
+                    //                 first_name: civ.first_name,
+                    //                 last_name: civ.last_name,
+                    //                 email: civ.email,
+                    //                 is_healthcare_worker: civ.is_healthcare_worker,
+                    //                 org: org.employees
+                    //             }
+                    //         }) 
+                    //     })
+                    //     .catch(err => res.status(500).json(err));
+
+                    db.organisation
+                        .findOneAndUpdate(
+                            {'_id' : req.user_id},
+                            {
+                                $pull: { '_employees': civ._id }
+                            },
+                            {'new': true}
+                        )
+                        .populate({path:'_employees', select:'_id', model: 'civilian' })
+                        .exec(function(err,post) {
+                            if (err) throw err; // or something
+                            res.send(post)
                         })
-                        .catch(err => res.status(500).json(err));
                 })
                 .catch(err => res.status(500).json(err))            
         }catch(err){
@@ -230,7 +245,7 @@ class Civilian{
             // and set is healthcare to fase
             db.civilian
                 .findOneAndUpdate(
-                    {email: civ.email, is_healthcare_worker: true}, 
+                    {email: email, is_healthcare_worker: true}, 
                     {is_healthcare_worker: false}
                 )
                 .then(civ => {
