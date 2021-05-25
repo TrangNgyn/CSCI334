@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, VStack } from "@chakra-ui/layout";
+import { Box, Text, Flex, VStack } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
@@ -47,22 +47,24 @@ export default function HotSpotsPage({ back }) {
 
   return (
     
-    <Box h="100vh" layerStyle="mainBG">
-      <GrayContainer>
-        <VStack spacing={4} w="100%">
-          <Text variant="heading" as="h2" m={0}>
-            Hotspot Map
-          </Text>
-          <Text pb={3}>View local viral activity on the map below</Text>
-          <Box width="75vw">
-            <MapChart activeCases={groupedStats} setTooltipContent={setContent} />
-            <ReactTooltip effect={"float"}>{content}</ReactTooltip>
-          </Box>
-          <Button variant="gray" 
-          maxW="lg"
-          w="90%" onClick={() => navigate(back)}>BACK</Button>
-        </VStack>
-      </GrayContainer>
+    <Box h="100vh" layerStyle="grayBG">
+      <Box position="absolute" h="100%" w="100%" top="40px">
+        <Flex justifyContent="center" alignItems="flex-start">
+          <VStack spacing={4} w="100%">
+            <Text variant="heading" as="h2" m={0}>
+              Hotspot Map
+            </Text>
+            <Text pb={3}>Confirmed covid-19 transmissions, last 14 days.</Text>
+            <Box width="90vw">
+              <MapChart activeCases={groupedStats} setTooltipContent={setContent} />
+              <ReactTooltip effect={"float"}>{content}</ReactTooltip>
+            </Box>
+            <Button variant="gray" 
+            maxW="lg"
+            w="90%" onClick={() => navigate(back)}>BACK</Button>
+          </VStack>
+        </Flex>
+      </Box>
     </Box>
   );
 

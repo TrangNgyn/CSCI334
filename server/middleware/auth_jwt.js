@@ -130,6 +130,7 @@ is_healthcare = (req,res,next) => {
                     message: err
                 })
             for(let i = 0; i < roles.length; i++) {
+                console.log(roles[i].name)
                 if(roles[i].name === "healthcare"){
                     return next()
                 }
@@ -160,7 +161,7 @@ is_civilian = (req,res,next) => {
                     message: err
                 })
             for(let i = 0; i < roles.length; i++) {
-                if(roles[i].name === "civilian"){
+                if(roles[i].name === "civilian" || roles[i].name === "healthcare"){
                     return next()
                 }
             }

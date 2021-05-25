@@ -55,7 +55,8 @@ class UserStoreImpl {
 
   // Healthcare worker user type
   isHealthCare = false;
-  foundUser = { name: "Gregethy Knowles", id: "123456" };
+  foundUser = { first_name: "", last_name: "", email: "" };
+  userWasFound = false;
 
   // Response from sign in/sign up
   isLoggedIn = false;
@@ -153,10 +154,6 @@ class UserStoreImpl {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
 
-  findUser = (userId) => {
-    console.log("searching for " + userId);
-  };
-
   updateTotalEmps = () => {
     console.log("Updating DB with new total emp count");
 
@@ -200,6 +197,39 @@ class UserStoreImpl {
     //this.QRCodeUrl = "";
     this.orgName = "";
     this.employees = [];
+  };
+
+  healthCareSearchUser = (userEmail) => {
+    this.isLoading = true;
+    this.userWasFound = false;
+    fetch("http://localhost:5000/api/civilian/healthcare-search-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.foundUser = json.civilian;
+          this.userWasFound = true;
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.userWasFound = false;
+          this.isLoading = false;
+        }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.userWasFound = false;
+        this.isLoading = false;
+      });
   };
 
   getActiveCases = () => {
@@ -501,6 +531,8 @@ class UserStoreImpl {
           this.isHealthCare = json.is_healthcare_worker;
           this.isLoading = false;
           this.isLoggedIn = true;
+
+          console.log(this.access_token);
         } else {
           this.errorMSG = json.message;
           this.isLoading = false;
