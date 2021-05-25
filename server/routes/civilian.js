@@ -20,7 +20,7 @@ router.post('/search-civilian', [
 
 router.post('/promote-civilian', [
     auth_jwt.verify_token,
-    auth_jwt.is_civilian,
+    auth_jwt.is_organisation,    
 ], civilians_controller.post_promote_civilian);
 
 router.post('/search-healthcare', [
