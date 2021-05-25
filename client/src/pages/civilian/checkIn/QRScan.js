@@ -33,34 +33,50 @@ export default function QRScan() {
             sourceSelectPanel.style.display = "block";
           }
 
-          document
-            .getElementById("startButton")
-            .addEventListener("click", () => {
-              console.log("start");
-              codeReader.decodeFromVideoDevice(
-                selectedDeviceId,
-                "video",
-                (result, err) => {
-                  if (result) {
-                    userStore.setProperty("business_id", result);
-                    userStore.setProperty("scanned", true);
-                    codeReader.reset();
-
-                    /***use this to check in***/
+      codeReader
+        .listVideoInputDevices()
+        .then((videoInputDevices) => {
+          if (videoInputDevices.length > 0) {
+            const sourceSelect = document.getElementById("sourceSelect");
+            setSelectedDeviceId(videoInputDevices[0].deviceId);
+            if (videoInputDevices.length >= 1) {
+              videoInputDevices.forEach((element) => {
+                const sourceOption = document.createElement("option");
+                sourceOption.text = element.label;
+                sourceOption.value = element.deviceId;
+                sourceSelect.appendChild(sourceOption);
+              });
+  
+              sourceSelect.onchange = () => {
+                setSelectedDeviceId(sourceSelect.value);
+              };
+  
+              const sourceSelectPanel =
+                document.getElementById("sourceSelectPanel");
+              sourceSelectPanel.style.display = "block";
+            }
+  
+            document
+              .getElementById("startButton")
+              .addEventListener("click", () => {
+                codeReader.decodeFromVideoDevice(
+                  selectedDeviceId,
+                  "video",
+                  (result, err) => {
+                    if (result) {
+                      userStore.setProperty("business_id", result);
+                      userStore.setProperty("scanned", true);
+                      codeReader.reset();
+                    }
+                    if (err && !(err instanceof NotFoundException)) {
+                      console.error(err);
+                    }
                   }
-                  if (err && !(err instanceof NotFoundException)) {
-                    console.error(err);
-                  }
-                }
-              );
-              console.log(
-                `Started continous decode from camera with id ${selectedDeviceId}`
-              );
-            });
-
-          document.getElementById("back").addEventListener("click", () => {
-            codeReader.reset();
-            console.log("Reset.");
+                );
+              });
+  
+            document.getElementById("back").addEventListener("click", () => {
+              codeReader.reset();
           });
         }
       })
