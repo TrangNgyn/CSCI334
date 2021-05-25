@@ -6,13 +6,7 @@ import { observer } from "mobx-react";
 import { UserStore } from "../../../stores/UserStore";
 import VacCentres from "../components/VacCentres";
 import RolloutInfo from "../components/RolloutInfo";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
+import { Accordion, AccordionItem, AccordionPanel } from "@chakra-ui/react";
 import AccordButton from "../components/AccordButton";
 
 function RolloutsPage({ back }) {
@@ -32,7 +26,7 @@ function RolloutsPage({ back }) {
             Rollout Info
           </Text>
 
-          <Accordion defaultIndex={[0]} w="90%" maxW="container.sm">
+          <Accordion defaultIndex={[0]} w="90%" maxW="container.sm" allowToggle>
             <AccordionItem>
               {({ isExpanded }) => (
                 <>
@@ -40,7 +34,7 @@ function RolloutsPage({ back }) {
                     title="Rollout Phases"
                     isExpanded={isExpanded}
                   />
-                  <AccordionPanel pb={4} bg="#fafafa" borderRadius="2xl">
+                  <AccordionPanel mb={4} bg="#fafafa" borderRadius="2xl">
                     <Box
                       w="90%"
                       maxW="container.sm"

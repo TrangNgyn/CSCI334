@@ -30,7 +30,7 @@ export default function StatsPage() {
           >
             <VStack spacing="3" w="100%">
               {/* statistics accordion */}
-              <Accordion defaultIndex={null} w="100%">
+              <Accordion defaultIndex={null} w="100%" allowToggle>
                 {/* total cases accordion item */}
                 <TotalCasesStats />
 

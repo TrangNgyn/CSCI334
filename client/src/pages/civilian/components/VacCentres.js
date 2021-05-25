@@ -33,7 +33,7 @@ export default function VacCentres({ userStore }) {
         <Tbody>
           {userStore.vic_vaccine_locations.map((location) => {
             return (
-              <Tr>
+              <Tr key={location.shortNameClean}>
                 <Td>{location.shortNameClean}</Td>
                 <Td>{location.addressFull}</Td>
                 <Td>{location.waitPeriodDisp}</Td>

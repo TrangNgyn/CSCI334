@@ -19,7 +19,7 @@ export const menuOptions = [
   },
   {
     icon: FiMapPin,
-    title: "Rollout Map",
+    title: "Rollout Information",
     desc: "Vaccine rollouts in you area",
     route: "/civ/rollout",
   },

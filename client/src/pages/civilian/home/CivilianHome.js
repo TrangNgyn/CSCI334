@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/button";
 import { Box, Center, VStack } from "@chakra-ui/layout";
 import React, { useEffect } from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
-import DotPattern from "../../../components/DotPattern";
 import { civMenuRoutes } from "../components/civRoutes";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
