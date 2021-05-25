@@ -242,64 +242,12 @@ class Civilian{
                         org.employees.push(user._id)
                         org.save()
                         return res.send({
+                            success: true,
                             message: "User was added to healthcare org"
                         })
                     })
             })
 
-
-            // await db.civilian.findOne({email: email, is_healthcare_worker: true})
-            //     .orFail(new Error('No civilian found'))
-            //     .then((user) => {
-            //         user.is_healthcare_worker = false
-            //         user.save()
-            //     })
-            // await db.organisation.findById(req.user_id)
-            //     .orFail(new Error('No organisation found'))
-            //     .then(async (org) => {
-            //         await db.civilian.find({email: email})
-            //             .then(user => {
-            //                 org.employees.push(user._id)
-            //                 console.log(org)
-            //             })
-            //     })
-            
-            // set is healthcare to true
-        //     await db.civilian
-        //         .findOneAndUpdate(
-        //             {email: email, is_healthcare_worker: false},
-        //             {is_healthcare_worker: true}
-        //         )
-        //         .then(async civ => {
-        //             if (!civ) {
-        //                 res.status(404)
-        //                 return res.json({
-        //                     success: false,
-        //                     message: `No civilian with email ${email} found`
-        //                 })
-        //             }
-        //             await db.organisation
-        //                 .findOneAndUpdate(
-        //                     {'_id' : req.user_id},
-        //                     {
-        //                         $pull: { '_employees': civ._id }
-        //                     },
-        //                     {'new': true}
-        //                 )
-        //                 .populate({ path:'_employees', select:'_id', model: 'civilian' })
-        //                 .exec(function(err,post) {
-        //                     if (err) 
-        //                         res.send("there was an error")
-        //                     res.send(post)
-        //                 })
-        //         })
-        //         .catch(err => res.status(500).json(err))            
-        // }catch(err){
-        //     res.status(500).send({
-        //         success: false,
-        //         message: err.message
-        //     })
-        // }
         }catch(err){
             res.status(500).send({
                 success: false,
@@ -323,48 +271,42 @@ class Civilian{
             
             // find the civ by email          
             // and set is healthcare to fase
-            db.civilian
-                .findOneAndUpdate(
-                    {email: email, is_healthcare_worker: true}, 
-                    {is_healthcare_worker: false}
-                )
-                .then(civ => {
-                    if(!civ){
-                        res.status(404)
-                        return res.json({
-                            success: false,
-                            message: `Civilian with email ${email} not found`
-                        })
-                    }
-                            
-                    // remove from org's employee list
-                    db.organisation
-                        .findByIdAndUpdate(req.user_id, function(error, org) {
-                            if (error) {
-                                res.status(404)
-                                return res.json({
+            db.civilian.findOne({email: email, is_healthcare_worker: true}, (err, user) => {
+                if(err)
+                    return res.status(500).send({
+                        message: err.message
+                    })
+                if(!user)
+                    return res.status(404).json({
+                        success: false,
+                        message: "User was not found"
+                    })
+                db.role.findOne({name: 'civilian'})
+                    .orFail(new Error('error finding role'))
+                    .then(role => {
+                        user.is_healthcare_worker = false;
+                        user.roles.push(role._id);
+                        user.save(err => {
+                            if(err)
+                                return res.status(500).json({
                                     success: false,
-                                    message: `Error demoting civilian with email ${email}`
-                                })
-                            }
-
-                            org.employees = org.employees
-                                .filter(emp => emp !== civ._id);
-
-                            return res.json({
-                                success: true,
-                                civilian: {
-                                    first_name: civ.first_name,
-                                    last_name: civ.last_name,
-                                    email: civ.email,
-                                    is_healthcare_worker: civ.is_healthcare_worker,
-                                    org: org.employees
-                                }
-                            })  
+                                    message: err.message
+                                });
                         })
-                        .catch(err => res.status(500).json(err));    
-                })
-                .catch(err => res.status(500).json(err))            
+                        
+                    })
+                
+                db.organisation.findById(req.user_id)
+                    .orFail(new Error('error finding organisation'))
+                    .then(org => {
+                        org.employees.pull(user._id);
+                        org.save()
+                        return res.send({
+                            success: true,
+                            message: "User was removed from healthcare org"
+                        })
+                    })
+            })          
         }catch(err){
             res.status(500).send({
                 success: false,
@@ -373,17 +315,44 @@ class Civilian{
         }
     }
 
-    // @route   POST api/civilian/add-vaccine-cert
+    // @route   POST api/civilian/update-vaccine-status
     // @desc    Add a cert to a civilian
     // @access  Protected
 
-    async post_add_cert(req, res){
-        const { email, vaccine_type, recommended_doses, doses_recieved } = req.body;
+    async post_update_vaccine_status(req, res){
+        let { 
+            email, 
+            vaccine_type, 
+            date, 
+            recommended_doses, 
+            doses_recieved 
+        } = req.body;
 
         // check for empty field
         if(!email || !vaccine_type || !recommended_doses || !doses_recieved){
             return res.json(empty_field);
         }
+
+        // default to now if date is not provided
+        if(!date){
+            date = new Date();
+        }
+
+        // make sure user cannot their own vaccination status
+        db.civilian.findById(req.user_id, (err, user) => {
+            if(err){
+                return res.status(500).send({err});
+            }
+            
+            if(user){
+                if(user.email === email){
+                    return res.json({
+                        success: false,
+                        message: "User cannot update their own vaccination status"
+                    });
+                }
+            }
+        })
 
         const vaccine = {
             vaccine_type, 
@@ -393,11 +362,12 @@ class Civilian{
         };
 
         // update the certification of user with specified email
-        d.civilian
+        db.civilian
             .findOneAndUpdate(
                 {email: email}, 
                 {vaccine: vaccine}
             )
+            
             .then(civ => {
                 if(!civ){
                     res.status(404)
@@ -415,9 +385,35 @@ class Civilian{
             })
     }
 
-    async post_retrieve_vaccine(req, res){
+    // @route   POST api/civilian/retrieve-vaccination-status
+    // @desc    Retrieve a cert of a civilian
+    // @access  Protected
+
+    async post_retrieve_vaccination_status(req, res){
         const { email } = req.body;
 
+        db.civilian
+            .findOne({email: email}, (err, user) => {
+                if(err)
+                    return res.status(500).send({
+                        success: false,
+                        message: err.message
+                    });
+                if(!user)
+                    return res.status(404).json({
+                        success: false,
+                        message: "User was not found"
+                    });
+                
+                // return the user's vaccine info
+                return res.json({
+                    success: true,
+                    data: {
+                        email: user.email,
+                        vaccine: user.vaccine
+                    }
+                });
+            })
         
     }
 }

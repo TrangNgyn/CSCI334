@@ -47,6 +47,7 @@ const alert = require('./routes/alert')
 const check_in = require('./routes/check_in')
 const business = require('./routes/business')
 const civilian = require('./routes/civilian')
+const organisation = require('./routes/organisation');
 const stats = require('./routes/stats')
 
 // setup database
@@ -78,6 +79,7 @@ cron_jobs.task.start()
 app.use('/api/auth',auth);
 app.use('/api/business',business);
 app.use('/api/civilian', civilian);
+app.use('/api/organisation', organisation);
 app.use('/api/stats', stats);
 
 // make server object that contain port property and the value for our server.

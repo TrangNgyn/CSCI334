@@ -130,7 +130,6 @@ is_healthcare = (req,res,next) => {
                     message: err
                 })
             for(let i = 0; i < roles.length; i++) {
-                console.log(roles[i].name)
                 if(roles[i].name === "healthcare"){
                     return next()
                 }
