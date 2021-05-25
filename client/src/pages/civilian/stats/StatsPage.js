@@ -3,12 +3,12 @@ import { Box, Flex, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
-import { Accordion } from "@chakra-ui/react"
-import TotalCasesStats from './TotalCasesStats';
-import ActiveCasesStats from './ActiveCasesStats';
-import TotalImmunisedStats from './TotalImmunisedStats';
-import TotalDeathsStats from './TotalDeathsStats';
-import TotalTestsStats from './TotalTestsStats';
+import { Accordion } from "@chakra-ui/react";
+import TotalCasesStats from "./TotalCasesStats";
+import ActiveCasesStats from "./ActiveCasesStats";
+import TotalImmunisedStats from "./TotalImmunisedStats";
+import TotalDeathsStats from "./TotalDeathsStats";
+import TotalTestsStats from "./TotalTestsStats";
 
 export default function StatsPage() {
   const navigate = useNavigate();
@@ -16,39 +16,38 @@ export default function StatsPage() {
   return (
     <Box h="100vh" layerStyle="grayBG">
       <Box position="absolute" h="100%" w="100%" top="40px">
-        <Flex justifyContent="center" alignItems="flex-start">
-          <VStack
-            spacing="3"
-            w="90%"
-            minH="80%"
+        <Flex justifyContent="center" direction="column" alignItems="center">
+          <Text variant="heading" mb="3">
+            Statistics
+          </Text>
+          <Box
+            overflowY="scroll"
             maxW={{ base: "90%", md: "container.sm" }}
+            w="100%"
+            h="70vh"
+            p="5"
+            borderRadius="3xl"
           >
-            <Text variant="heading" mb="3">
-              Statistics
-            </Text>
-            
-            {/* statistics accordion */}
-            <Accordion defaultIndex={[0]} allowMultiple>
+            <VStack spacing="3" w="100%">
+              {/* statistics accordion */}
+              <Accordion defaultIndex={null} w="100%" allowToggle>
+                {/* total cases accordion item */}
+                <TotalCasesStats />
 
-              {/* total cases accordion item */}
-              <TotalCasesStats />
+                {/* active (last 14 days) cases accordion item */}
+                <ActiveCasesStats />
 
-              {/* active (last 14 days) cases accordion item */}
-              <ActiveCasesStats />
+                {/* total number of covid-19 tests performed */}
+                <TotalTestsStats />
 
-              {/* total number of covid-19 tests performed */}
-              <TotalTestsStats />
-              
-              {/* total deaths accordion item */}
-              <TotalDeathsStats />
-              
-              {/* vaccination accordion item */}
-              <TotalImmunisedStats />
+                {/* total deaths accordion item */}
+                <TotalDeathsStats />
 
-
-            </Accordion>
-
-          </VStack>
+                {/* vaccination accordion item */}
+                <TotalImmunisedStats />
+              </Accordion>
+            </VStack>
+          </Box>
         </Flex>
       </Box>
       <GrayContainer>

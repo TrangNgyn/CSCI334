@@ -4,12 +4,12 @@ import CivilianRouting from "./civilian/components/CivilianRouting";
 import OrgRouting from "./organisation/components/OrgRouting";
 import AdRouting from "./admin/components/AdRouting";
 import { observer } from "mobx-react";
-//import { useNavigate } from "react-router";
 
 function AppRouting({ userStore }) {
-  //const navigate = useNavigate();
-  //navigate("../");
-  if (userStore.roles[0] === "ROLE_CIVILIAN" || userStore.roles[0] === "ROLE_HEALTHCARE") {
+  if (
+    userStore.roles[0] === "ROLE_CIVILIAN" ||
+    userStore.roles[0] === "ROLE_HEALTHCARE"
+  ) {
     return <CivilianRouting />;
   }
   if (userStore.roles[0] === "ROLE_BUSINESS") {

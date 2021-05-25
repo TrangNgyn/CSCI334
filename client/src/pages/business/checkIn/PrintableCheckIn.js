@@ -1,31 +1,32 @@
-import React from 'react';
-import { Center, VStack, Text, Box } from "@chakra-ui/react";
+import React from "react";
+import { Center, VStack, Text } from "@chakra-ui/react";
 import QRImage from "../../../components/QRImage";
 
 // react-to-print must be class based components
-// maybe avoid using colour since if somebody doesn't have access to a colour printer it can at best, potentially look bad, and at worst make the print out un-readable?
 export class PrintableCheckIn extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return(
-            <Box h="100vh" id="Printable-QR-Code-Page">
-                <VStack spacing="7" w="100%">
-                    <Text variant="heading" as="h2" m={0}>
-                        {this.props.business_name}
-                    </Text>
-                    <Text align="center" w="70%">
-                        Check in to our premises
-                    </Text>
+  render() {
+    return (
+      <Center h="100vh" w="100vw" id="Printable-QR-Code-Page">
+        <VStack spacing="7" w="100%" p="16">
+          <Text variant="heading" fontSize="5xl" m={0}>
+            {this.props.business_name}
+          </Text>
+          <Text align="center" w="70%">
+            Check in to our premises
+          </Text>
 
-                    <Center h="50vh">
-                        <QRImage src={this.props.qr_code} />
-                    </Center>
+          <Center w="50%" h="100%">
+            <QRImage src={this.props.qr_code} />
+          </Center>
 
-                </VStack>
-            </Box>
-        );
-    }
+          <Text variant="heading">Stay Covid Safe</Text>
+          <Text>Check out the Trace Response app to beat plague!</Text>
+        </VStack>
+      </Center>
+    );
+  }
 }

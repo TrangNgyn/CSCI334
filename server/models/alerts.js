@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const counters = require('./counters');
 
 const alert_schema = new Schema({
-    place_id: { 
+    business_name: { 
         required: false,
         type: String,
     },

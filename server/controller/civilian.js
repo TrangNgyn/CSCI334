@@ -210,50 +210,42 @@ class Civilian{
             if(!email){
                 return res.json(empty_field);
             }
-            
-            // set is healthcare to true
-            db.civilian
-                .findOneAndUpdate(
-                    {email: civ.email, is_healthcare_worker: false},
-                    {is_healthcare_worker: true}
-                )
-                .then(civ => {
-                    if (!civ) {
-                        res.status(404)
-                        return res.json({
-                            success: false,
-                            message: `No civilian with email ${email} found`
-                        })
-                    }
-                    
-                    // add to org's employee list
-                    db.organisation
-                        .findByIdAndUpdate(req.user_id, function(error, org) {
 
-                            if (error) {
-                                res.status(404)
-                                return res.json({
+            db.civilian.findOne({email: email, is_healthcare_worker: false}, (err, user) => {
+                if(err)
+                    return res.status(500).send({
+                        message: err.message
+                    })
+                if(!user)
+                    return res.status(404).json({
+                        success: false,
+                        message: "User was not found"
+                    })
+                db.role.findOne({name: 'healthcare'})
+                    .orFail(new Error('error finding role'))
+                    .then(role => {
+                        user.is_healthcare_worker = true
+                        user.roles.push(role._id)
+                        user.save(err => {
+                            if(err)
+                                return res.status(500).json({
                                     success: false,
-                                    message: `Error promoting civilian with email ${email}`
+                                    message: err.message
                                 })
-                            }
-                            
-                            org.employees = [...org.employees, civ._id];
-
-                            return res.json({
-                                success: true,
-                                civilian: {
-                                    first_name: civ.first_name,
-                                    last_name: civ.last_name,
-                                    email: civ.email,
-                                    is_healthcare_worker: civ.is_healthcare_worker,
-                                    org: org.employees
-                                }
-                            }) 
                         })
-                        .catch(err => res.status(500).json(err));
-                })
-                .catch(err => res.status(500).json(err))            
+                        
+                    })
+                
+                db.organisation.findById(req.user_id)
+                    .orFail(new Error('error finding organisation'))
+                    .then(org => {
+                        org.employees.push(user._id)
+                        org.save()
+                        return res.send({
+                            message: "User was added to healthcare org"
+                        })
+                    })
+            })
         }catch(err){
             res.status(500).send({
                 success: false,
@@ -279,7 +271,7 @@ class Civilian{
             // and set is healthcare to fase
             db.civilian
                 .findOneAndUpdate(
-                    {email: civ.email, is_healthcare_worker: true}, 
+                    {email: email, is_healthcare_worker: true}, 
                     {is_healthcare_worker: false}
                 )
                 .then(civ => {

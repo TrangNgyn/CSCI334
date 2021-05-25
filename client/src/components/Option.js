@@ -13,16 +13,21 @@ export default function Option({ content }) {
       py="2"
       px="4"
       borderRadius="xl"
-      shadow="2xl"
+      shadow="base"
       w="90%"
       minHeight="60px"
       onClick={() => navigate(route)}
       _hover={{ bg: "gray.200", cursor: "pointer" }}
     >
       <HStack>
-        <Icon as={icon} boxSize="12%" pr="2" color="gray.700" />
+        <Icon
+          as={icon}
+          boxSize={{ base: "12%", md: "8%" }}
+          pr="2"
+          color="gray.700"
+        />
         <VStack>
-          <Text as="h3" color="gray.800" textAlign="start" my="1" w="100%">
+          <Text as="h3" color="gray.700" textAlign="start" my="1" w="100%">
             {title}
           </Text>
           <Text textAlign="start">{desc}</Text>

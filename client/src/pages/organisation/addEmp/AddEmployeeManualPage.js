@@ -64,7 +64,7 @@ const AddEmployeeManualPage = () => {
       <GrayContainer>
         <VStack spacing="7" w="100%">
           <Text variant="heading" as="h2" m={0}>
-            Find User
+            Add Employee
           </Text>
           <VStack
             w="90%"

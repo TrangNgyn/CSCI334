@@ -7,10 +7,9 @@ import GrayContainer from "../../components/GrayContainer";
 import DotPattern from "../../components/DotPattern";
 import { useNavigate } from "react-router";
 import { UserStore } from "../../stores/UserStore";
-import {
-  useDisclosure,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import Notifications from "../civilian/components/Notifications";
+import LogoIcon from "../../components/LogoMenu/LogoIcon";
 
 export default function HealthLandingPage() {
   const navigate = useNavigate();
@@ -24,13 +23,14 @@ export default function HealthLandingPage() {
 
   return (
     <Box h="100vh" layerStyle="mainBG">
-      <Box position="absolute" top="5" left="5" zIndex="2">
-        <LogoMenu menuItems={busMenuRoutes} notification={handleNotificationClicked}/>
-      </Box>
+      <Box position="absolute" top="5" left="5" zIndex="2"></Box>
       <DotPattern />
       <GrayContainer>
         <VStack spacing="7" w="100%">
-          <LogoMenu menuItems={[]} />
+          <LogoMenu
+            menuItems={busMenuRoutes}
+            notification={handleNotificationClicked}
+          />
           <Text variant="heading" as="h2">
             Business Account
           </Text>
@@ -48,8 +48,11 @@ export default function HealthLandingPage() {
           </VStack>
         </VStack>
       </GrayContainer>
-      <Notifications onClose={onClose} isOpen={isOpen} alerts={alerts}></Notifications>
-
+      <Notifications
+        onClose={onClose}
+        isOpen={isOpen}
+        alerts={alerts}
+      ></Notifications>
     </Box>
   );
 }

@@ -4,8 +4,8 @@ import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router-dom";
 import { UserStore } from "../../../stores/UserStore";
 import QRImage from "../../../components/QRImage";
-import ReactToPrint from 'react-to-print';
-import { PrintableCheckIn } from './PrintableCheckIn';
+import ReactToPrint from "react-to-print";
+import { PrintableCheckIn } from "./PrintableCheckIn";
 
 const CheckinPage = () => {
   const navigate = useNavigate();
@@ -14,9 +14,15 @@ const CheckinPage = () => {
 
   return (
     <Box h="100vh" layerStyle="mainBG">
-    
       {/* render printable page and pass props, not displayed, just for printing */}
-      <div style={{ display: "none" }}><PrintableCheckIn ref={qrPrintRef} business_name={userStore.business_name} qr_code={userStore.qr_code} /></div>
+
+      <Box d="none" ref={qrPrintRef}>
+        <PrintableCheckIn
+          ref={qrPrintRef}
+          business_name={userStore.business_name}
+          qr_code={userStore.qr_code}
+        />
+      </Box>
 
       <GrayContainer>
         <VStack spacing="7" w="100%">

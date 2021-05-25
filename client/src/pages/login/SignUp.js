@@ -1,13 +1,11 @@
-import { Button } from "@chakra-ui/button";
 import { Center, Text, VStack } from "@chakra-ui/layout";
-import { Select, Input, Spacer, Stack, InputGroup } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import { Select, Spacer, Stack, InputGroup } from "@chakra-ui/react";
+import React from "react";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
-import LocationSearchInput from '../../components/GoogleMapsAutoComplete';
+import LocationSearchInput from "../../components/GoogleMapsAutoComplete";
 import InputWrapper from "../../components/InputWrapper";
 import ButtonWrapper from "../../components/ButtonWrapper";
-import { useToast } from "@chakra-ui/react";
 
 const accTypes = [
   { name: "Civilian", id: "civilian" },
@@ -15,7 +13,6 @@ const accTypes = [
 ];
 
 const SignUp = ({ userStore, setSignUp }) => {
-
   const handleSignUp = (e) => {
     e.preventDefault();
     userStore.doSignUp();
@@ -77,7 +74,7 @@ const SignUp = ({ userStore, setSignUp }) => {
             </InputGroup>
 
             {/* Display required fields for signing up as a user */}
-            {userStore.accType === 'civilian' &&
+            {userStore.accType === "civilian" && (
               <>
                 <InputGroup size="md">
                   <InputWrapper
@@ -106,10 +103,10 @@ const SignUp = ({ userStore, setSignUp }) => {
                   />
                 </InputGroup>
               </>
-            }
+            )}
 
             {/* Display required fields for signing up as a business */}
-            {userStore.accType === 'business' &&
+            {userStore.accType === "business" && (
               <>
                 <InputGroup size="md">
                   <InputWrapper
@@ -124,9 +121,12 @@ const SignUp = ({ userStore, setSignUp }) => {
                     }
                   />
                 </InputGroup>
-                <LocationSearchInput address={userStore.address} setProperty={userStore.setProperty} />
+                <LocationSearchInput
+                  address={userStore.address}
+                  setProperty={userStore.setProperty}
+                />
               </>
-            }
+            )}
 
             <VStack pt="3">
               <Text variant="link" align="center">

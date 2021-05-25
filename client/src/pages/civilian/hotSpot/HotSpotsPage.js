@@ -7,12 +7,12 @@ import ReactTooltip from "react-tooltip";
 import MapChart from "./HotSpotChart";
 import { UserStore } from "../../../stores/UserStore";
 
-
 export default function HotSpotsPage({ back }) {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   const userStore = UserStore;
   const [groupedStats, setGroupedStats] = useState([]);
+  const mobile = window.innerWidth < 800;
 
   // group active cases across NSW/VIC by post code
   function groupStats() {
@@ -27,7 +27,6 @@ export default function HotSpotsPage({ back }) {
       
       // increment active cases for postcode 
       covidCases[userStore.activeCasesStats[i].postcode] += 1;
-
     }
 
     // iterate over VIC covid-19 cases dataset
@@ -39,42 +38,63 @@ export default function HotSpotsPage({ back }) {
       
       // increment active cases for postcode 
       covidCases[userStore.vic_recent_confirmed_cases[i].Postcode] += 1;
-
     }
 
     return covidCases;
   }
-  
+
   useEffect(() => {
-      setGroupedStats(groupStats());
+    setGroupedStats(groupStats());
   }, []);
 
   return (
-    
     <Box h="100vh" layerStyle="grayBG">
       <Box position="absolute" h="100%" w="100%" top="40px">
-        <Flex justifyContent="center" alignItems="flex-start">
-          <VStack spacing={4} w="100%">
-            <Text variant="heading" as="h2" m={0}>
-              Hotspot Map
-            </Text>
-            <Text pb={3}>Confirmed covid-19 transmissions, last 14 days.</Text>
-            <Box width="90vw">
-              <MapChart activeCases={groupedStats} setTooltipContent={setContent} />
-              <ReactTooltip effect={"float"}>{content}</ReactTooltip>
-            </Box>
-            <Button variant="gray" 
-            maxW="lg"
-            w="90%" onClick={() => navigate(back)}>BACK</Button>
-          </VStack>
-        </Flex>
+        <VStack spacing={4} w="100%">
+          <Text variant="heading" as="h2" m={0}>
+            Hotspot Map
+          </Text>
+          <Text pb={3}>Confirmed covid-19 transmissions, last 14 days.</Text>
+          // Render different map based on viewport size
+          <Box width="90vw">
+            {mobile ? (
+              <>
+                <MapChart
+                  activeCases={groupedStats}
+                  setTooltipContent={setContent}
+                  height={800}
+                />
+                <ReactTooltip effect={"float"}>{content}</ReactTooltip>
+              </>
+            ) : (
+              <>
+                <MapChart
+                  activeCases={groupedStats}
+                  setTooltipContent={setContent}
+                  height={300}
+                />
+                <ReactTooltip effect={"float"}>{content}</ReactTooltip>
+              </>
+            )}
+          </Box>
+        </VStack>
       </Box>
+
+      <GrayContainer>
+        <VStack w="90%" maxW={{ base: "90%", md: "container.sm" }} spacing="5">
+          <Button
+            variant="gray"
+            maxW="lg"
+            w="90%"
+            onClick={() => navigate(back)}
+          >
+            BACK
+          </Button>
+        </VStack>
+      </GrayContainer>
     </Box>
   );
-
 }
-
-
 
 // const hotspots = [
 //   {
@@ -108,12 +128,10 @@ export default function HotSpotsPage({ back }) {
 //     // ]);
 
 //     let arr = [["Lat","Long","Marker"]];
-//     hotspots.map((el) => 
+//     hotspots.map((el) =>
 //       arr.push([el.Lat, el.Long, el.Marker])
 //     );
 //     let data = window.google.visualization.arrayToDataTable(arr);
-  
-    
 
 //     let url =
 //       "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/";
@@ -148,7 +166,7 @@ export default function HotSpotsPage({ back }) {
 //           </Text>
 //           <Text pb={3}>View local viral activity on the map below</Text>
 //           <Box id="map_div" maxW="3xl" w="90%"></Box>
-//           <Button variant="gray" 
+//           <Button variant="gray"
 //           maxW="lg"
 //           w="90%" onClick={() => navigate(back)}>BACK</Button>
 //         </VStack>

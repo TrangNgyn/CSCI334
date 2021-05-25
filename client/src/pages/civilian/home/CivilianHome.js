@@ -2,16 +2,13 @@ import { Button } from "@chakra-ui/button";
 import { Box, Center, VStack } from "@chakra-ui/layout";
 import React, { useEffect } from "react";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
-import DotPattern from "../../../components/DotPattern";
 import { civMenuRoutes } from "../components/civRoutes";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import { menuOptions, healthMenuOption } from "./menuOptions";
 import Option from "../../../components/Option";
 import { UserStore } from "../../../stores/UserStore";
-import {
-  useDisclosure,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import Notifications from "../components/Notifications";
 
 export default function CivilianHome() {
@@ -43,7 +40,6 @@ export default function CivilianHome() {
           notification={handleNotificationClicked}
         />
       </Box>
-      <DotPattern position="fixed" />
       <Box position="absolute" w="100%" top="140px" zIndex="0" pb="180px">
         <Center>
           <VStack
@@ -70,7 +66,11 @@ export default function CivilianHome() {
           </Button>
         </VStack>
       </GrayContainer>
-      <Notifications onClose={onClose} isOpen={isOpen} alerts={alerts}></Notifications>
+      <Notifications
+        onClose={onClose}
+        isOpen={isOpen}
+        alerts={alerts}
+      ></Notifications>
     </Box>
   );
 }
