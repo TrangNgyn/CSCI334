@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 import InputWrapper from "../../components/InputWrapper";
 import ButtonWrapper from "../../components/ButtonWrapper";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
 
 function Login({ userStore }) {
@@ -23,20 +23,20 @@ function Login({ userStore }) {
     e.preventDefault();
     userStore.doLogin();
   };
-  
 
   const toast = useToast();
   // status can be "success", "error", "warning" or "info"
   // display toast error message if an error is returned
   useEffect(() => {
     const msg = userStore.errorMSG;
-    if(msg.toString().length > 0) {
+    if (msg.toString().length > 0) {
       toast({
         title: "Error",
         description: msg.toString(),
-        status: 'error',
+        status: "error",
+
         duration: 9000,
-        isClosable: true
+        isClosable: true,
       });
     }
   }, [userStore.errorMSG]);

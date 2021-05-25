@@ -1,12 +1,12 @@
 import { action, makeAutoObservable } from "mobx";
-import QRCode from 'qrcode';
+import QRCode from "qrcode";
 
-const hash = require('hash.js');
+const hash = require("hash.js");
 
 class UserStoreImpl {
   id = "";
-  email = "someemail@email.com";
-  password = "somePass12@3";
+  email = "Tiffany-April@gmail.com";
+  password = "555555";
   accType = "civilian";
   first_name = "";
   last_name = "";
@@ -71,7 +71,7 @@ class UserStoreImpl {
   address = "";
   gps = {};
   place_id = "";
-  
+
   // active cases by timestamp, postcode and area e.g. Sydney, Northern Sydney, Wollongong etc.
   activeCasesStats = [];
   allAusData = []; // numerous australia-wide covid-19 related statistics
@@ -166,18 +166,27 @@ class UserStoreImpl {
   };
 
   verifyOrganisation = (organisation) => {
-    this.pendingOrganisations.splice(this.pendingOrganisations.indexOf(organisation), 1);
+    this.pendingOrganisations.splice(
+      this.pendingOrganisations.indexOf(organisation),
+      1
+    );
     this.verifiedOrganisations.push(organisation);
     // Update database
   };
 
   denyOrganisation = (organisation) => {
-    this.pendingOrganisations.splice(this.pendingOrganisations.indexOf(organisation), 1);
+    this.pendingOrganisations.splice(
+      this.pendingOrganisations.indexOf(organisation),
+      1
+    );
     // Update database
-  }
+  };
 
   deleteOrganisation = (organisation) => {
-    this.verifiedOrganisations.splice(this.verifiedOrganisations.indexOf(organisation), 1);
+    this.verifiedOrganisations.splice(
+      this.verifiedOrganisations.indexOf(organisation),
+      1
+    );
     // Update database
   };
 
@@ -238,8 +247,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -265,8 +274,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -291,8 +300,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -317,8 +326,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -335,7 +344,7 @@ class UserStoreImpl {
         this.errorMSG = err;
         this.isLoading = false;
       });
-  }
+  };
 
   getEsriData = () => {
     this.isLoading = true;
@@ -343,8 +352,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -361,7 +370,7 @@ class UserStoreImpl {
         this.errorMSG = err;
         this.isLoading = false;
       });
-  }
+  };
 
   getRecentVicCases = () => {
     this.isLoading = true;
@@ -369,8 +378,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -387,16 +396,16 @@ class UserStoreImpl {
         this.errorMSG = err;
         this.isLoading = false;
       });
-  }
-  
-  getCurrentTotals= () => {
+  };
+
+  getCurrentTotals = () => {
     this.isLoading = true;
     fetch("http://localhost:5000/api/stats/get-current-totals-data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -413,7 +422,7 @@ class UserStoreImpl {
         this.errorMSG = err;
         this.isLoading = false;
       });
-  }
+  };
 
   getTotalVaccinations = () => {
     this.isLoading = true;
@@ -421,8 +430,8 @@ class UserStoreImpl {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
-      }
+        Authorization: `Bearer ${this.access_token}`,
+      },
     })
       .then((res) => res.json())
       .then((json) => {
@@ -479,7 +488,7 @@ class UserStoreImpl {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         business: this.business_document_id,
@@ -514,7 +523,7 @@ class UserStoreImpl {
         email: this.email,
         password: this.password,
       }),
-      })
+    })
       .then((res) => res.json())
       .then((json) => {
         if (json.success) {
@@ -524,7 +533,7 @@ class UserStoreImpl {
           this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
           this.token_type = json.token_type;
 
-          this.business_name = json.business_name; 
+          this.business_name = json.business_name;
           this.address = json.address;
           this.qr_code = json.qr_cde;
 
@@ -562,12 +571,12 @@ class UserStoreImpl {
     const generateQR = async (business_id) => {
       try {
         const qr_code_url = await QRCode.toDataURL(business_id);
-          signUpCallback(qr_code_url, business_id);
+        signUpCallback(qr_code_url, business_id);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
-    }
-    
+    };
+
     // method used for user sign up
     const signUp = () => {
       fetch("http://localhost:5000/api/auth/sign_up", {
@@ -583,28 +592,28 @@ class UserStoreImpl {
           last_name: this.last_name,
         }),
       })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success) {
-          this.resetState();
-          this.errorMSG = "";
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success) {
+            this.resetState();
+            this.errorMSG = "";
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        })
+        .catch((err) => {
+          this.errorMSG = err;
           this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
-      })
-      .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
-      });
-    }
+        });
+    };
 
     // if signing up for a business account generate qr code then run business sign up method, else run user sign up method
-    if(this.accType === 'business') {
-      const businessID = hash.sha256().update(this.email).digest('hex'); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
+    if (this.accType === "business") {
+      const businessID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
       generateQR(businessID);
-    } else { 
+    } else {
       signUp();
     }
 
@@ -627,25 +636,23 @@ class UserStoreImpl {
           place_id: this.place_id,
         }),
       })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.success) {
-          this.resetState();
-          this.errorMSG = "";
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success) {
+            this.resetState();
+            this.errorMSG = "";
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        })
+        .catch((err) => {
+          this.errorMSG = err;
           this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
-      })
-      .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
-      });
-    }
-
+        });
+    };
   };
-  
 }
 
 // Utility

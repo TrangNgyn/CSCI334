@@ -1,7 +1,5 @@
-import { Center } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/spinner";
 import React, { useEffect, useRef, useState } from "react";
-import { Image } from "react-bootstrap";
+import { Image, Center, Spinner } from "@chakra-ui/react";
 
 export default function QRImage({ src }) {
   const imageRef = useRef(null);
@@ -24,7 +22,7 @@ export default function QRImage({ src }) {
       src={src}
       alt="The QR code of the organisation"
       w="90%"
-      maxW="250px"
+      maxW="400px"
       onLoad={() => {
         setIsLoaded(true);
       }}

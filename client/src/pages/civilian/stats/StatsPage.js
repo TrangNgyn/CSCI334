@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Center, Flex, Text, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
@@ -30,7 +30,7 @@ export default function StatsPage() {
           >
             <VStack spacing="3" w="100%">
               {/* statistics accordion */}
-              <Accordion defaultIndex={[0]} allowMultiple w="100%">
+              <Accordion defaultIndex={null} w="100%">
                 {/* total cases accordion item */}
                 <TotalCasesStats />
 
