@@ -70,13 +70,11 @@ const MapChart = ({ activeCases, setTooltipContent }) => {
             geographies.map(geo => {
               const centroid = geoCentroid(geo);
               return (
-                <>
-                  <Marker coordinates={centroid}>
-                    <text style={{pointerEvents: "none"}} y="2" fontSize={1} textAnchor="middle">
-                      {geo.properties.TR_NAME16}
-                    </text>
-                  </Marker>
-                </>
+                <Marker coordinates={centroid}>
+                  <text style={{pointerEvents: "none"}} y="2" fontSize={1} textAnchor="middle">
+                    {geo.properties.TR_NAME16}
+                  </text>
+                </Marker>
               );
             })
           }

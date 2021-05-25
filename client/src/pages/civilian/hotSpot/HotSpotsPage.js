@@ -14,31 +14,35 @@ export default function HotSpotsPage({ back }) {
   const userStore = UserStore;
   const [groupedStats, setGroupedStats] = useState([]);
 
-  // group active cases across NSW by area
+  // group active cases across NSW/VIC by post code
   function groupStats() {
-    let temp = [];
+    let covidCases = [];
 
+    // iterate over NSW covid-19 cases dataset
     for(let i = 0; i < userStore.activeCasesStats.length; i++) {
 
-      if(temp[userStore.activeCasesStats[i].postcode] === undefined) { // if key does not yet exist, define it as an empty array
-        temp[userStore.activeCasesStats[i].postcode] = 0;
+      if(covidCases[userStore.activeCasesStats[i].postcode] === undefined) { // if key does not yet exist, define it as an empty array
+        covidCases[userStore.activeCasesStats[i].postcode] = 0;
       }
       
-      temp[userStore.activeCasesStats[i].postcode] += 1;
+      // increment active cases for postcode 
+      covidCases[userStore.activeCasesStats[i].postcode] += 1;
 
     }
 
+    // iterate over VIC covid-19 cases dataset
     for(let i = 0; i < userStore.vic_recent_confirmed_cases.length; i++) {
 
-      if(temp[userStore.vic_recent_confirmed_cases[i].Postcode] === undefined) { // if key does not yet exist, define it as an empty array
-        temp[userStore.vic_recent_confirmed_cases[i].Postcode] = 0;
+      if(covidCases[userStore.vic_recent_confirmed_cases[i].Postcode] === undefined) { // if key does not yet exist, define it as an empty array
+        covidCases[userStore.vic_recent_confirmed_cases[i].Postcode] = 0;
       }
       
-      temp[userStore.vic_recent_confirmed_cases[i].Postcode] += 1;
+      // increment active cases for postcode 
+      covidCases[userStore.vic_recent_confirmed_cases[i].Postcode] += 1;
 
     }
 
-    return temp;
+    return covidCases;
   }
   
   useEffect(() => {
