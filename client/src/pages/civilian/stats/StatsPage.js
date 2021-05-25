@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Center, Flex, Text, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Text, VStack } from "@chakra-ui/layout";
 import React from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
