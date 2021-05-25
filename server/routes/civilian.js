@@ -18,7 +18,7 @@ router.post('/search-civilian', [
     auth_jwt.is_organisation,
 ], civilians_controller.post_search_civilian);
 
-router.post('/promote-civilian', [
+router.put('/promote-civilian', [
     auth_jwt.verify_token,
     auth_jwt.is_organisation,    
 ], civilians_controller.post_promote_civilian);
