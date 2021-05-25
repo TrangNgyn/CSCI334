@@ -341,6 +341,54 @@ class Civilian{
             })
         }
     }
+
+    // @route   POST api/civilian/add-vaccine-cert
+    // @desc    Add a cert to a civilian
+    // @access  Protected
+
+    async post_add_cert(req, res){
+        const { email, vaccine_type, recommended_doses, doses_recieved } = req.body;
+
+        // check for empty field
+        if(!email || !vaccine_type || !recommended_doses || !doses_recieved){
+            return res.json(empty_field);
+        }
+
+        const vaccine = {
+            vaccine_type, 
+            date, 
+            recommended_doses, 
+            doses_recieved
+        };
+
+        // update the certification of user with specified email
+        d.civilian
+            .findOneAndUpdate(
+                {email: email}, 
+                {vaccine: vaccine}
+            )
+            .then(civ => {
+                if(!civ){
+                    res.status(404)
+                    return res.json({
+                        success: false,
+                        message: `Error adding certification for Civilian with email ${email}`
+                    })
+                }
+
+                return res.json({
+                    success: true,
+                    message: "Vaccination info is successfully added."
+                });
+                
+            })
+    }
+
+    async post_retrieve_vaccine(req, res){
+        const { email } = req.body;
+
+        
+    }
 }
 
 const civilians_controller = new Civilian;

@@ -14,7 +14,10 @@ const civilian = user.discriminator('civilian', new Schema({
     vaccine: {
         type: {
             vaccine_type:{type: String},
-            date: {type: Date},
+            date: {
+                type: Date,
+                default: Date.now()
+            },
             recommended_doses: {type:Number},
             doses_recieved: {type:Number}
         },
