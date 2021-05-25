@@ -22,9 +22,14 @@ function random_int(max) {
 async function generate() {
 
     var civ_id
+    var health_id
     await db.role.findOne({name: 'civilian'})
     .then(role => {
         civ_id = role._id
+    })
+    await db.role.findOne({name: 'healthcare'})
+    .then(role => {
+        health_id = role._id
     })
 
     for(let i = 0; i < 1000; i++) {
@@ -33,14 +38,16 @@ async function generate() {
         var password = data.passwords[random_int(100)]
         var email = first_name + seperator + last_name + "@" + data.email
         var is_healthcare_worker = false
-        if(i < 500)
+        var roles = [civ_id]
+        if(i < 500) {
             is_healthcare_worker = true
+            roles = [civ_id,health_id]
+        }
         users.push({
             email: email,
             password: password,
             healthcare: is_healthcare_worker
         })
-        var roles = [civ_id]
         
         const user = new db.civilian({
             is_healthcare_worker,
@@ -68,4 +75,4 @@ async function finish() {
     db.mongoose.connection.close()
 }
 
-module.exports = finish()
+finish()

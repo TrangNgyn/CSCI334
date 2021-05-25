@@ -38,6 +38,17 @@ exports.sign_up = (req,res) => {
             password: bcrypt.hashSync(req.body.password, salt_rounds),
         }) 
     } 
+
+    if(role == "admin") {
+        let { acc_name } = req.body
+        if(!acc_name)
+            return res.status(400).send(empty_field)
+        user =  new db.admin({
+            email: email,
+            acc_name: acc_name,
+            password: bcrypt.hashSync(req.body.password, salt_rounds),
+        }) 
+    } 
     
     if(role == "business") {
         let { business_name, qr_code, business_id, address, gps, place_id } = req.body
@@ -153,7 +164,16 @@ exports.sign_in = (req,res) => {
                 qr_cde: user.qr_code,
                 address: user.address,
             })
-        } else {
+        } else if(authorities[0] === "ROLE_ADMIN") {
+            res.status(200).send({
+                success: true,
+                access_token: token,
+                token_type: "Bearer",
+                roles: authorities,
+                expires_in: ":1800",
+                acc_name: user.acc_name,
+            })
+        }else {
             res.status(200).send({
                 success: true,
                 access_token: token,
