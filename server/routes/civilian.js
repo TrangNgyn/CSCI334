@@ -28,4 +28,8 @@ router.post('/search-healthcare', [
     auth_jwt.is_organisation,
 ], civilians_controller.post_search_healthcare);
 
+router.post('/healthcare-search-user', [
+    auth_jwt.verify_token,
+    auth_jwt.is_healthcare,
+], civilians_controller.post_healthcare_search_civilian);
 module.exports = router;

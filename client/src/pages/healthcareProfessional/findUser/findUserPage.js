@@ -7,23 +7,30 @@ import {
   InputGroup,
   Flex,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { civMenuRoutes } from "../../civilian/components/civRoutes";
 import LogoMenu from "../../../components/LogoMenu/LogoMenu";
 import GrayContainer from "../../../components/GrayContainer";
 import DotPattern from "../../../components/DotPattern";
 import { useNavigate } from "react-router-dom";
 import { UserStore } from "../../../stores/UserStore";
+import { observer } from "mobx-react";
 
 const FindUserPage = () => {
-  const [userId, setUserId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const userStore = UserStore;
   const navigate = useNavigate();
 
   const handleFindUser = () => {
-    userStore.findUser(userId);
-    navigate("/hea/healthtools");
+    userStore.healthCareSearchUser(userEmail);
   };
+
+  useEffect(() => {
+    if(userStore.userWasFound) {
+      userStore.setProperty('userWasFound', false);
+      navigate("/hea/healthtools");
+    }
+  }, [userStore.userWasFound]);
 
   return (
     <Box h="100vh" w="100%" layerStyle="mainBG">
@@ -49,12 +56,12 @@ const FindUserPage = () => {
         >
           <InputGroup>
             <Input
-              name="userId"
+              name="userEmail"
               variant="filled"
               bg="#efefef"
               placeholder="User ID"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
           </InputGroup>
         </Box>
@@ -83,4 +90,4 @@ const FindUserPage = () => {
   );
 };
 
-export default FindUserPage;
+export default observer(FindUserPage);

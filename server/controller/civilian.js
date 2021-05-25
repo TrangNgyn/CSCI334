@@ -60,7 +60,7 @@ class Civilian{
             const {email} = req.body;
 
             // check for empty field
-            if(!email){
+            if(!email) {
                 return res.json(empty_field);
             }
 
@@ -100,11 +100,60 @@ class Civilian{
         
     }
 
+    // @route   POST api/civilian/healthcare-search-user
+    // @desc    Find a user with a specific email
+    // @access  Protected
+
+    async post_healthcare_search_civilian(req,res) {
+        try{
+            const {email} = req.body;
+
+            // check for empty field
+            if(!email){
+                return res.json(empty_field);
+            }
+
+            db.civilian
+                .findOne({
+                    _id: { $ne: req.user_id },
+                    email: email
+                })
+                .then(civ => {
+                    if(!civ){
+                        return res.status(404).send({
+                            success: false,
+                            message: 'No user found.'
+                        })
+                    }
+
+                    return res.json({
+                        success: true,
+                        civilian: {
+                            first_name: civ.first_name,
+                            last_name: civ.last_name,
+                            email: civ.email
+                        }
+                    })
+
+                })
+                .catch(err => res.status(500).send({
+                    success: false,
+                    message: `Error finding the user with email ${email}`
+                }))
+        }catch(err){
+            res.status(500).send({
+                success: false,
+                message: err.message
+            })
+        }
+        
+    }
+
     // @route   POST api/civilian/search-healthcare-worker
     // @desc    Find a healthcare worker with a specific email
     // @access  Protected
 
-    async post_search_healthcare(req,res){
+    async post_search_healthcare(req,res) {
         try{
             const {email} = req.body;
 
