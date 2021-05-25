@@ -210,65 +210,96 @@ class Civilian{
             if(!email){
                 return res.json(empty_field);
             }
+
+            db.civilian.findOne({email: email, is_healthcare_worker: false}, (err, user) => {
+                if(err)
+                    return res.status(500).send({
+                        message: err.message
+                    })
+                if(!user)
+                    return res.status(404).json({
+                        success: false,
+                        message: "User was not found"
+                    })
+                db.role.findOne({name: 'healthcare'})
+                    .orFail(new Error('error finding role'))
+                    .then(role => {
+                        user.is_healthcare_worker = true
+                        user.roles.push(role._id)
+                        user.save(err => {
+                            if(err)
+                                return res.status(500).json({
+                                    success: false,
+                                    message: err.message
+                                })
+                        })
+                        
+                    })
+                
+                db.organisation.findById(req.user_id)
+                    .orFail(new Error('error finding organisation'))
+                    .then(org => {
+                        org.employees.push(user._id)
+                        org.save()
+                        return res.send({
+                            message: "User was added to healthcare org"
+                        })
+                    })
+            })
+
+
+            // await db.civilian.findOne({email: email, is_healthcare_worker: true})
+            //     .orFail(new Error('No civilian found'))
+            //     .then((user) => {
+            //         user.is_healthcare_worker = false
+            //         user.save()
+            //     })
+            // await db.organisation.findById(req.user_id)
+            //     .orFail(new Error('No organisation found'))
+            //     .then(async (org) => {
+            //         await db.civilian.find({email: email})
+            //             .then(user => {
+            //                 org.employees.push(user._id)
+            //                 console.log(org)
+            //             })
+            //     })
             
             // set is healthcare to true
-            db.civilian
-                .findOneAndUpdate(
-                    {email: email, is_healthcare_worker: false},
-                    {is_healthcare_worker: true}
-                )
-                .then(civ => {
-                    if (!civ) {
-                        res.status(404)
-                        return res.json({
-                            success: false,
-                            message: `No civilian with email ${email} found`
-                        })
-                    }
-
-                    // add to org's employee list
-                    // db.organisation
-                    //     .findByIdAndUpdate(req.user_id, function(error, org) {
-                    //         console.log("here")
-                    //         if (error) {
-                    //             res.status(404)
-                    //             return res.json({
-                    //                 success: false,
-                    //                 message: `Error promoting civilian with email ${email}`
-                    //             })
-                    //         }
-                            
-                    //         org.employees = [...org.employees, civ._id];
-
-                            
-                    //         return res.json({
-                    //             success: true,
-                    //             civilian: {
-                    //                 first_name: civ.first_name,
-                    //                 last_name: civ.last_name,
-                    //                 email: civ.email,
-                    //                 is_healthcare_worker: civ.is_healthcare_worker,
-                    //                 org: org.employees
-                    //             }
-                    //         }) 
-                    //     })
-                    //     .catch(err => res.status(500).json(err));
-
-                    db.organisation
-                        .findOneAndUpdate(
-                            {'_id' : req.user_id},
-                            {
-                                $pull: { '_employees': civ._id }
-                            },
-                            {'new': true}
-                        )
-                        .populate({ path:'_employees', select:'_id', model: 'civilian' })
-                        .exec(function(err,post) {
-                            if (err) throw err; // or something
-                            res.send(post)
-                        })
-                })
-                .catch(err => res.status(500).json(err))            
+        //     await db.civilian
+        //         .findOneAndUpdate(
+        //             {email: email, is_healthcare_worker: false},
+        //             {is_healthcare_worker: true}
+        //         )
+        //         .then(async civ => {
+        //             if (!civ) {
+        //                 res.status(404)
+        //                 return res.json({
+        //                     success: false,
+        //                     message: `No civilian with email ${email} found`
+        //                 })
+        //             }
+        //             await db.organisation
+        //                 .findOneAndUpdate(
+        //                     {'_id' : req.user_id},
+        //                     {
+        //                         $pull: { '_employees': civ._id }
+        //                     },
+        //                     {'new': true}
+        //                 )
+        //                 .populate({ path:'_employees', select:'_id', model: 'civilian' })
+        //                 .exec(function(err,post) {
+        //                     if (err) 
+        //                         res.send("there was an error")
+        //                     res.send(post)
+        //                 })
+        //         })
+        //         .catch(err => res.status(500).json(err))            
+        // }catch(err){
+        //     res.status(500).send({
+        //         success: false,
+        //         message: err.message
+        //     })
+        // }
         }catch(err){
             res.status(500).send({
                 success: false,

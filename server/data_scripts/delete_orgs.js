@@ -18,4 +18,3 @@ db.civilian.find( {alerts: { $exists: true, $ne: [] } })
     .then(found => {
         console.log(found.length)
     })
-
