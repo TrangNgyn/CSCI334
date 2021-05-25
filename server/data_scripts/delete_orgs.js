@@ -13,3 +13,9 @@ db.mongoose.connect(process.env.MONGODB_STRING, { useFindAndModify: false, useNe
 //     .then(found => {
 //         console.log(found)
 //     })
+
+db.civilian.find( {alerts: { $exists: true, $ne: [] } })
+    .then(found => {
+        console.log(found.length)
+    })
+
