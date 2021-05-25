@@ -9,7 +9,6 @@ export default function QRScan() {
   const userStore = UserStore;
 
   useEffect(() => {
-    console.log("ZXing code reader initialized");
     codeReader
       .listVideoInputDevices()
       .then((videoInputDevices) => {
@@ -32,7 +31,6 @@ export default function QRScan() {
               document.getElementById("sourceSelectPanel");
             sourceSelectPanel.style.display = "block";
           }
-
           document
             .getElementById("startButton")
             .addEventListener("click", () => {
@@ -45,29 +43,23 @@ export default function QRScan() {
                     userStore.setProperty("business_id", result);
                     userStore.setProperty("scanned", true);
                     codeReader.reset();
-
                     /***use this to check in***/
                   }
                   if (err && !(err instanceof NotFoundException)) {
                     console.error(err);
                   }
                 }
-              );
-              console.log(
-                `Started continous decode from camera with id ${selectedDeviceId}`
-              );
-            });
-
-          document.getElementById("back").addEventListener("click", () => {
-            codeReader.reset();
-            console.log("Reset.");
+                );
+              });
+              document.getElementById("back").addEventListener("click", () => {
+                codeReader.reset();
+              });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
           });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+      }, []);
 
   return (
     <Box h="50vh">

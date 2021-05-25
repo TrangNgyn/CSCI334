@@ -14,4 +14,6 @@ router.post('/get-org-by-email-status', [
     auth_jwt.is_admin, 
 ], organisation_controller.get_org_by_email_status);
 
+router.get('/get_business_details', organisation_controller.get_org_buss)
+
 module.exports = router;

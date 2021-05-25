@@ -46,6 +46,16 @@ class Organisation {
             res.status(500).send({
                 success: false,
                 message: err.message
+            });
+        }
+    }
+    
+    async manual_alert(req,res) {
+        try{
+            
+        } catch(err) {
+            return res.status(500).send({
+                message: err.message
             })
         }
     }
@@ -57,31 +67,58 @@ class Organisation {
     async get_org_by_email_status(req, res){
         const { email, is_verified } = req.body;
 
-        db.organisation
-            .findOne({email: email, verified: is_verified}, (err, user) => {
-                if(err)
-                    return res.status(500).send({
-                        success: false,
-                        message: err.message
-                    });
-                if(!user)
-                    return res.status(404).json({
-                        success: false,
-                        message: "Organisation was not found"
-                    });
-                
-                // return the user's vaccine info
-                return res.json({
-                    success: true,
-                    data: {
-                        email: user.email,
+        // check for empty field
+        if(!email || typeof is_verified === 'undefined'){
+            return res.json(empty_field);
+        }
+        
+        try{
+            db.organisation
+                .findOne({email: email, verified: is_verified}, (err, user) => {
+                    if(err)
+                        return res.status(500).send({
+                            success: false,
+                            message: err.message
+                        });
+                    if(!user)
+                        return res.status(404).json({
+                            success: false,
+                            message: "Organisation was not found"
+                        });
+                    
+                    // return the user's vaccine info
+                    return res.json({
+                        success: true,
                         data: {
-                            organisation_name: user.organisation_name,
-                            verified: user.verified
+                            email: user.email,
+                            data: {
+                                organisation_name: user.organisation_name,
+                                verified: user.verified
+                            }
                         }
-                    }
-                });
+                    });
+                })
+
+        }catch(err){
+            res.status(500).send(err)
+        }
+        
+    }
+
+    async get_org_buss(req,res) {
+        try{
+            // find all businesses and send back business_name and addresss to the FE for the 
+            // org user to search for the desired user
+            await db.business.find({}).select("business_name address")
+            .then(found => {
+                return res.send(found)
             })
+            
+        } catch(err) {
+            return res.status(500).send({
+                message: err.message
+            })
+        }
     }
 }
 
