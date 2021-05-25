@@ -3,6 +3,7 @@ import GrayContainer from "../../../components/GrayContainer";
 import React from "react";
 import { useNavigate } from "react-router";
 import { UserStore } from "../../../stores/UserStore";
+import { observer } from "mobx-react";
 
 const HealthTools = () => {
   const navigate = useNavigate();
@@ -16,12 +17,12 @@ const HealthTools = () => {
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg">
           <Text as="h2" m={0}>
-            {userStore.foundUser.name}
+            {userStore.foundUser.first_name} {userStore.foundUser.last_name}
           </Text>
           <Flex>
-            <Text>User ID: </Text>
+            <Text>User Email: </Text>
             <Spacer />
-            <Text>{userStore.foundUser.id}</Text>
+            <Text>{userStore.foundUser.email}</Text>
           </Flex>
           <Stack spacing={4}>
             <Button
@@ -67,4 +68,4 @@ const HealthTools = () => {
   );
 };
 
-export default HealthTools;
+export default observer(HealthTools);

@@ -28,11 +28,13 @@ function Login({ userStore }) {
   // status can be "success", "error", "warning" or "info"
   // display toast error message if an error is returned
   useEffect(() => {
-    if (userStore.errorMSG.toString().length > 0) {
+    const msg = userStore.errorMSG;
+    if (msg.toString().length > 0) {
       toast({
         title: "Error",
-        description: userStore.errorMSG.toString(),
+        description: msg.toString(),
         status: "error",
+
         duration: 9000,
         isClosable: true,
       });
