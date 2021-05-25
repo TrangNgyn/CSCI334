@@ -54,11 +54,6 @@ exports.sign_up = (req,res) => {
         let { business_name, qr_code, business_id, address, gps, place_id } = req.body
         if(!business_name | !address | !gps)
             return res.status(400).send(empty_field)
-        // if(!address.country|!address.state|!address.city|!address.street|!address.street_num)
-        //     return res.status(400).send({
-        //         message: "Incorrect address object"
-        //     })
-
         user = new db.business({
             business_name,
             business_id,
@@ -181,6 +176,8 @@ exports.sign_in = (req,res) => {
                 roles: authorities,
                 expires_in: ":1800",
                 is_healthcare_worker: user.is_healthcare_worker,
+                vaccination_certificate: user.vaccine,
+                alerts: user.alerts,
             })
         }
     })

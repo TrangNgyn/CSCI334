@@ -45,6 +45,6 @@ router.post('/retrieve-vaccination-status', [
 router.put('/update-vaccination-status', [
     auth_jwt.verify_token,
     auth_jwt.is_healthcare,
-], civilians_controller.post_update_vaccine_status)
+], civilians_controller.put_update_vaccine_status);
 
 module.exports = router;

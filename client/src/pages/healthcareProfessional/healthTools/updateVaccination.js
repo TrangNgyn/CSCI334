@@ -6,26 +6,51 @@ import {
   InputGroup,
   Input,
   Button,
-  Select,
-  Checkbox,
+  Select
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import viruses from "../components/viruses";
+import { UserStore } from "../../../stores/UserStore";
+import { observer } from "mobx-react";
 
 function UpdateVacination() {
   const navigate = useNavigate();
-  const [virusName, setVirusName] = useState(false);
-  const handleVirusName = (id) => {
-    if (id === "") {
-      setVirusName(false);
-      document.getElementById("vaccineName").setAttribute("disabled","true");
-    } else {
-      setVirusName(id);
-      document.getElementById("vaccineName").removeAttribute("disabled");
+  const userStore = UserStore;
+
+  const [vaccine, setVaccine] = useState(viruses.vaccines[0].name);
+  const [certificateDate, setCertificateDate] = useState(Date.now());
+  const [receivedDoses, setReceivedDoses] = useState(1);
+  const [recommendedDoses, setRecommendedDoses] = useState(1);
+  const [successMSG, setSuccessMSG] = useState("");
+  
+  // get found users vaccine status on component mount
+  useEffect(() => {
+    userStore.healthCareGetVaccineStatus();
+  }, []);
+
+  useEffect(() => {
+    if(typeof userStore.foundUser.vaccine_status !== 'undefined') {
+      // if vaccine status has been retrieved
+      setVaccine(userStore.foundUser.vaccine_status.vaccine_type);
+      setCertificateDate(userStore.foundUser.vaccine_status.date);
+      setReceivedDoses(userStore.foundUser.vaccine_status.doses_received);
+      setRecommendedDoses(userStore.foundUser.vaccine_status.recommended_doses);
+      console.log(recommendedDoses);
     }
+  }, [userStore.foundUser.vaccine_status]);
+
+  const handleAddVaccination = () => {
+    userStore.healthCareUpdateVaccinationStatus(vaccine, certificateDate, recommendedDoses, receivedDoses, setSuccessMSG);
   };
+
+  useEffect(() => {
+    if(successMSG.toString().length > 0) {
+      setSuccessMSG("");
+      navigate("/hea/healthtools");
+    }
+  }, [successMSG]);
 
   return (
     <Flex h="100vh" layerStyle="function">
@@ -35,55 +60,56 @@ function UpdateVacination() {
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
           <Text as="h2" mt={0}>
-            Vaccination Certificate
+            Covid-19 Vaccination Certificate
           </Text>
           <Select
-            name="virusName"
+            name="vaccineName"
             variant="filled"
-            placeholder="Virus name"
             bg="#efefef"
-            onChange={(e) => handleVirusName(e.target.value)}
+            id="vaccineName"
+            value={vaccine}
+            onChange={(e) => setVaccine(e.target.value)}
+            required
           >
-            {viruses.map((el) => (
-              <option value={el.id} key={el.id}>
+            {viruses.vaccines.map((el) => (
+              <option value={el.name} key={el.name}>
                 {el.name}
               </option>
             ))}
           </Select>
-          <Select
-            name="vaccineName"
-            variant="filled"
-            placeholder="Vaccine name"
-            bg="#efefef"
-            mt={3}
-            id="vaccineName"
-            disabled
-          >
-            {virusName !== false
-              ? viruses
-                  .find((el) => el.id === virusName)
-                  .vaccines.map((el) => (
-                    <option value={el.id} key={el.id}>
-                      {el.name}
-                    </option>
-                  ))
-              : null}
-          </Select>
           <InputGroup size="md">
-            {/* TO-DO: add isRequired */}
             <Input
               name="date"
               type="date"
-              placeholder={Date.now()}
+              value={certificateDate}
+              onChange={(e) => setCertificateDate(e.target.value)}
               variant="filled"
               bg="#efefef"
             />
           </InputGroup>
-          <Checkbox defaultIsChecked display="block">
-            Requires follow-up?
-          </Checkbox>
-          {/* TO-DO: SEND THE FORM */}
-          <Button variant="orange" w="100%" onClick={()=> navigate("/hea/healthtools")}>
+          <InputGroup size="md">
+            <Input
+              name="dosesReceived"
+              type="number"
+              min={1}
+              value={receivedDoses}
+              onChange={(e) => setReceivedDoses(e.target.value)}
+              variant="filled"
+              bg="#efefef"
+              required
+            />
+            <Input
+              name="recommendedDoses"
+              type="number"
+              min={1}
+              value={recommendedDoses}
+              onChange={(e) => setRecommendedDoses(e.target.value)}
+              variant="filled"
+              bg="#efefef"
+              required
+            />
+          </InputGroup>
+          <Button variant="orange" w="100%" onClick={() => handleAddVaccination()}>
             Update Vaccination
           </Button>
         </Stack>
@@ -110,4 +136,4 @@ function UpdateVacination() {
   );
 }
 
-export default UpdateVacination;
+export default observer(UpdateVacination);

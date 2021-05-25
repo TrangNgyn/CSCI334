@@ -16,13 +16,15 @@ const CheckinPage = () => {
     <Box h="100vh" layerStyle="mainBG">
       {/* render printable page and pass props, not displayed, just for printing */}
 
-      <Box d="none" ref={qrPrintRef}>
-        <PrintableCheckIn
-          ref={qrPrintRef}
-          business_name={userStore.business_name}
-          qr_code={userStore.qr_code}
-        />
-      </Box>
+      <div style={{display:'none'}}>
+        <Box ref={qrPrintRef}>
+          <PrintableCheckIn
+            ref={qrPrintRef}
+            business_name={userStore.business_name}
+            qr_code={userStore.qr_code}
+          />
+        </Box>
+      </div>
 
       <GrayContainer>
         <VStack spacing="7" w="100%">

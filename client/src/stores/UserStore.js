@@ -10,6 +10,19 @@ class UserStoreImpl {
   accType = "civilian";
   first_name = "";
   last_name = "";
+  vaccination_certificate = {};
+  alerts = [
+    // {
+    //   alertId: "alert124",
+    //   location: "Primby Hotel",
+    //   businessId: "businessID124",
+    //   timeStart: "7:45pm",
+    //   timeFinish: "9:45pm",
+    //   date: "13/04/2021",
+    //   virus: "covid-19",
+    //   active: true,
+    // },
+  ];
 
   // token variables recieved after succesful login
   access_token = "";
@@ -19,43 +32,11 @@ class UserStoreImpl {
 
   newDependant = "";
   dependants = [];
-  certs = [
-    { title: "Covid-19", status: "complete" },
-    { title: "Tetanus", status: "pending" },
-  ];
-  infections = ["covid", "tetanus"];
-  alerts = [
-    {
-      alertId: "alert123",
-      location: "Primby Diner",
-      businessId: "businessID123",
-      timeStart: "1:45pm",
-      timeFinish: "3:45pm",
-      date: "23/04/2021",
-      virus: "covid-19",
-      active: true,
-    },
-    {
-      alertId: "alert124",
-      location: "Primby Hotel",
-      businessId: "businessID124",
-      timeStart: "7:45pm",
-      timeFinish: "9:45pm",
-      date: "13/04/2021",
-      virus: "covid-19",
-      active: true,
-    },
-  ];
-  stats = [
-    { key: "Australia", value: 138 },
-    { key: "NSW", value: 74 },
-    { key: "Shellharbour", value: 0 },
-    { key: "totalImmunised", value: 600349 },
-  ];
+  infections = ["covid"];
 
   // Healthcare worker user type
   isHealthCare = false;
-  foundUser = { first_name: "", last_name: "", email: "" };
+  foundUser = { first_name: "", last_name: "", email: "", vaccine_status: {} };
   userWasFound = false;
 
   // Response from sign in/sign up
@@ -237,6 +218,72 @@ class UserStoreImpl {
       .catch((err) => {
         this.errorMSG = err;
         this.userWasFound = false;
+        this.isLoading = false;
+      });
+  };
+
+  healthCareGetVaccineStatus = () => {
+    this.isLoading = true;
+    fetch("http://localhost:5000/api/civilian/retrieve-vaccination-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: this.foundUser.email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          this.errorMSG = "";
+          this.foundUser.vaccine_status = json.data.vaccine;
+          console.log(json.data.vaccine);
+          console.log(this.foundUser.vaccine_status);
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
+        this.isLoading = false;
+      });
+  };
+  
+  // as a healthcare worker, update a vaccination status of a civilian
+  healthCareUpdateVaccinationStatus = (vaccine_type, date, recommended_doses, doses_received, setSuccessMSG) => {
+    this.isLoading = true;
+    fetch("http://localhost:5000/api/civilian/update-vaccination-status", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: this.foundUser.email,
+        vaccine_type, 
+        date, 
+        recommended_doses, 
+        doses_received,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          this.errorMSG = "";
+          setSuccessMSG(json.message);
+          this.isLoading = false;
+        } else {
+          this.errorMSG = json.message;
+          this.isLoading = false;
+        }
+      })
+      .catch((err) => {
+        this.errorMSG = err;
         this.isLoading = false;
       });
   };
@@ -526,12 +573,16 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
+        console.log(json);
         if (json.success) {
           this.errorMSG = "";
           this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time
           this.expires_in = json.expires_in; // store time in seconds before token expires
           this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
           this.token_type = json.token_type;
+          this.vaccination_certificate = json.vaccination_certificate;
+          console.log(this.vaccination_certificate);
+          this.alerts = json.alerts;
 
           this.business_name = json.business_name;
           this.address = json.address;
@@ -540,8 +591,6 @@ class UserStoreImpl {
           this.isHealthCare = json.is_healthcare_worker;
           this.isLoading = false;
           this.isLoggedIn = true;
-
-          console.log(this.access_token);
         } else {
           this.errorMSG = json.message;
           this.isLoading = false;
