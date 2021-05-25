@@ -39,16 +39,16 @@ exports.sign_up = (req,res) => {
         }) 
     } 
 
-    if(role == "admin") {
-        let { acc_name } = req.body
-        if(!acc_name)
-            return res.status(400).send(empty_field)
-        user =  new db.admin({
-            email: email,
-            acc_name: acc_name,
-            password: bcrypt.hashSync(req.body.password, salt_rounds),
-        }) 
-    } 
+    // if(role == "admin") {
+    //     let { acc_name } = req.body
+    //     if(!acc_name)
+    //         return res.status(400).send(empty_field)
+    //     user =  new db.admin({
+    //         email: email,
+    //         acc_name: acc_name,
+    //         password: bcrypt.hashSync(req.body.password, salt_rounds),
+    //     }) 
+    // } 
     
     if(role == "business") {
         let { business_name, qr_code, business_id, address, gps, place_id } = req.body
