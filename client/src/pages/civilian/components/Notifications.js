@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 const Notifications = ({ onClose, isOpen, alerts }) => {
+  console.log(alerts);
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size={"lg"} zIndex="0">
       <DrawerOverlay />

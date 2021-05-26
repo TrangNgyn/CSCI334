@@ -1,8 +1,8 @@
 import OrgLandingPage from "../OrgLandingPage";
 import OrgHomePage from "../home/OrgHomePage";
-import AddEmployeePage from "../addEmp/AddEmployeePage";
+//import AddEmployeePage from "../addEmp/AddEmployeePage";
 import AddEmployeeManualPage from "../addEmp/AddEmployeeManualPage";
-import StatsPage from "../stats/StatsPage";
+import RemoveEmployeeManualPage from "../addEmp/RemoveEmployeeManualPage";
 
 export const orgRoutes = [
   {
@@ -15,15 +15,11 @@ export const orgRoutes = [
   },
   {
     path: "/org/addemp",
-    element: <AddEmployeePage />,
-  },
-  {
-    path: "/org/addempmanual",
     element: <AddEmployeeManualPage />,
   },
   {
-    path: "/org/stats",
-    element: <StatsPage />,
+    path: "/org/removeemp",
+    element: <RemoveEmployeeManualPage />,
   },
 ];
 
@@ -33,7 +29,7 @@ export const orgMenuRoutes = [
     path: "/org/addemp",
   },
   {
-    title: "View Statistics",
-    path: "/org/stats",
+    title: "Remove Employee",
+    path: "/org/removeemp",
   },
 ];

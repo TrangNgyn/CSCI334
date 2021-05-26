@@ -6,16 +6,11 @@ import { busMenuRoutes } from "./components/BusRoutes";
 import GrayContainer from "../../components/GrayContainer";
 import DotPattern from "../../components/DotPattern";
 import { useNavigate } from "react-router";
-import { UserStore } from "../../stores/UserStore";
 import { useDisclosure } from "@chakra-ui/react";
-import Notifications from "../civilian/components/Notifications";
-import LogoIcon from "../../components/LogoMenu/LogoIcon";
 
 export default function HealthLandingPage() {
   const navigate = useNavigate();
-  const userStore = UserStore;
-  const alerts = userStore.alerts;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
 
   const handleNotificationClicked = () => {
     onOpen();
@@ -48,11 +43,6 @@ export default function HealthLandingPage() {
           </VStack>
         </VStack>
       </GrayContainer>
-      <Notifications
-        onClose={onClose}
-        isOpen={isOpen}
-        alerts={alerts}
-      ></Notifications>
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from "mobx";
+import { action, makeAutoObservable, runInAction } from "mobx";
 import QRCode from "qrcode";
 
 const hash = require("hash.js");
@@ -37,11 +37,12 @@ class UserStoreImpl {
   // Healthcare worker user type
   isHealthCare = false;
   foundUser = { first_name: "", last_name: "", email: "", vaccine_status: {} };
-  userWasFound = false;
+  operationWasSuccessful = false;
 
   // Response from sign in/sign up
   isLoggedIn = false;
   errorMSG = "";
+  successMSG = "";
   isLoading = false;
 
   // Business Account
@@ -135,15 +136,86 @@ class UserStoreImpl {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
 
-  updateTotalEmps = () => {
-    console.log("Updating DB with new total emp count");
-
-    // Update database with this
-    //this.orgStats[0].value;
+  addEmployee = (userEmail) => {
+    runInAction(() => {
+      this.operationWasSuccessful = false;
+      this.isLoading = true;
+    });
+    fetch("http://localhost:5000/api/civilian/promote-civilian", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = "Succesfully added user to Organisation and granted Healthcare Worker privileges!";
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.successMSG = "";
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
   };
 
-  addEmployee = (empId) => {
-    console.log("Adding Employee " + empId + " to the organisation");
+  removeEmployee = (userEmail) => {
+    runInAction(() => {
+      this.operationWasSuccessful = false;
+      this.isLoading = true;
+    });
+    fetch("http://localhost:5000/api/civilian/demote-healthcare", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = "Succesfully removed employee from your Organisation and revoked their Healthcare Worker privileges!";
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.successMSG = "";
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
   };
 
   verifyOrganisation = (organisation) => {
@@ -175,7 +247,7 @@ class UserStoreImpl {
     this.id = "";
     this.email = "";
     this.password = "";
-    this.accType = "";
+    this.accType = "civilian";
     this.first_name = "";
     this.last_name = "";
     this.certs = [];
@@ -190,8 +262,11 @@ class UserStoreImpl {
   };
 
   healthCareSearchUser = (userEmail) => {
-    this.isLoading = true;
-    this.userWasFound = false;
+    runInAction(() => {
+      this.isLoading = true;
+      this.operationWasSuccessful = false;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/civilian/healthcare-search-user", {
       method: "POST",
       headers: {
@@ -204,26 +279,33 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.foundUser = json.civilian;
-          this.userWasFound = true;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.userWasFound = false;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.foundUser = json.civilian;
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.userWasFound = false;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
       });
   };
 
   healthCareGetVaccineStatus = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/civilian/retrieve-vaccination-status", {
       method: "POST",
       headers: {
@@ -236,26 +318,34 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.foundUser.vaccine_status = json.data.vaccine;
-          console.log(json.data.vaccine);
-          console.log(this.foundUser.vaccine_status);
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.foundUser.vaccine_status = json.data.vaccine;
+            console.log(json.data.vaccine);
+            console.log(this.foundUser.vaccine_status);
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
   
   // as a healthcare worker, update a vaccination status of a civilian
   healthCareUpdateVaccinationStatus = (vaccine_type, date, recommended_doses, doses_received, setSuccessMSG) => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+      this.successMSG = "";
+    });
     fetch("http://localhost:5000/api/civilian/update-vaccination-status", {
       method: "PUT",
       headers: {
@@ -272,24 +362,33 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
-        if (json.success) {
-          this.errorMSG = "";
-          setSuccessMSG(json.message);
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = "Succesfully updated users' vaccination status!";
+            setSuccessMSG(json.message);
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.successMSG = "";
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.isLoading = false;
+        });
       });
   };
 
   getActiveCases = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -299,24 +398,31 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.activeCasesStats = json.confirmed_cases;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.activeCasesStats = json.confirmed_cases;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   // get vaccine locations for Victoria (only state to release a dataset with vaccine locations)
   getVaccineLocations = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-vic-vaccine-locations", {
       method: "GET",
       headers: {
@@ -326,23 +432,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.vic_vaccine_locations = json.vaccine_locations;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.vic_vaccine_locations = json.vaccine_locations;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getAusData = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-aus-data", {
       method: "GET",
       headers: {
@@ -352,23 +465,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.allAusData = json.aus_data;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.allAusData = json.aus_data;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getAusData14Days = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-aus-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -378,23 +498,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.ausData14Days = json.aus_14days;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.ausData14Days = json.aus_14days;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getEsriData = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-esri-data", {
       method: "GET",
       headers: {
@@ -404,23 +531,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.esri_data = json.esri_data;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.esri_data = json.esri_data;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getRecentVicCases = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-vic-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -430,23 +564,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.vic_recent_confirmed_cases = json.confirmed_cases;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.vic_recent_confirmed_cases = json.confirmed_cases;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getCurrentTotals = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-current-totals-data", {
       method: "GET",
       headers: {
@@ -456,23 +597,30 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.esri_current_totals = json.esri_data;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.esri_current_totals = json.esri_data;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   getTotalVaccinations = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/stats/get-aus-total-vaccinations", {
       method: "GET",
       headers: {
@@ -482,24 +630,32 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.total_vaccinations = json.total_vaccinations;
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.total_vaccinations = json.total_vaccinations;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
   // get business by id for check in
   getBusiness = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+      this.successMSG = "";
+    });
     fetch("http://localhost:5000/api/business/get_business", {
       method: "POST",
       headers: {
@@ -511,26 +667,37 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.business_document_id = json.found._id; // get mongoDB object id of document
-          this.business_name = json.found.business_name; // get name of business
-          this.address = json.found.address; // get human-readable address of business
-          this.gps = json.found.gps; // get coordinates of business
-          this.isLoading = false;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = "Sucessfully scanned business QR code!";
+            this.business_document_id = json.found._id; // get mongoDB object id of document
+            this.business_name = json.found.business_name; // get name of business
+            this.address = json.found.address; // get human-readable address of business
+            this.gps = json.found.gps; // get coordinates of business
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.successMSG = "";
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.isLoading = false;
+        });
       });
   };
 
   doCheckIn = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+      this.successMSG = "";
+    });
     fetch("http://localhost:5000/api/check-in/create-check-in", {
       method: "POST",
       headers: {
@@ -544,23 +711,32 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.success) {
-          this.errorMSG = "";
-          this.isLoading = false;
-          this.checkedIn = true;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = "Succesfully checked in!";
+            this.isLoading = false;
+            this.checkedIn = true;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.isLoading = false;
+        });
       });
   };
 
   doLogin = () => {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.errorMSG = "";
+    });
     fetch("http://localhost:5000/api/auth/sign_in", {
       method: "POST",
       headers: {
@@ -573,32 +749,35 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
-        if (json.success) {
-          this.errorMSG = "";
-          this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time
-          this.expires_in = json.expires_in; // store time in seconds before token expires
-          this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
-          this.token_type = json.token_type;
-          this.vaccination_certificate = json.vaccination_certificate;
-          console.log(this.vaccination_certificate);
-          this.alerts = json.alerts;
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time
+            this.expires_in = json.expires_in; // store time in seconds before token expires
+            this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
+            this.token_type = json.token_type;
+            this.vaccination_certificate = json.vaccination_certificate;
+            console.log(this.vaccination_certificate);
+            this.alerts = json.alerts;
 
-          this.business_name = json.business_name;
-          this.address = json.address;
-          this.qr_code = json.qr_cde;
+            this.business_name = json.business_name;
+            this.address = json.address;
+            this.qr_code = json.qr_cde;
 
-          this.isHealthCare = json.is_healthcare_worker;
-          this.isLoading = false;
-          this.isLoggedIn = true;
-        } else {
-          this.errorMSG = json.message;
-          this.isLoading = false;
-        }
+            this.isHealthCare = json.is_healthcare_worker;
+            this.isLoading = false;
+            this.isLoggedIn = true;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
       })
       .catch((err) => {
-        this.errorMSG = err;
-        this.isLoading = false;
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
       });
   };
 
@@ -608,9 +787,11 @@ class UserStoreImpl {
   };
 
   doSignUp = () => {
-    this.isLoading = true;
-    this.accountSuccessMSG = "";
-
+    runInAction(() => {
+      this.isLoading = true;
+      this.successMSG = "";
+      this.errorMSG = "";
+    });
     if (!validateEmail(this.email)) {
       this.errorMSG = "Email format is incorrect";
       this.isLoading = false;
@@ -622,7 +803,10 @@ class UserStoreImpl {
         const qr_code_url = await QRCode.toDataURL(business_id);
         signUpCallback(qr_code_url, business_id);
       } catch (err) {
-        console.error(err);
+        runInAction(() => {
+          this.successMSG = "";
+          this.errorMSG = err;
+        });
       }
     };
 
@@ -643,18 +827,25 @@ class UserStoreImpl {
       })
         .then((res) => res.json())
         .then((json) => {
-          if (json.success) {
-            this.resetState();
-            this.errorMSG = "";
-            this.isLoading = false;
-          } else {
-            this.errorMSG = json.message;
-            this.isLoading = false;
-          }
+          runInAction(() => {
+            if (json.success) {
+              this.resetState();
+              this.errorMSG = "";
+              this.successMSG = "Succesfully registered account!";
+              this.isLoading = false;
+            } else {
+              this.errorMSG = json.message;
+              this.successMSG = "";
+              this.isLoading = false;
+            }
+          });
         })
         .catch((err) => {
-          this.errorMSG = err;
-          this.isLoading = false;
+          runInAction(() => {
+            this.errorMSG = err;
+            this.successMSG = "";
+            this.isLoading = false;
+          });
         });
     };
 
@@ -687,18 +878,25 @@ class UserStoreImpl {
       })
         .then((res) => res.json())
         .then((json) => {
-          if (json.success) {
-            this.resetState();
-            this.errorMSG = "";
-            this.isLoading = false;
-          } else {
-            this.errorMSG = json.message;
-            this.isLoading = false;
-          }
+          runInAction(() => {
+            if (json.success) {
+              this.resetState();
+              this.errorMSG = "";
+              this.successMSG = "Succesfully registered Business account!";
+              this.isLoading = false;
+            } else {
+              this.errorMSG = json.message;
+              this.successMSG = "";
+              this.isLoading = false;
+            }
+          });
         })
         .catch((err) => {
-          this.errorMSG = err;
-          this.isLoading = false;
+          runInAction(() => {
+            this.errorMSG = err;
+            this.successMSG = "";
+            this.isLoading = false;
+          });
         });
     };
   };
