@@ -145,7 +145,7 @@ class UserStoreImpl {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         email: userEmail,
@@ -156,7 +156,8 @@ class UserStoreImpl {
         runInAction(() => {
           if (json.success) {
             this.errorMSG = "";
-            this.successMSG = "Succesfully added user to Organisation and granted Healthcare Worker privileges!";
+            this.successMSG =
+              "Succesfully added user to Organisation and granted Healthcare Worker privileges!";
             this.operationWasSuccessful = true;
             this.isLoading = false;
           } else {
@@ -186,7 +187,7 @@ class UserStoreImpl {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         email: userEmail,
@@ -197,7 +198,8 @@ class UserStoreImpl {
         runInAction(() => {
           if (json.success) {
             this.errorMSG = "";
-            this.successMSG = "Succesfully removed employee from your Organisation and revoked their Healthcare Worker privileges!";
+            this.successMSG =
+              "Succesfully removed employee from your Organisation and revoked their Healthcare Worker privileges!";
             this.operationWasSuccessful = true;
             this.isLoading = false;
           } else {
@@ -271,7 +273,7 @@ class UserStoreImpl {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       // body: JSON.stringify({
       //   is_verified: userEmail,
@@ -300,7 +302,7 @@ class UserStoreImpl {
           this.isLoading = false;
         });
       });
-  }
+  };
 
   healthCareSearchUser = (userEmail) => {
     runInAction(() => {
@@ -312,7 +314,7 @@ class UserStoreImpl {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         email: userEmail,
@@ -351,7 +353,7 @@ class UserStoreImpl {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         email: this.foundUser.email,
@@ -379,9 +381,15 @@ class UserStoreImpl {
         });
       });
   };
-  
+
   // as a healthcare worker, update a vaccination status of a civilian
-  healthCareUpdateVaccinationStatus = (vaccine_type, date, recommended_doses, doses_received, setSuccessMSG) => {
+  healthCareUpdateVaccinationStatus = (
+    vaccine_type,
+    date,
+    recommended_doses,
+    doses_received,
+    setSuccessMSG
+  ) => {
     runInAction(() => {
       this.isLoading = true;
       this.errorMSG = "";
@@ -391,13 +399,13 @@ class UserStoreImpl {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.access_token}`
+        Authorization: `Bearer ${this.access_token}`,
       },
       body: JSON.stringify({
         email: this.foundUser.email,
-        vaccine_type, 
-        date, 
-        recommended_doses, 
+        vaccine_type,
+        date,
+        recommended_doses,
         doses_received,
       }),
     })
@@ -894,7 +902,8 @@ class UserStoreImpl {
     if (this.accType === "business") {
       const businessID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
       generateQR(businessID);
-    } if (this.accType === "organisation") {
+    }
+    if (this.accType === "organisation") {
       const organisationID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
       signUpCallback(organisationID);
     } else {
@@ -903,44 +912,43 @@ class UserStoreImpl {
 
     // method used for user organisation sign up
     //TODO-Sam: check this part and add BE code please. ty -huy
-    const signUpCallback = (organisation_id) => {
-      fetch("http://localhost:5000/api/auth/sign_up", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          role: this.accType,
-          email: this.email,
-          password: this.password,
-          organisation_name: this.organisation_name,
-          organisation_id: organisation_id,
-        }),
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          runInAction(() => {
-            if (json.success) {
-              this.resetState();
-              this.errorMSG = "";
-              this.successMSG = "Succesfully registered Organisation account!";
-              this.isLoading = false;
-            } else {
-              this.errorMSG = json.message;
-              this.successMSG = "";
-              this.isLoading = false;
-            }
-          });
-        })
-        .catch((err) => {
-          runInAction(() => {
-            this.errorMSG = err;
-            this.successMSG = "";
-            this.isLoading = false;
-          });
-        });
-    };
-
+    // const signUpCallback = (organisation_id) => {
+    //   fetch("http://localhost:5000/api/auth/sign_up", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       role: this.accType,
+    //       email: this.email,
+    //       password: this.password,
+    //       organisation_name: this.organisation_name,
+    //       organisation_id: organisation_id,
+    //     }),
+    //   })
+    //     .then((res) => res.json())
+    //     .then((json) => {
+    //       runInAction(() => {
+    //         if (json.success) {
+    //           this.resetState();
+    //           this.errorMSG = "";
+    //           this.successMSG = "Succesfully registered Organisation account!";
+    //           this.isLoading = false;
+    //         } else {
+    //           this.errorMSG = json.message;
+    //           this.successMSG = "";
+    //           this.isLoading = false;
+    //         }
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       runInAction(() => {
+    //         this.errorMSG = err;
+    //         this.successMSG = "";
+    //         this.isLoading = false;
+    //       });
+    //     });
+    // };
 
     // method used for user business sign up
     const signUpCallback = (qr_code_url, business_id) => {

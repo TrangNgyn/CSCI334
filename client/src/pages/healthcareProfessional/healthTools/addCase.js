@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 import React from "react";
 import viruses from "../components/viruses";
 
-function AddVacination({ name, userID }) {
+function AddVaccination({ name, userID }) {
   const navigate = useNavigate();
 
   return (
@@ -40,7 +40,6 @@ function AddVacination({ name, userID }) {
             ))}
           </Select>
           <InputGroup size="md">
-            
             <Input
               name="date"
               type="date"
@@ -50,7 +49,11 @@ function AddVacination({ name, userID }) {
               id="date"
             />
           </InputGroup>
-          <Button variant="red" w="100%" onClick={()=>navigate("/hea/healthtools")}>
+          <Button
+            variant="red"
+            w="100%"
+            onClick={() => navigate("/hea/healthtools")}
+          >
             Confirm Positive Case
           </Button>
         </Stack>
@@ -77,4 +80,4 @@ function AddVacination({ name, userID }) {
   );
 }
 
-export default AddVacination;
+export default AddVaccination;

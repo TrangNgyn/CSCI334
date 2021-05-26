@@ -22,16 +22,6 @@ function CheckInPage({ back }) {
               <Text variant="heading" mb={0}>
                 Safe Check In
               </Text>
-              <Button
-                borderRadius="full"
-                variant="green"
-                w="20"
-                ml="5"
-                id="startButton"
-                mt="3"
-              >
-                scan
-              </Button>
             </Center>
             <div id="sourceSelectPanel">
               <Select

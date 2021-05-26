@@ -6,7 +6,9 @@ import {
   InputGroup,
   Input,
   Button,
-  Select
+  Select,
+  HStack,
+  Box,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import GrayContainer from "../../../components/GrayContainer";
@@ -15,7 +17,7 @@ import viruses from "../components/viruses";
 import { UserStore } from "../../../stores/UserStore";
 import { observer } from "mobx-react";
 
-function UpdateVacination() {
+function UpdateVaccination() {
   const navigate = useNavigate();
   const userStore = UserStore;
 
@@ -24,14 +26,14 @@ function UpdateVacination() {
   const [receivedDoses, setReceivedDoses] = useState(1);
   const [recommendedDoses, setRecommendedDoses] = useState(1);
   const [successMSG, setSuccessMSG] = useState("");
-  
+
   // get found users vaccine status on component mount
   useEffect(() => {
     userStore.healthCareGetVaccineStatus();
   }, []);
 
   useEffect(() => {
-    if(typeof userStore.foundUser.vaccine_status !== 'undefined') {
+    if (typeof userStore.foundUser.vaccine_status !== "undefined") {
       // if vaccine status has been retrieved
       setVaccine(userStore.foundUser.vaccine_status.vaccine_type);
       setCertificateDate(userStore.foundUser.vaccine_status.date);
@@ -42,11 +44,17 @@ function UpdateVacination() {
   }, [userStore.foundUser.vaccine_status]);
 
   const handleAddVaccination = () => {
-    userStore.healthCareUpdateVaccinationStatus(vaccine, certificateDate, recommendedDoses, receivedDoses, setSuccessMSG);
+    userStore.healthCareUpdateVaccinationStatus(
+      vaccine,
+      certificateDate,
+      recommendedDoses,
+      receivedDoses,
+      setSuccessMSG
+    );
   };
 
   useEffect(() => {
-    if(successMSG.toString().length > 0) {
+    if (successMSG.toString().length > 0) {
       setSuccessMSG("");
       navigate("/hea/healthtools");
     }
@@ -59,9 +67,7 @@ function UpdateVacination() {
           Update Vaccination
         </Text>
         <Stack bg="white" rounded="lg" p={8} boxShadow="lg" spacing={4}>
-          <Text as="h2" mt={0}>
-            Covid-19 Vaccination Certificate
-          </Text>
+          <Text>Vaccine Name</Text>
           <Select
             name="vaccineName"
             variant="filled"
@@ -77,6 +83,7 @@ function UpdateVacination() {
               </option>
             ))}
           </Select>
+          <Text>Vaccination Date</Text>
           <InputGroup size="md">
             <Input
               name="date"
@@ -87,29 +94,44 @@ function UpdateVacination() {
               bg="#efefef"
             />
           </InputGroup>
-          <InputGroup size="md">
-            <Input
-              name="dosesReceived"
-              type="number"
-              min={1}
-              value={receivedDoses}
-              onChange={(e) => setReceivedDoses(e.target.value)}
-              variant="filled"
-              bg="#efefef"
-              required
-            />
-            <Input
-              name="recommendedDoses"
-              type="number"
-              min={1}
-              value={recommendedDoses}
-              onChange={(e) => setRecommendedDoses(e.target.value)}
-              variant="filled"
-              bg="#efefef"
-              required
-            />
-          </InputGroup>
-          <Button variant="orange" w="100%" onClick={() => handleAddVaccination()}>
+          <HStack>
+            <Box>
+              <Text>Current Dose</Text>
+              <InputGroup size="md">
+                <Input
+                  name="dosesReceived"
+                  type="number"
+                  min={1}
+                  value={receivedDoses}
+                  onChange={(e) => setReceivedDoses(e.target.value)}
+                  variant="filled"
+                  bg="#efefef"
+                  required
+                />
+              </InputGroup>
+            </Box>
+            <Box>
+              <Text>Total Doses</Text>
+              <InputGroup size="md">
+                <Input
+                  name="recommendedDoses"
+                  type="number"
+                  min={1}
+                  value={recommendedDoses}
+                  onChange={(e) => setRecommendedDoses(e.target.value)}
+                  variant="filled"
+                  bg="#efefef"
+                  required
+                />
+              </InputGroup>
+            </Box>
+          </HStack>
+
+          <Button
+            variant="orange"
+            w="100%"
+            onClick={() => handleAddVaccination()}
+          >
             Update Vaccination
           </Button>
         </Stack>
@@ -136,4 +158,4 @@ function UpdateVacination() {
   );
 }
 
-export default observer(UpdateVacination);
+export default observer(UpdateVaccination);

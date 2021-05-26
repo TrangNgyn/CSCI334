@@ -12,9 +12,12 @@ function MyCertsPage() {
   const userStore = UserStore;
 
   const noCertificates = () => {
-    return Object.keys(userStore.vaccination_certificate).length === 0 && userStore.vaccination_certificate.constructor === Object;
-  }
-  
+    return (
+      Object.keys(userStore.vaccination_certificate).length === 0 &&
+      userStore.vaccination_certificate.constructor === Object
+    );
+  };
+
   return (
     <Box h="100vh" layerStyle="grayBG">
       <Box position="absolute" h="100%" w="100%" top="40px">
@@ -25,12 +28,14 @@ function MyCertsPage() {
             minH="80%"
             maxW={{ base: "90%", md: "container.sm" }}
           >
-            <Text variant="heading">My Covid-19 Vaccination Certificate</Text>
-            {noCertificates() ?
+            <Text variant="heading" textAlign="center">
+              My Covid-19 Vaccination Certificate
+            </Text>
+            {noCertificates() ? (
               <>No certificates</>
-            :
+            ) : (
               <Certificate content={userStore.vaccination_certificate} />
-            }
+            )}
           </VStack>
         </Flex>
       </Box>

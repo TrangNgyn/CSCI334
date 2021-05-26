@@ -41,14 +41,17 @@ export default function LogoMenu({ menuItems, notification }) {
             {item.title}
           </MenuItem>
         ))}
-        <MenuItem
-          bg="white"
-          border="none"
-          key={"notification"}
-          onClick={handleNotificationClicked}
-        >
-          Notification
-        </MenuItem>
+        {userStore.accType == "civ" && (
+          <MenuItem
+            bg="white"
+            border="none"
+            key={"notification"}
+            onClick={handleNotificationClicked}
+          >
+            Notification
+          </MenuItem>
+        )}
+
         <MenuItem
           bg="white"
           border="none"
