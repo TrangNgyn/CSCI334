@@ -11,18 +11,7 @@ class UserStoreImpl {
   first_name = "";
   last_name = "";
   vaccination_certificate = {};
-  alerts = [
-    // {
-    //   alertId: "alert124",
-    //   location: "Primby Hotel",
-    //   businessId: "businessID124",
-    //   timeStart: "7:45pm",
-    //   timeFinish: "9:45pm",
-    //   date: "13/04/2021",
-    //   virus: "covid-19",
-    //   active: true,
-    // },
-  ];
+  alerts = [];
 
   // token variables recieved after succesful login
   access_token = "";
@@ -66,11 +55,10 @@ class UserStoreImpl {
 
   // Organisation Account
   organisation_name = "";
-  totalEmps = "77";
-  emps = ["123", "125", "474", "221"]; // ID's of employees
+  emps = []; // ID's of employees
   orgStats = [
-    { key: "Acc's Registered", value: 64 },
-    { key: "Vaccinated", value: 22 },
+    { key: "Acc's Registered", value: 0 },
+    { key: "Vaccinated", value: 0 },
   ];
 
   // Admin Account
@@ -136,14 +124,102 @@ class UserStoreImpl {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
 
-  // admin account approve and revoke organisation account status
-  updateOrganisationVerification = (email, verified) => {
+  // operations to be run before fetch requests
+  preFetchOperations = () => {
     runInAction(() => {
       this.operationWasSuccessful = false;
       this.errorMSG = "";
       this.successMSG = "";
       this.isLoading = true;
     });
+  }
+
+  // fetch org's employee stats
+  orgEmployeeStats = () => {
+    this.preFetchOperations();
+    fetch("http://localhost:5000/api/organisation/get-org-employees", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.access_token}`,
+      },
+      body: JSON.stringify({}),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        runInAction(() => {
+          if (json.success) {
+            this.organisation_name = json.org_name;
+            this.emps = json.emp_ids;
+            this.orgStats = [
+              { key: "Accounts Registered", value: json.registered },
+              { key: "Vaccinated", value: json.vaccinated },
+            ];
+
+            this.errorMSG = "";
+            this.successMSG = json.message;
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+
+            console.log(this.orgStats)
+          } else {
+            this.errorMSG = json.message;
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
+  };
+
+  // healthcare worker confirm positive case of covid in a civilian
+  confirmCovidCase = () => {
+    this.preFetchOperations();
+    fetch("http://localhost:5000/api/civilian/civ-create-alerts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.access_token}`,
+      },
+      body: JSON.stringify({
+        email: this.foundUser.email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = json.message;
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
+  };
+
+  // admin account approve and revoke organisation account status
+  updateOrganisationVerification = (email, verified) => {
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/organisation/update-org-status", {
       method: "PUT",
       headers: {
@@ -183,10 +259,7 @@ class UserStoreImpl {
   };
 
   addEmployee = (userEmail) => {
-    runInAction(() => {
-      this.operationWasSuccessful = false;
-      this.isLoading = true;
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/civilian/promote-civilian", {
       method: "PUT",
       headers: {
@@ -225,10 +298,7 @@ class UserStoreImpl {
   };
 
   removeEmployee = (userEmail) => {
-    runInAction(() => {
-      this.operationWasSuccessful = false;
-      this.isLoading = true;
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/civilian/demote-healthcare", {
       method: "PUT",
       headers: {
@@ -266,31 +336,6 @@ class UserStoreImpl {
       });
   };
 
-  verifyOrganisation = (organisation) => {
-    this.pendingOrganisations.splice(
-      this.pendingOrganisations.indexOf(organisation),
-      1
-    );
-    this.verifiedOrganisations.push(organisation);
-    // Update database
-  };
-
-  denyOrganisation = (organisation) => {
-    this.pendingOrganisations.splice(
-      this.pendingOrganisations.indexOf(organisation),
-      1
-    );
-    // Update database
-  };
-
-  deleteOrganisation = (organisation) => {
-    this.verifiedOrganisations.splice(
-      this.verifiedOrganisations.indexOf(organisation),
-      1
-    );
-    // Update database
-  };
-
   resetState = () => {
     this.id = "";
     this.email = "";
@@ -310,11 +355,7 @@ class UserStoreImpl {
   };
 
   adminPopulateOrgList = (setVerifiedOrgList, setUnverifiedOrgList) => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.operationWasSuccessful = false;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/organisation/get-org-by-status", {
       method: "POST",
       headers: {
@@ -351,11 +392,7 @@ class UserStoreImpl {
   };
 
   healthCareSearchUser = (userEmail) => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.operationWasSuccessful = false;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/civilian/healthcare-search-user", {
       method: "POST",
       headers: {
@@ -391,10 +428,7 @@ class UserStoreImpl {
   };
 
   healthCareGetVaccineStatus = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/civilian/retrieve-vaccination-status", {
       method: "POST",
       headers: {
@@ -433,14 +467,9 @@ class UserStoreImpl {
     vaccine_type,
     date,
     recommended_doses,
-    doses_received,
-    setSuccessMSG
+    doses_received
   ) => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-      this.successMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/civilian/update-vaccination-status", {
       method: "PUT",
       headers: {
@@ -461,7 +490,7 @@ class UserStoreImpl {
           if (json.success) {
             this.errorMSG = "";
             this.successMSG = "Succesfully updated users' vaccination status!";
-            setSuccessMSG(json.message);
+            this.operationWasSuccessful = true;
             this.isLoading = false;
           } else {
             this.errorMSG = json.message;
@@ -480,10 +509,7 @@ class UserStoreImpl {
   };
 
   getActiveCases = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -514,10 +540,7 @@ class UserStoreImpl {
 
   // get vaccine locations for Victoria (only state to release a dataset with vaccine locations)
   getVaccineLocations = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-vic-vaccine-locations", {
       method: "GET",
       headers: {
@@ -547,10 +570,7 @@ class UserStoreImpl {
   };
 
   getAusData = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-aus-data", {
       method: "GET",
       headers: {
@@ -580,10 +600,7 @@ class UserStoreImpl {
   };
 
   getAusData14Days = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-aus-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -613,10 +630,7 @@ class UserStoreImpl {
   };
 
   getEsriData = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-esri-data", {
       method: "GET",
       headers: {
@@ -646,10 +660,7 @@ class UserStoreImpl {
   };
 
   getRecentVicCases = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-vic-confirmed-cases-14days", {
       method: "GET",
       headers: {
@@ -679,10 +690,7 @@ class UserStoreImpl {
   };
 
   getCurrentTotals = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-current-totals-data", {
       method: "GET",
       headers: {
@@ -712,10 +720,7 @@ class UserStoreImpl {
   };
 
   getTotalVaccinations = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/stats/get-aus-total-vaccinations", {
       method: "GET",
       headers: {
@@ -746,11 +751,7 @@ class UserStoreImpl {
 
   // get business by id for check in
   getBusiness = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-      this.successMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/business/get_business", {
       method: "POST",
       headers: {
@@ -788,11 +789,7 @@ class UserStoreImpl {
   };
 
   doCheckIn = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-      this.successMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/check-in/create-check-in", {
       method: "POST",
       headers: {
@@ -809,7 +806,6 @@ class UserStoreImpl {
         runInAction(() => {
           if (json.success) {
             this.errorMSG = "";
-            this.successMSG = "Succesfully checked in!";
             this.isLoading = false;
             this.checkedIn = true;
           } else {
@@ -827,11 +823,41 @@ class UserStoreImpl {
       });
   };
 
+  // get alerts for a user account on login
+  getCovidAlerts = () => {
+    this.preFetchOperations();
+    fetch("http://localhost:5000/api/civilian/alerts", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.access_token}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        runInAction(() => {
+          if (json.success) {
+            this.alerts = [];
+            this.errorMSG = "";
+            this.alerts = json.found.alerts;
+            this.isLoading = false;
+            this.isLoggedIn = true;
+          } else {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.isLoading = false;
+        });
+      });
+  };
+
   doLogin = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     fetch("http://localhost:5000/api/auth/sign_in", {
       method: "POST",
       headers: {
@@ -866,6 +892,9 @@ class UserStoreImpl {
             this.isLoading = false;
           }
         });
+      }).then(() => {
+        if(this.accType === "civilian")
+          this.getCovidAlerts();
       })
       .catch((err) => {
         runInAction(() => {
@@ -881,11 +910,7 @@ class UserStoreImpl {
   };
 
   doSignUp = () => {
-    runInAction(() => {
-      this.isLoading = true;
-      this.successMSG = "";
-      this.errorMSG = "";
-    });
+    this.preFetchOperations();
     if (!validateEmail(this.email)) {
       this.errorMSG = "Email format is incorrect";
       this.isLoading = false;
@@ -895,7 +920,7 @@ class UserStoreImpl {
     const generateQR = async (business_id) => {
       try {
         const qr_code_url = await QRCode.toDataURL(business_id);
-        signUpCallback(qr_code_url, business_id);
+        signUpCallbackBusiness(qr_code_url, business_id);
       } catch (err) {
         runInAction(() => {
           this.successMSG = "";
@@ -917,16 +942,17 @@ class UserStoreImpl {
           password: this.password,
           first_name: this.first_name,
           last_name: this.last_name,
+          organisation_name: this.organisation_name,
         }),
       })
         .then((res) => res.json())
         .then((json) => {
           runInAction(() => {
             if (json.success) {
-              this.resetState();
               this.errorMSG = "";
               this.successMSG = "Succesfully registered account!";
               this.isLoading = false;
+              this.resetState();
             } else {
               this.errorMSG = json.message;
               this.successMSG = "";
@@ -947,56 +973,12 @@ class UserStoreImpl {
     if (this.accType === "business") {
       const businessID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
       generateQR(businessID);
-    }
-    if (this.accType === "organisation") {
-      const organisationID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
-      signUpCallback(organisationID);
     } else {
       signUp();
     }
 
-    // method used for user organisation sign up
-    //TODO-Sam: check this part and add BE code please. ty -huy
-    // const signUpCallback = (organisation_id) => {
-    //   fetch("http://localhost:5000/api/auth/sign_up", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       role: this.accType,
-    //       email: this.email,
-    //       password: this.password,
-    //       organisation_name: this.organisation_name,
-    //       organisation_id: organisation_id,
-    //     }),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((json) => {
-    //       runInAction(() => {
-    //         if (json.success) {
-    //           this.resetState();
-    //           this.errorMSG = "";
-    //           this.successMSG = "Succesfully registered Organisation account!";
-    //           this.isLoading = false;
-    //         } else {
-    //           this.errorMSG = json.message;
-    //           this.successMSG = "";
-    //           this.isLoading = false;
-    //         }
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       runInAction(() => {
-    //         this.errorMSG = err;
-    //         this.successMSG = "";
-    //         this.isLoading = false;
-    //       });
-    //     });
-    // };
-
     // method used for user business sign up
-    const signUpCallback = (qr_code_url, business_id) => {
+    const signUpCallbackBusiness = (qr_code_url, business_id) => {
       fetch("http://localhost:5000/api/auth/sign_up", {
         method: "POST",
         headers: {

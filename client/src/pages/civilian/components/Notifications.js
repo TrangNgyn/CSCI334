@@ -10,9 +10,10 @@ import {
   Button,
   Box,
 } from "@chakra-ui/react";
+import moment from "moment";
 
 const Notifications = ({ onClose, isOpen, alerts }) => {
-  console.log(alerts);
+
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size={"lg"} zIndex="0">
       <DrawerOverlay />
@@ -24,13 +25,11 @@ const Notifications = ({ onClose, isOpen, alerts }) => {
               <Box bg="white" key={x} w="90%" rounded="lg" p="4" boxShadow="lg">
                 <VStack align="left">
                   <Text as="h3" m={0}>
-                    COVID-19 Alert
+                    Possible COVID-19 Contact Alert
                   </Text>
-                  <Text>Location: {el.location}</Text>
-                  <Text>Date: {el.date}</Text>
-                  <Text>
-                    Time: {el.timeStart} - {el.timeFinish}
-                  </Text>
+                  <Text>Business Name: {el.business_name}</Text>
+                  <Text>Location: {el.business_address}</Text>
+                  <Text>Date: {moment(el.alert_date).local().format("YYYY-MM-DD")}</Text>
                 </VStack>
               </Box>
             ))}

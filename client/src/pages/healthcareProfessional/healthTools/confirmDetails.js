@@ -8,7 +8,6 @@ import {
   Select
 } from "@chakra-ui/react";
 import React from "react";
-import viruses from "../viruses";
 
 function ConfirmDetails({ back, submit, name, userID }) {
   return (
@@ -29,11 +28,6 @@ function ConfirmDetails({ back, submit, name, userID }) {
             id="virusName"
             mt={3}
           >
-            {viruses.map((el) => (
-              <option value={el.id} key={el.id}>
-                {el.name}
-              </option>
-            ))}
           </Select>
           <InputGroup size="md">
             {/* TO-DO: add isRequired */}

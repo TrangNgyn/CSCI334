@@ -23,11 +23,12 @@ async function generate() {
         var business_name = item.business_name
         var alert = new db.alert({
             business_name,
+            business_address: item.address,
             gps: item.gps,
             alert_date,
             business_id
-        })
-        alerts.push(alert)
+        });
+        alerts.push(alert);
         
         var found = await db.check_in.find({business: business_id})
         await Promise.all(found.map(async (check_in) => {
