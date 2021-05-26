@@ -1,4 +1,4 @@
-import { BsPersonPlus, BsPersonDash } from "react-icons/bs";
+import { BsPersonPlus, BsPersonDash, BsPerson } from "react-icons/bs";
 
 export const menuOptions = [
   {
@@ -12,5 +12,11 @@ export const menuOptions = [
     title: "Remove Employee",
     desc: "Remove previous employees from your organisation",
     route: "/org/removeemp",
+  },
+  {
+    icon: BsPerson,
+    title: "Employee Stats",
+    desc: "View the overall statistics of your employees",
+    route: "/org/empstats",
   },
 ];

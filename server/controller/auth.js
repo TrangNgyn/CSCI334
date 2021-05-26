@@ -39,16 +39,16 @@ exports.sign_up = (req,res) => {
         }) 
     } 
 
-    if(role == "admin") {
-        let { acc_name } = req.body
-        if(!acc_name)
-            return res.status(400).send(empty_field)
-        user =  new db.admin({
-            email: email,
-            acc_name: acc_name,
-            password: bcrypt.hashSync(req.body.password, salt_rounds),
-        }) 
-    } 
+    // if(role == "admin") {
+    //     let { acc_name } = req.body
+    //     if(!acc_name)
+    //         return res.status(400).send(empty_field)
+    //     user =  new db.admin({
+    //         email: email,
+    //         acc_name: acc_name,
+    //         password: bcrypt.hashSync(req.body.password, salt_rounds),
+    //     }) 
+    // } 
     
     if(role == "business") {
         let { business_name, qr_code, business_id, address, gps, place_id } = req.body
@@ -161,6 +161,7 @@ exports.sign_in = (req,res) => {
                 business_name: user.business_name,
                 qr_cde: user.qr_code,
                 address: user.address,
+                accType: "business"
             })
         } else if(authorities[0] === "ROLE_ADMIN") {
             res.status(200).send({
@@ -170,6 +171,7 @@ exports.sign_in = (req,res) => {
                 roles: authorities,
                 expires_in: ":1800",
                 acc_name: user.acc_name,
+                accType: "admin"
             })
         }else {
             res.status(200).send({
@@ -181,6 +183,7 @@ exports.sign_in = (req,res) => {
                 is_healthcare_worker: user.is_healthcare_worker,
                 vaccination_certificate: user.vaccine,
                 alerts: user.alerts,
+                accType: user.roles[user.roles.length-1].name
             })
         }
     })
