@@ -65,7 +65,7 @@ class UserStoreImpl {
   vic_vaccine_locations = [];
 
   // Organisation Account
-  orgName = "";
+  organisation_name = "";
   totalEmps = "77";
   emps = ["123", "125", "474", "221"]; // ID's of employees
   orgStats = [
@@ -853,9 +853,53 @@ class UserStoreImpl {
     if (this.accType === "business") {
       const businessID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
       generateQR(businessID);
+    } if (this.accType === "organisation") {
+      const organisationID = hash.sha256().update(this.email).digest("hex"); // email is hashed to provide a unique identifier for a qr code without revealing a business' email
+      signUpCallback(organisationID);
     } else {
       signUp();
     }
+
+    // method used for user organisation sign up
+    //TODO-Sam: check this part and add BE code please. ty -huy
+    const signUpCallback = (organisation_id) => {
+      fetch("http://localhost:5000/api/auth/sign_up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: this.accType,
+          email: this.email,
+          password: this.password,
+          organisation_name: this.organisation_name,
+          organisation_id: organisation_id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          runInAction(() => {
+            if (json.success) {
+              this.resetState();
+              this.errorMSG = "";
+              this.successMSG = "Succesfully registered Organisation account!";
+              this.isLoading = false;
+            } else {
+              this.errorMSG = json.message;
+              this.successMSG = "";
+              this.isLoading = false;
+            }
+          });
+        })
+        .catch((err) => {
+          runInAction(() => {
+            this.errorMSG = err;
+            this.successMSG = "";
+            this.isLoading = false;
+          });
+        });
+    };
+
 
     // method used for user business sign up
     const signUpCallback = (qr_code_url, business_id) => {

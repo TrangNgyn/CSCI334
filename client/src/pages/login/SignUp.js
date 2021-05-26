@@ -11,6 +11,7 @@ import ToastStatusMessageWrapper from "../../components/ToastStatusMessageWrappe
 const accTypes = [
   { name: "Civilian", id: "civilian" },
   { name: "Business", id: "business" },
+  { name: "Organisation", id: "organisation"},
 ];
 
 const SignUp = ({ userStore, setSignUp }) => {
@@ -128,6 +129,26 @@ const SignUp = ({ userStore, setSignUp }) => {
                   />
                 </>
               )}
+
+              {/* Display required fields for signing up as a organisation */}
+            {userStore.accType === "organisation" && (
+              <>
+                <InputGroup size="md">
+                  <InputWrapper
+                    isRequired
+                    name="organisation_name"
+                    value={userStore.organisation_name}
+                    placeholder="Organisation Name"
+                    variant="filled"
+                    bg="#efefef"
+                    onChange={(e) =>
+                      userStore.setProperty(e.target.name, e.target.value)
+                    }
+                  />
+                </InputGroup>
+              </>
+            )}
+            
 
               <VStack pt="3">
                 <Text variant="link" align="center">
