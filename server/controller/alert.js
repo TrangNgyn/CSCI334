@@ -12,7 +12,7 @@ class Alert {
 
     async post_create_alert(req,res) {
         try{
-            let { place_id, gps, business_id, virus } = req.body
+            let { business_name, gps, business_id } = req.body
             if(!place_id | !gps | !business_id)
                 return res.status(400).send(empty_field)
             if(!gps.lat | !gps.lng)
@@ -21,7 +21,7 @@ class Alert {
                 })
 
             const new_alert = new db.alert({
-                place_id,
+                business_name,
                 gps,
                 business_id
             })

@@ -33,10 +33,6 @@ const civilian = user.discriminator('civilian', new Schema({
     is_healthcare_worker: {
         type: Boolean,
         default: false
-    },
-    infected: {
-        type: Boolean,
-        default: false
     }
 }))
 

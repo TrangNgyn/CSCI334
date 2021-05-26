@@ -46,14 +46,14 @@ async function generate() {
 
     for(let i = 0; i< 1000; i++) {
         var password = data.passwords[random_int(100)]
-        var first_name = data.names[random_int(2000)]
-        var last_name = data.names[random_int(2000)]
+        var first_name = data.names[random_int(5000)]
+        var last_name = data.names[random_int(5000)]
         var business_name =  first_name + seperator + last_name
         var email = first_name + seperator + last_name + "@" + data.email
         var roles = [bus_id] 
         var business_id = create_hash(email)
         var qr_code = await generate_QR(business_id)
-        var address =  data.passwords[random_int(100)] + ' ' + data.names[random_int(2000)]
+        var address =  data.passwords[random_int(100)] + ' ' + data.names[random_int(5000)]
         var lat = random_float(-35)
         var lng = random_float(151)
         var gps = {

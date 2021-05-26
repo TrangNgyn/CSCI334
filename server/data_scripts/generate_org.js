@@ -31,7 +31,7 @@ async function generate() {
         var first_name = data.names[random_int(5000)]
         var last_name = data.names[random_int(5000)]
         var password = data.passwords[random_int(100)]
-        var organisation_name =  first_name + seperator + last_name
+        var organisation_name =  first_name + seperator + last_name + ' Health'
         var email = first_name + seperator + last_name + "@" + data.email
         var roles = [org_id]
         var employees = []

@@ -38,10 +38,6 @@ const business = user.discriminator('business', new Schema({
                 type: Number,
             },
         }
-    },
-    alerts: {
-        type: [Schema.Types.ObjectId],
-        default: []
     }
 }))
 

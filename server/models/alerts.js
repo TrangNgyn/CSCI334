@@ -26,10 +26,6 @@ const alert_schema = new Schema({
     },
     alert_date: {
         type: Date,
-    },
-    resolved: {
-        type: Boolean,
-        default: false
     }
 },
 {

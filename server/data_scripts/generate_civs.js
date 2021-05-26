@@ -33,8 +33,8 @@ async function generate() {
     })
 
     for(let i = 0; i < 1000; i++) {
-        var first_name = data.names[random_int(2000)]
-        var last_name = data.names[random_int(2000)]
+        var first_name = data.names[random_int(5000)]
+        var last_name = data.names[random_int(5000)]
         var password = data.passwords[random_int(100)]
         var email = first_name + seperator + last_name + "@" + data.email
         var is_healthcare_worker = false
