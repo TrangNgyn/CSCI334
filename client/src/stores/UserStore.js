@@ -136,6 +136,52 @@ class UserStoreImpl {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
 
+  // admin account approve and revoke organisation account status
+  updateOrganisationVerification = (email, verified) => {
+    runInAction(() => {
+      this.operationWasSuccessful = false;
+      this.errorMSG = "";
+      this.successMSG = "";
+      this.isLoading = true;
+    });
+    fetch("http://localhost:5000/api/organisation/update-org-status", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: JSON.stringify({
+        email: email,
+        is_verified: verified,
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            this.successMSG = json.message;
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.successMSG = "";
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.successMSG = "";
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
+  };
+
   addEmployee = (userEmail) => {
     runInAction(() => {
       this.operationWasSuccessful = false;
@@ -806,7 +852,6 @@ class UserStoreImpl {
             this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
             this.token_type = json.token_type;
             this.vaccination_certificate = json.vaccination_certificate;
-            console.log(this.vaccination_certificate);
             this.alerts = json.alerts;
 
             this.business_name = json.business_name;
