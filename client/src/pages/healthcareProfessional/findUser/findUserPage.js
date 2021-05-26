@@ -61,7 +61,7 @@ const FindUserPage = () => {
                 name="userEmail"
                 variant="filled"
                 bg="#efefef"
-                placeholder="User ID"
+                placeholder="User Email"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
               />

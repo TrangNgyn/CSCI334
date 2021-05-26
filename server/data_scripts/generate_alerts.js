@@ -25,19 +25,21 @@ async function generate() {
     var buses = await db.business.find({}).limit(250)
 
     await Promise.all(buses.map(async (item) => {
-        var business_id = item._id
-        var resolved = false
-        var alert_date = new Date()
-        alert_date = alert_date - (60*60*24*(random_int(14))*1000)
-        var business_name = item.business_name
+        var business_id = item._id;
+        var resolved = false;
+        var alert_date = new Date();
+        alert_date = alert_date - (60*60*24*(random_int(14))*1000);
+        var business_name = item.business_name;
+
         var alert = new db.alert({
             business_name,
+            business_address: item.address,
             gps: item.gps,
             alert_date,
             resolved,
             business_id
-        })
-        alerts.push(alert)
+        });
+        alerts.push(alert);
         
         var found = await db.check_in.find({business: business_id})
         await Promise.all(found.map(async (check_in) => {

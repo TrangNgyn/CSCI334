@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Spacer, Text, VStack } from "@chakra-ui/layout";
-import React from "react";
+import React, { useEffect } from "react";
 import GrayContainer from "../../../components/GrayContainer";
 import { useNavigate } from "react-router";
 import { UserStore } from "../../../stores/UserStore";
@@ -12,6 +12,10 @@ import { observer } from "mobx-react";
 function StatsPage() {
   const navigate = useNavigate();
   const userStore = UserStore;
+
+  useEffect(() => {
+    userStore.orgEmployeeStats();
+  }, [])
 
   return (
     <Box h="100vh" layerStyle="grayBG">
@@ -42,13 +46,6 @@ function StatsPage() {
               borderRadius="xl"
               shadow="base"
             >
-              <Box d="flex" px="3">
-                <Text as="h3" color="gray.800">
-                  Total Employees
-                </Text>
-                <Spacer />
-                <Text as="h3">{userStore.totalEmps}</Text>
-              </Box>
             </Box>
 
             {userStore.orgStats.map((item) => (
@@ -71,18 +68,6 @@ function StatsPage() {
               </Box>
             ))}
 
-            <Box d="flex" w="90%" pr="8">
-              <Spacer />
-              <UpdateTotalEmpsMenu />
-            </Box>
-            <Box
-              px="3"
-              w="90%"
-              maxW={{ base: "90%", md: "container.sm" }}
-              bg="white"
-              borderRadius="xl"
-              shadow="2xl"
-            ></Box>
           </VStack>
         </Flex>
       </Box>

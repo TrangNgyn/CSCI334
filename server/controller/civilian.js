@@ -17,6 +17,7 @@ class Civilian{
             .then(async business => {
                 var alert = await new db.alert({
                     business_name: business.business_name,
+                    business_address: business.address,
                     business_id: business._id,
                     gps: business.gps
                 })
@@ -52,7 +53,10 @@ class Civilian{
             await db.civilian.findById(req.user_id).populate('alerts').select('alerts')
                 .orFail(new Error('No user found'))
                 .then(found => {
-                    return res.send(found)
+                    return res.send({
+                        success: true,
+                        found
+                    })
                 })
         } catch(err) {
             return res.status(500).send({
@@ -108,6 +112,7 @@ class Civilian{
                 })
             })
             return res.send({
+                success: true,
                 message: "New Alerts have been created and the necessary Civilian's have been notified"
             })
         } catch(err) {

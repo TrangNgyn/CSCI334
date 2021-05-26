@@ -1,6 +1,6 @@
 import { Center, Text, VStack } from "@chakra-ui/layout";
 import { Select, Spacer, Stack, InputGroup } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 import LocationSearchInput from "../../components/GoogleMapsAutoComplete";
@@ -19,6 +19,14 @@ const SignUp = ({ userStore, setSignUp }) => {
     e.preventDefault();
     userStore.doSignUp();
   };
+
+  useEffect(() => {
+    if(userStore.operationWasSuccessful) {
+      userStore.setProperty("operationWasSuccessful", false);
+      setSignUp(false);
+      
+    }
+  }, [userStore.operationWasSuccessful]);
 
   return (
     <ToastStatusMessageWrapper>
@@ -151,9 +159,6 @@ const SignUp = ({ userStore, setSignUp }) => {
             
 
               <VStack pt="3">
-                <Text variant="link" align="center">
-                  Request an organisation account here
-                </Text>
                 <ButtonWrapper variant="green" borderRadius="md" type="submit">
                   Sign Up
                 </ButtonWrapper>

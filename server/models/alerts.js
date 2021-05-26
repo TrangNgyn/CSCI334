@@ -20,6 +20,9 @@ const alert_schema = new Schema({
             },
         }
     },
+    business_address: {
+        type: String,
+    },
     business_id: {
         type: Schema.Types.ObjectId,
         ref: 'business'

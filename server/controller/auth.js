@@ -95,7 +95,10 @@ exports.sign_up = (req,res) => {
                     res.status(500).send({ message: err })
                     return
                 }
-                res.send({ message: "User was registered successfully" })
+                res.send({
+                    success: true,
+                    message: "User was registered successfully" 
+                })
                 return
             })
         })
