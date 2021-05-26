@@ -105,19 +105,86 @@ class Organisation {
         
     }
 
+    // @route   GET api/civilian/get-business-details
+    // @desc    Get all business details so the FE can search them and create an alert
+    // @access  Protected
+    
+
     async get_org_buss(req,res) {
         try{
-            // find all businesses and send back business_name and addresss to the FE for the 
-            // org user to search for the desired user
+            // only return business_name and address orgs don't need any more
             await db.business.find({}).select("business_name address")
             .then(found => {
                 return res.send(found)
+            })
+            .catch(err => {
+                return res.status(500).send({
+                    message: err.message
+                })
             })
             
         } catch(err) {
             return res.status(500).send({
                 message: err.message
             })
+        }
+    }
+
+    // @route   POST api/civilian/create-alert
+    // @desc    Create a new alert
+    // @access  Protected
+
+    async post_create_alert(req,res) {
+        try{
+            let { bus_id } = req.body
+            // check that there is a business linked to that id
+            await db.business.findById(bus_id)
+            .orFail(new Error("No business found"))
+            .then(async business => {
+                const alert = await new db.alert({
+                    business_name: business.business_name,
+                    business_id: business._id,
+                    gps: business.gps
+                })
+                await alert.save()
+                .then(async saved => {
+                    // set date to 2 weeks ago
+                    var find_date = Date.now()
+                    find_date = find_date - 60*60*24*14*1000
+                    // find civs that checked in 2 weeks ago
+                    await db.check_in.find({ 
+                        business: business._id, 
+                        date: { $gte: find_date }
+                    })
+                    // add alert to all civs that checked in 2 weeks ago
+                    .then(async check_ins => {
+                        await Promise.all(check_ins.map(async check => {
+                            await db.civilian.findById(check.civilian)
+                                .then(civ => {
+                                    civ.alerts.push(alert._id)
+                                    civ.save()
+                                })
+                        }))
+                        return res.send({
+                            message: "Alert created and added to necessary civs"
+                        })
+                    })
+                })
+            })
+            .catch(err => {
+                return res.status(500).send({
+                    message: err.message
+                })
+            })
+        } catch (err) {
+            if(err.message == "No business found")
+                return res.status(404).send({
+                    message: err.message
+                })
+            else
+                return res.status(500).send({
+                    message: err.message
+                })
         }
     }
 }
