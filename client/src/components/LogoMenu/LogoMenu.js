@@ -41,7 +41,7 @@ export default function LogoMenu({ menuItems, notification }) {
             {item.title}
           </MenuItem>
         ))}
-        {userStore.accType == "civilian" && (
+        {(userStore.accType == "civilian" || userStore.accType == "healthcare") && (
           <MenuItem
             bg="white"
             border="none"

@@ -147,7 +147,6 @@ class UserStoreImpl {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         runInAction(() => {
           if (json.success) {
             this.organisation_name = json.org_name;
@@ -879,6 +878,7 @@ class UserStoreImpl {
             this.token_type = json.token_type;
             this.vaccination_certificate = json.vaccination_certificate;
             this.alerts = json.alerts;
+            this.accType = json.accType;
 
             this.business_name = json.business_name;
             this.address = json.address;

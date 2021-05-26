@@ -30,7 +30,7 @@ function ToastStatusMessageWrapper({...props}) {
     }
 
     useEffect(() => {
-      if(userStore.successMSG.length > 0) {
+      if(userStore.successMSG || userStore.successMSG.length > 0) {
         returnSuccessToast();
         userStore.setProperty('successMSG', "");
       }

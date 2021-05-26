@@ -256,11 +256,19 @@ class Organisation {
             await db.organisation
             .findById(req.user_id).populate("employees").select("organisation_name employees")
             .then(found => {
+
+                if(!found){
+                    return res.status(404).json({
+                        success: false,
+                        message: "No stats on employees available"
+                    });
+                }
+
                 let emp_ids = found.employees.filter(e => e._id);
                 let registered = found.employees.length;
 
                 let vaccinated = 0;
-                found.employees.array.forEach(e => {
+                found.employees.forEach(e => {
                     if(e.vaccine !== {}){
                         vaccinated++;
                     }
