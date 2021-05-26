@@ -64,17 +64,20 @@ class Organisation {
     // @desc    Get a verified org by email and verification status
     // @access  Protected
 
-    async get_org_by_email_status(req, res){
-        const { is_verified } = req.body;
+    async get_org_by_status(req, res){
+        // const { is_verified } = req.body;
 
         // check for empty field
-        if(typeof is_verified === 'undefined'){
-            return res.json(empty_field);
-        }
+        // if(typeof is_verified === 'undefined'){
+        //     return res.json(empty_field);
+        // }
+
+        let verified_org, unverified_org;
         
         try{
-            db.organisation
-                .findOne({verified: is_verified}, (err, user) => {
+            // find verified orgs
+            await db.organisation
+                .find({verified: true}, (err, user) => {
                     if(err)
                         return res.status(500).send({
                             success: false,
@@ -86,16 +89,40 @@ class Organisation {
                             message: "Organisation was not found"
                         });
                     
-                    // return the user's vaccine info
+                    verified_org = user.map(org => {
+                        return {
+                            organisation_name: org.organisation_name,
+                            email: org.email
+                        }                        
+                    })
+                })
+
+            // find unverified orgs
+            await db.organisation
+                .find({verified: false}, (err, user) => {
+                    if(err)
+                        return res.status(500).send({
+                            success: false,
+                            message: err.message
+                        });
+                    if(!user)
+                        return res.status(404).json({
+                            success: false,
+                            message: "Organisation was not found"
+                        });
+                    
+                    unverified_org = user.map(org => {
+                        return {
+                            organisation_name: org.organisation_name,
+                            email: org.email
+                        }                        
+                    })
+
                     return res.json({
                         success: true,
                         data: {
-                            email: user.email,
-                            data: {
-                                organisation_name: user.organisation_name,
-                                email: user.email,
-                                verified: user.verified
-                            }
+                            verified_org,
+                            unverified_org
                         }
                     });
                 })

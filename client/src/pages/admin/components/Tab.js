@@ -17,24 +17,24 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
-import React from "react";
+import { useState } from "react";
 
-const AccountTab = ({ civilians, handleDelete }) => {
-  const [civilian, setCivilian] = React.useState(civilians[0]);
+const AccountTab = ({ verifiedOrganisations, handleDelete }) => {
+  const [organisation, setOrganisation] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleClick = (civ) => {
-    setCivilian(civ);
+  const handleClick = (org) => {
+    setOrganisation(org);
     onOpen();
   };
 
   const handleDeleteBtnClicked = () => {
-    handleDelete(civilian);
+    handleDelete(organisation);
     onClose();
   }
 
   return (
     <VStack w="100%" p="0">
-      {civilians.map((el) => (
+      {verifiedOrganisations.map((el) => (
         <Flex
           bg="white"
           align="center"
@@ -47,19 +47,19 @@ const AccountTab = ({ civilians, handleDelete }) => {
         >
           <VStack align="left">
             <Text as="h3" m={0}>
-              {el.name}
+              {el.email}
             </Text>
-            <Text m={0}>#{el.userId}</Text>
+            <Text m={0}>#{el.name}</Text>
           </VStack>
         </Flex>
       ))}
       <Drawer onClose={onClose} isOpen={isOpen} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>{civilian.name}</DrawerHeader>
+          <DrawerHeader>{organisation.name}</DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="left">
-              <Text m={0}>#{civilian.userId}</Text>
+              <Text m={0}>{organisation.email}</Text>
             </VStack>
           </DrawerBody>
           <DrawerFooter>

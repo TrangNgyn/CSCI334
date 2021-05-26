@@ -261,6 +261,47 @@ class UserStoreImpl {
     this.employees = [];
   };
 
+  adminPopulateOrgList = (setVerifiedOrgList, setUnverifiedOrgList) => {
+    runInAction(() => {
+      this.isLoading = true;
+      this.operationWasSuccessful = false;
+      this.errorMSG = "";
+    });
+    fetch("http://localhost:5000/api/organisation/get-org-by-status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      // body: JSON.stringify({
+      //   is_verified: userEmail,
+      // }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        runInAction(() => {
+          if (json.success) {
+            this.errorMSG = "";
+            setVerifiedOrgList(json.data.verified_org);
+            setUnverifiedOrgList(json.data.unverified_org);
+            this.operationWasSuccessful = true;
+            this.isLoading = false;
+          } else {
+            this.errorMSG = json.message;
+            this.operationWasSuccessful = false;
+            this.isLoading = false;
+          }
+        });
+      })
+      .catch((err) => {
+        runInAction(() => {
+          this.errorMSG = err;
+          this.operationWasSuccessful = false;
+          this.isLoading = false;
+        });
+      });
+  }
+
   healthCareSearchUser = (userEmail) => {
     runInAction(() => {
       this.isLoading = true;

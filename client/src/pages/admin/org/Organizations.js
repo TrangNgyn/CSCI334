@@ -1,6 +1,6 @@
-import { VStack, Container, Text, Box, Button, InputGroup, Input } from "@chakra-ui/react";
+import { VStack, Text, Box, Button, InputGroup, Input } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { adMenuRoutes } from "../components/adRoutes";
 import AccountTab from "../components/Tab";
 import AccountTabPending from "../components/TabPending";
@@ -12,20 +12,26 @@ import { UserStore } from "../../../stores/UserStore";
 import {
   useDisclosure,
 } from "@chakra-ui/react";
-import Notifications from "../components/AdminNotifications";
 
 const Organisations = () => {
   const userStore = UserStore;
-  const orgs = userStore.verifiedOrganisations;
-  const orgsPending = userStore.pendingOrganisations;
   const navigate = useNavigate();
-  const [organisations, setOrganisations] = useState(orgs);
-  const [organisationsPending, setOrganisationsPending] = useState(orgsPending);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [verifiedOrganisations, setVerifiedOrganisations] = useState([]); // state to contain all verified organisations
+  const [searchVerifiedOrganisations, setSearchVerifiedOrganisations] = useState([]); // state to contain all verified organisations when a user is using the search function
+
+  const [unverifiedOrganisations, setUnverifiedOrganisations] = useState([]); // state to contain all unverified organisations
+  const [searchUnverifiedOrganisations, setSearchUnverifiedOrganisations] = useState([]); // state to contain all unverified organisations when a user is using the search function
+
+  const { onOpen } = useDisclosure();
 
   const handleNotificationClicked = () => {
     onOpen();
   };
+
+  useEffect(() => {
+    userStore.adminPopulateOrgList(setVerifiedOrganisations, setUnverifiedOrganisations);
+  }, []);
   
   const handleDelete = userStore.deleteOrganisation;
   const handleVerify = userStore.verifyOrganisation;
@@ -33,13 +39,13 @@ const Organisations = () => {
 
   const handleUserSearch = (e) => {
     if (e.target.value === "") {
-      setOrganisations(orgs);
-      setOrganisationsPending(orgsPending);
+      setSearchVerifiedOrganisations(verifiedOrganisations);
+      setSearchUnverifiedOrganisations(unverifiedOrganisations);
     } else {
-      let results = orgs.filter((el) => el.userId.includes(e.target.value));
-      setOrganisations(results);
-      results = orgsPending.filter((el) => el.userId.includes(e.target.value));
-      setOrganisationsPending(results);
+      let results = verifiedOrganisations.filter((el) => el.userId.includes(e.target.value));
+      setSearchVerifiedOrganisations(results);
+      results = unverifiedOrganisations.filter((el) => el.userId.includes(e.target.value));
+      setSearchUnverifiedOrganisations(results);
     }
   };
 
@@ -48,7 +54,7 @@ const Organisations = () => {
       <Box position="fixed" top="5" left="5" zIndex="1">
         <LogoMenu menuItems={adMenuRoutes} notification={handleNotificationClicked} />
       </Box>
-      <DotPattern position="fixed"/>
+      <DotPattern position="fixed" />
       <VStack
         position="absolute"
         top="140px"
@@ -73,7 +79,7 @@ const Organisations = () => {
               name="userId"
               variant="filled"
               bg="#efefef"
-              placeholder="User ID"
+              placeholder="Organisation Email"
               onChange={(e) => handleUserSearch(e)}
             />
           </InputGroup>
@@ -94,17 +100,25 @@ const Organisations = () => {
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={3} pb="180px">
-              <AccountTab
-                civilians={organisations}
-                handleDelete={handleDelete}
-              />
+              {verifiedOrganisations.length <= 0 ? 
+                "No verified organisations to show."
+              :
+                <AccountTab
+                  verifiedOrganisations={verifiedOrganisations}
+                  handleDelete={handleDelete}
+                />
+              }
             </TabPanel>
             <TabPanel p={0} pt={3} pb="180px">
-                {organisationsPending.length <= 0 ? "Empty":<AccountTabPending
-                organisations={organisationsPending}
-                handleVerify={handleVerify}
-                handleDeny={handleDeny}
-              />}
+              {unverifiedOrganisations.length <= 0 ? 
+                "No organisations awaiting verification."
+              :
+                <AccountTabPending
+                  pendingOrganisations={unverifiedOrganisations}
+                  handleVerify={handleVerify}
+                  handleDeny={handleDeny}
+                />
+              }
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -123,7 +137,6 @@ const Organisations = () => {
           </VStack>
         </VStack>
       </GrayContainer>
-      <Notifications isOpen={isOpen} onClose={onClose}/>
     </Box>
   );
 };
