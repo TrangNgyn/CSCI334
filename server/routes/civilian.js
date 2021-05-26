@@ -3,9 +3,11 @@ const router = express.Router();
 const civilians_controller = require('../controller/civilian');
 const { auth_jwt } = require('../middleware');
 
-// router.post('/add-civ', civilians_controller.post_add_civ);
-router.get('/:email', civilians_controller.get_civ_by_email);
 
+router.get('/alerts',[
+    auth_jwt.verify_token,
+    auth_jwt.is_civilian,
+],civilians_controller.get_alerts)
 
     // router.post('/search-civilian', [
     //     auth_jwt.verify_token,
@@ -51,5 +53,7 @@ router.post('/civ-create-alerts', [
     auth_jwt.verify_token,
     auth_jwt.is_healthcare,
 ], civilians_controller.post_civ_alerts);
+
+
 
 module.exports = router;
