@@ -47,4 +47,9 @@ router.put('/update-vaccination-status', [
     auth_jwt.is_healthcare,
 ], civilians_controller.put_update_vaccine_status);
 
+router.post('/civ-create-alerts', [
+    auth_jwt.verify_token,
+    auth_jwt.is_healthcare,
+], civilians_controller.post_civ_alerts);
+
 module.exports = router;

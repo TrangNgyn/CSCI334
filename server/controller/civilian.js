@@ -51,6 +51,97 @@ class Civilian{
         }
     }
 
+    //middleware functions 
+
+    // find business by ID and create a new alert at that location
+    static find_bus(id) {
+        return new Promise(async resolve => {
+            await db.business.findById(id)
+            .orFail(new Error("Error finding Business"))
+            .then(async business => {
+                var alert = await new db.alert({
+                    business_name: business.business_name,
+                    business_id: business._id,
+                    gps: business.gps
+                })
+                resolve(alert)
+            })
+        })
+    }
+
+    // find all check ins where at the same location within 24 hours
+    static find_check_in(check_in) {
+        return new Promise(async resolve => {
+            // create date that is 24 hours in the future
+            var check_end = new Date(check_in.date) 
+            check_end.setDate(check_end.getDate() + 1)
+            await db.check_in.find({
+                business: check_in.business,
+                civilian: {$ne: check_in.civilian },
+                date: {$gte: check_in.date, 
+                         $lte: check_end}
+            })
+            .then(found_civs => {
+                resolve(found_civs)
+            })
+        })
+    }
+
+    // @route   POST api/user/edit-customer
+    // @desc    edit customer information (not password)
+    // @access  Restricted to signed in customers
+
+    async post_civ_alerts (req,res) {
+        try{
+            let {email} = req.body
+
+            if(!email) 
+                return res.status(404).send(empty_field)
+
+            let date_two_weeks = new Date()
+            date_two_weeks.setDate(date_two_weeks.getDate() - 14)
+
+            if(!email)
+                return res.status(400).send(empty_field)
+            await db.civilian.findOne({email: email})
+            .orFail(err => {
+                return res.status(500).send({
+                    message: err.message
+                })
+            })
+            .then(async civ => {
+                await db.check_in.find({civilian: civ._id, date: {$gte: date_two_weeks}})
+                .then(async checks => {
+                    await Promise.all(checks.map(async check_in => {
+                        // 24 hours later
+
+                        let [alert, civ_checks] = await Promise.all([
+                            Civilian.find_bus(check_in.business),
+                            Civilian.find_check_in(check_in)
+                        ])
+                        await alert.save()
+
+                        await Promise.all(civ_checks.map( async check_in => {
+                            await db.civilian.findById(check_in.civilian)
+                            .orFail(new Error("Error finding Civilian"))
+                            .then(civ => {
+                                civ.alerts.push(alert)
+                                civ.save()
+                            })
+                        }))
+                    }))
+                })
+            })
+            return res.send({
+                message: "New Alerts have been created and the necessary Civilian's have been notified"
+            })
+        } catch(err) {
+            return res.status(500).send({
+                message: err.message
+            })
+        }
+    }
+
     // @route   POST api/civilian/search-civilian
     // @desc    Find a civilian with a specific email
     // @access  Protected
