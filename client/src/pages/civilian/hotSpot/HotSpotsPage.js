@@ -14,6 +14,10 @@ export default function HotSpotsPage({ back }) {
   const [groupedStats, setGroupedStats] = useState([]);
   const mobile = window.innerWidth < 800;
 
+  // victoria data source
+  const VICSource = "https://discover.data.vic.gov.au/dataset/all-victorian-sars-cov-2-cases-by-local-government-area-postcode-and-acquired-source/resource/890da9b3-0976-4de3-8028-e0c22b9a0e09";
+  const NSWSource = "https://data.nsw.gov.au/data/dataset/covid-19-cases-by-location/resource/21304414-1ff1-4243-a5d2-f52778048b29";
+
   // group active cases across NSW/VIC by post code
   function groupStats() {
     let covidCases = [];
@@ -82,6 +86,7 @@ export default function HotSpotsPage({ back }) {
 
       <GrayContainer>
         <VStack w="90%" maxW={{ base: "90%", md: "container.sm" }} spacing="5">
+          <Text>Source: <a href={VICSource} target="_blank">https://discover.data.vic.gov.au/</a> &nbsp;&nbsp;<a href={NSWSource} target="_blank">https://data.nsw.gov.au/</a></Text>
           <Button
             variant="gray"
             maxW="lg"
@@ -95,82 +100,3 @@ export default function HotSpotsPage({ back }) {
     </Box>
   );
 }
-
-// const hotspots = [
-//   {
-//     Lat: -34.4071,
-//     Long: 150.8784,
-//     Marker: "home"
-//   },
-//   {
-//     Lat: -34.4088,
-//     Long: 150.8767,
-//     Marker: "covid"
-//   }
-// ];
-
-// export default function HotSpotsPage({ back }) {
-//   const navigate = useNavigate();
-
-//   window.google.charts.load("current", {
-//     packages: ["map"],
-//     // Note: you will need to get a mapsApiKey for your project.
-//     // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-//     mapsApiKey: "AIzaSyCBf-xWc4IRPv4CGohxINQVO4S7o0EXHoY", //huy's key
-//   });
-//   window.google.charts.setOnLoadCallback(drawChart);
-
-//   function drawChart() {
-//     // var data = window.google.visualization.arrayToDataTable([
-//     //   ["Lat", "Long", "Name", "Marker"],
-//     //   [-34.4071, 150.8784, "Home", "home"],
-//     //   [-34.4088, 150.8767, "COVID-19 infected", "covid"],
-//     // ]);
-
-//     let arr = [["Lat","Long","Marker"]];
-//     hotspots.map((el) =>
-//       arr.push([el.Lat, el.Long, el.Marker])
-//     );
-//     let data = window.google.visualization.arrayToDataTable(arr);
-
-//     let url =
-//       "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/";
-
-//     var options = {
-//       showTooltip: true,
-//       showInfoWindow: true,
-//       useMapTypeControl: true,
-//       icons: {
-//         home: {
-//           normal: url + "Map-Marker-Ball-Azure-icon.png",
-//           selected: url + "Map-Marker-Ball-Right-Azure-icon.png",
-//         },
-//         covid: {
-//           normal: url + "Map-Marker-Ball-Pink-icon.png",
-//           selected: url + "Map-Marker-Ball-Right-Pink-icon.png",
-//         },
-//       },
-//     };
-
-//     var map = new window.google.visualization.Map(
-//       document.getElementById("map_div")
-//     );
-//     map.draw(data, options);
-//   }
-//   return (
-//     <Box h="100vh" layerStyle="mainBG">
-//       <GrayContainer>
-//         <VStack spacing={4} w="100%">
-//           <Text variant="heading" as="h2" m={0}>
-//             Hotspot Map
-//           </Text>
-//           <Text pb={3}>View local viral activity on the map below</Text>
-//           <Box id="map_div" maxW="3xl" w="90%"></Box>
-//           <Button variant="gray"
-//           maxW="lg"
-//           w="90%" onClick={() => navigate(back)}>BACK</Button>
-//         </VStack>
-//       </GrayContainer>
-//     </Box>
-//   );
-// }

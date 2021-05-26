@@ -65,16 +65,16 @@ class Organisation {
     // @access  Protected
 
     async get_org_by_email_status(req, res){
-        const { email, is_verified } = req.body;
+        const { is_verified } = req.body;
 
         // check for empty field
-        if(!email || typeof is_verified === 'undefined'){
+        if(typeof is_verified === 'undefined'){
             return res.json(empty_field);
         }
         
         try{
             db.organisation
-                .findOne({email: email, verified: is_verified}, (err, user) => {
+                .findOne({verified: is_verified}, (err, user) => {
                     if(err)
                         return res.status(500).send({
                             success: false,
@@ -93,6 +93,7 @@ class Organisation {
                             email: user.email,
                             data: {
                                 organisation_name: user.organisation_name,
+                                email: user.email,
                                 verified: user.verified
                             }
                         }

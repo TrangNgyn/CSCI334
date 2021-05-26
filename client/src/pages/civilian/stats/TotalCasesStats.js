@@ -23,7 +23,9 @@ export default function TotalCasesStats() {
       key: "ACT",
       value: userStore.esri_current_totals[0].ACT.toLocaleString(),
     },
-    { key: "NT", value: userStore.esri_current_totals[0].NT.toLocaleString() },
+    { key: "NT", 
+      value: userStore.esri_current_totals[0].NT.toLocaleString() 
+    },
     {
       key: "QLD",
       value: userStore.esri_current_totals[0].QLD.toLocaleString(),

@@ -13,6 +13,9 @@ import TotalTestsStats from "./TotalTestsStats";
 export default function StatsPage() {
   const navigate = useNavigate();
 
+  const esriData = "https://covid19-esriau.hub.arcgis.com/datasets/b2505177db7f4f1f9a7d62e1bba6b53b_0/explore";
+  const NSWSource = "https://data.nsw.gov.au/data/dataset/covid-19-cases-by-location/resource/21304414-1ff1-4243-a5d2-f52778048b29";
+  
   return (
     <Box h="100vh" layerStyle="grayBG">
       <Box position="absolute" h="100%" w="100%" top="40px">
@@ -51,7 +54,7 @@ export default function StatsPage() {
         </Flex>
       </Box>
       <GrayContainer>
-        <VStack spacing="7" w="90%" maxW={{ base: "90%", md: "container.sm" }}>
+        <VStack spacing="2" w="90%" maxW={{ base: "90%", md: "container.sm" }}>
           <Button variant="gray" onClick={() => navigate("/civ/home")}>
             Back
           </Button>

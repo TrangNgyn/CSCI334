@@ -70,7 +70,7 @@ export default function CivilianHome() {
         onClose={onClose}
         isOpen={isOpen}
         alerts={alerts}
-      ></Notifications>
+      />
     </Box>
   );
 }

@@ -40,7 +40,7 @@ function AddVacination({ name, userID }) {
             ))}
           </Select>
           <InputGroup size="md">
-            {/* TO-DO: add isRequired */}
+            
             <Input
               name="date"
               type="date"
