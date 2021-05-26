@@ -182,6 +182,7 @@ is_organisation = (req,res,next) => {
             return res.status(404).send({
                 message: "No user found, Unauthorized"
             })
+            
         db.role.find({
             _id: {$in: user.roles }
         },(err, roles) => {

@@ -3,6 +3,7 @@ import OrgHomePage from "../home/OrgHomePage";
 //import AddEmployeePage from "../addEmp/AddEmployeePage";
 import AddEmployeeManualPage from "../addEmp/AddEmployeeManualPage";
 import RemoveEmployeeManualPage from "../addEmp/RemoveEmployeeManualPage";
+import StatsPage from "../../organisation/stats/StatsPage";
 
 export const orgRoutes = [
   {
@@ -21,6 +22,10 @@ export const orgRoutes = [
     path: "/org/removeemp",
     element: <RemoveEmployeeManualPage />,
   },
+  {
+    path: "/org/empstats",
+    element: <StatsPage />
+  },
 ];
 
 export const orgMenuRoutes = [
@@ -31,5 +36,9 @@ export const orgMenuRoutes = [
   {
     title: "Remove Employee",
     path: "/org/removeemp",
+  },
+  {
+    title: "Employee Stats",
+    path: "/org/empstats",
   },
 ];

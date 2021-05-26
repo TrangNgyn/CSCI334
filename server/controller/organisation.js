@@ -179,6 +179,7 @@ class Organisation {
             .then(async business => {
                 const alert = await new db.alert({
                     business_name: business.business_name,
+                    business_address: business.address,
                     business_id: business._id,
                     gps: business.gps
                 })
@@ -221,6 +222,48 @@ class Organisation {
                 return res.status(500).send({
                     message: err.message
                 })
+        }
+    }
+
+    // @route   GET api/organisation/get-org-employees
+    // @desc    Get the org's employee stats
+    // @access  Protected
+    
+
+    async get_org_employees(req,res) {
+        try{
+            // only return business_name and address orgs don't need any more
+            await db.organisation
+            .findById(req.user_id).populate("employees").select("organisation_name employees")
+            .then(found => {
+                let emp_ids = found.employees.filter(e => e._id);
+                let registered = found.employees.length;
+
+                let vaccinated = 0;
+                found.employees.array.forEach(e => {
+                    if(e.vaccine !== {}){
+                        vaccinated++;
+                    }
+                });
+
+                return res.send({
+                    success: true,
+                    organisation_name: found.organisation_name,
+                    emp_ids,
+                    registered,
+                    vaccinated
+                })
+            })
+            .catch(err => {
+                return res.status(500).send({
+                    message: err.message
+                })
+            })
+            
+        } catch(err) {
+            return res.status(500).send({
+                message: err.message
+            })
         }
     }
 }
