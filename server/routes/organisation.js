@@ -29,4 +29,9 @@ router.post('/get-org-employees', [
     auth_jwt.is_organisation, 
 ],organisation_controller.get_org_employees)
 
+router.get('/employee-count',[
+    auth_jwt.verify_token,
+    auth_jwt.is_organisation,
+],organisation_controller.get_employee_count)
+
 module.exports = router;
