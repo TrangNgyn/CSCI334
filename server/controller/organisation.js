@@ -7,7 +7,7 @@ const empty_field = {
 
 class Organisation {
 
-    // @route   POST api/civilian/update-org-status
+    // @route   POST api/organisation/update-org-status
     // @desc    Update the verification status of an org
     // @access  Protected
 
@@ -60,7 +60,7 @@ class Organisation {
         }
     }
 
-    // @route   POST api/civilian/get-org-by-email-status
+    // @route   POST api/organisation/get-org-by-email-status
     // @desc    Get a verified org by email and verification status
     // @access  Protected
 
@@ -133,7 +133,7 @@ class Organisation {
         
     }
 
-    // @route   GET api/civilian/get-business-details
+    // @route   GET api/organisation/get-business-details
     // @desc    Get all business details so the FE can search them and create an alert
     // @access  Protected
     
@@ -158,7 +158,27 @@ class Organisation {
         }
     }
 
-    // @route   POST api/civilian/create-alert
+    // @route   GET api/organisaiton/employee-count
+    // @desc    get total amount of employees for organisation
+    // @access  Protected
+
+    async get_employee_count(req,res) {
+        try{
+            await db.organisation.findById(req.user_id)
+                .then(found => {
+                    return res.send({
+                        total_emp: found.employees.length
+                    })
+                })
+        } catch(err) {
+            return res.status(500).send({
+                message: err.message
+            })
+        }
+    }
+    
+
+    // @route   POST api/organisation/create-alert
     // @desc    Create a new alert
     // @access  Protected
 

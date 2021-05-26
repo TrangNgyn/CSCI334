@@ -24,4 +24,9 @@ router.post('/create-alert', [
     auth_jwt.is_organisation, 
 ],organisation_controller.post_create_alert)
 
+router.get('/employee-count',[
+    auth_jwt.verify_token,
+    auth_jwt.is_organisation,
+],organisation_controller.get_employee_count)
+
 module.exports = router;
