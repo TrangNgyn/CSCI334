@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const AccountTab = ({ verifiedOrganisations, handleDelete }) => {
+const AccountTab = ({ verifiedOrganisations, handleOrganisationVerification, setUpdateOrgList }) => {
   const [organisation, setOrganisation] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleClick = (org) => {
@@ -27,15 +27,17 @@ const AccountTab = ({ verifiedOrganisations, handleDelete }) => {
     onOpen();
   };
 
-  const handleDeleteBtnClicked = () => {
-    handleDelete(organisation);
+  const handleRevokeBtnClicked = () => {
+    handleOrganisationVerification(organisation.email, false); // revoke a verified organisations account and deactivate their account
     onClose();
+    setUpdateOrgList(true);
   }
 
   return (
     <VStack w="100%" p="0">
       {verifiedOrganisations.map((el) => (
         <Flex
+          key={el.email}
           bg="white"
           align="center"
           w="80%"
@@ -43,23 +45,24 @@ const AccountTab = ({ verifiedOrganisations, handleDelete }) => {
           rounded="lg"
           p="4"
           boxShadow="lg"
+          cursor="pointer"
           onClick={() => handleClick(el)}
         >
           <VStack align="left">
             <Text as="h3" m={0}>
               {el.email}
             </Text>
-            <Text m={0}>#{el.name}</Text>
+            <Text m={0}>{el.organisation_name}</Text>
           </VStack>
         </Flex>
       ))}
       <Drawer onClose={onClose} isOpen={isOpen} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>{organisation.name}</DrawerHeader>
+          <DrawerHeader>{organisation.email}</DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="left">
-              <Text m={0}>{organisation.email}</Text>
+              <Text m={0}>{organisation.organisation_name}</Text>
             </VStack>
           </DrawerBody>
           <DrawerFooter>
@@ -69,18 +72,18 @@ const AccountTab = ({ verifiedOrganisations, handleDelete }) => {
               </Button>
               <Popover>
                 <PopoverTrigger>
-                  <Button variant="red">Delete</Button>
+                  <Button variant="red">Revoke Organisation</Button>
                 </PopoverTrigger>
                 <PopoverContent border={0}>
                   <PopoverArrow />
-                  <PopoverHeader>Delete warning!</PopoverHeader>
+                  <PopoverHeader>Revoke privilege warning!</PopoverHeader>
                   <PopoverCloseButton />
                   <PopoverBody>
                     <VStack spacing={4}>
                       <Text m={0}>
-                        Are you sure you want to delete this user?
+                        Are you sure you want to revoke this users organisation status?
                       </Text>
-                      <Button variant="red" onClick={handleDeleteBtnClicked}>Yes</Button>
+                      <Button variant="red" onClick={handleRevokeBtnClicked}>Yes</Button>
                     </VStack>
                   </PopoverBody>
                 </PopoverContent>

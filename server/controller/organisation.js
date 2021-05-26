@@ -21,7 +21,7 @@ class Organisation {
             }
             
             // find the civ by email          
-            // and set is healthcare to fase
+            // and set is healthcare to false
             db.organisation.findOne({email: email}, (err, org) => {
                 if(err)
                     return res.status(500).send({
@@ -34,12 +34,20 @@ class Organisation {
                     })
                
                 org.verified = is_verified;
-
-                return res.send({
-                    success: true,
-                    message: "Healthcare organisation's verification status updated",
-                    verified: org.verified
-                })
+                
+                org.save(err => {
+                    if(err)
+                        return res.status(500).json({
+                            success: false,
+                            message: err.message
+                        });
+                    
+                    return res.send({
+                        success: true,
+                        message: "Healthcare organisation's verification status succesfully updated.",
+                        verified: org.verified
+                    });
+                })              
                 
             })          
         }catch(err){
