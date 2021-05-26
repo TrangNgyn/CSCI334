@@ -17,10 +17,10 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
-import React from "react";
+import { useState } from "react";
 
-const AccountTabPending = ({ organisations, handleVerify, handleDeny }) => {
-    const [organisation, setOrganisation] = React.useState(organisations[0]);
+const AccountTabPending = ({ pendingOrganisations, handleVerify, handleDeny }) => {
+    const [organisation, setOrganisation] = useState(pendingOrganisations[0]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const handleClick = (civ) => {
       setOrganisation(civ);
@@ -39,7 +39,7 @@ const AccountTabPending = ({ organisations, handleVerify, handleDeny }) => {
   
     return (
     <VStack w="100%" p="0">
-      {organisations.map((el) => (
+      {pendingOrganisations.map((el) => (
         <Flex
           bg="white"
           align="center"
@@ -52,19 +52,19 @@ const AccountTabPending = ({ organisations, handleVerify, handleDeny }) => {
         >
           <VStack align="left">
             <Text as="h3" m={0}>
-              {el.name}
+              {el.email}
             </Text>
-            <Text m={0}>#{el.userId}</Text>
+            <Text m={0}>{el.name}</Text>
           </VStack>
         </Flex>
       ))}
       <Drawer onClose={onClose} isOpen={isOpen} size={"lg"}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>{organisation.name}</DrawerHeader>
+          <DrawerHeader>{organisation.email}</DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="left">
-              <Text m={0}>#{organisation.userId}</Text>
+              <Text m={0}>{organisation.name}</Text>
             </VStack>
           </DrawerBody>
           <DrawerFooter>

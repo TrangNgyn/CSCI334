@@ -19,8 +19,8 @@ import {
 } from "@chakra-ui/react";
 
 export default function AdminHome() {
-  const userStore = UserStore;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  //const userStore = UserStore;
+  const { onOpen } = useDisclosure();
 
   const handleNotificationClicked = () => {
     onOpen();
@@ -44,7 +44,7 @@ export default function AdminHome() {
           </VStack>
         </Center>
       </Box>
-      <Drawer onClose={onClose} isOpen={isOpen} size={"lg"} zIndex="0">
+      {/* <Drawer onClose={onClose} isOpen={isOpen} size={"lg"} zIndex="0">
         <DrawerOverlay/>
         <DrawerContent bg="#EFEFEF" overflow="scroll">
           <DrawerHeader>Notifications</DrawerHeader>
@@ -69,7 +69,7 @@ export default function AdminHome() {
             </VStack>
           </DrawerFooter>
         </DrawerContent>
-      </Drawer>
+      </Drawer> */}
     </Box>
   );
 }

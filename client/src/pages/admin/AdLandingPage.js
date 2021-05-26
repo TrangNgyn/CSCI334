@@ -9,11 +9,10 @@ import { useNavigate } from "react-router";
 import {
   useDisclosure,
 } from "@chakra-ui/react";
-import Notifications from "./components/AdminNotifications";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
 
   const handleNotificationClicked = () => {
     onOpen();
@@ -41,7 +40,6 @@ export default function LandingPage() {
           </VStack>
         </VStack>
       </GrayContainer>
-      <Notifications isOpen={isOpen} onClose={onClose}/>
       
     </Box>
   );
