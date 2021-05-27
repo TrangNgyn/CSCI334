@@ -29,18 +29,29 @@ function ToastStatusMessageWrapper({...props}) {
       });
     }
 
+
     useEffect(() => {
-      if(userStore.successMSG || userStore.successMSG.length > 0) {
+
+      
+    if(userStore.successMSG){
+      if(userStore.successMSG.length > 0){
         returnSuccessToast();
         userStore.setProperty('successMSG', "");
       }
-    }, [userStore.successMSG]);
+    }
+
+
+    //   if(userStore.successMSG || userStore.successMSG.length > 0) {
+    //     returnSuccessToast();
+    //     userStore.setProperty('successMSG', "");
+    //   }
+    // }, [userStore.successMSG]);
   
-    useEffect(() => {
-      if(userStore.errorMSG.length > 0) {
-        returnWarningToast();
-        userStore.setProperty('errorMSG', "");
-      } 
+    // useEffect(() => {
+    //   if(userStore.errorMSG.length > 0) {
+    //     returnWarningToast();
+    //     userStore.setProperty('errorMSG', "");
+    //   } 
     }, [userStore.errorMSG]);
 
     return(
