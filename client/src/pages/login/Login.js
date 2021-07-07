@@ -9,13 +9,15 @@ import {
 import React, { useState } from "react";
 import SignUp from "./SignUp";
 import LogoIcon from "../../components/LogoMenu/LogoIcon";
+import { UserStore } from "../../stores/UserStore";
 import { observer } from "mobx-react";
 import DotPattern from "../../components/DotPattern";
 import InputWrapper from "../../components/InputWrapper";
 import ButtonWrapper from "../../components/ButtonWrapper";
 import ToastStatusMessageWrapper from "../../components/ToastStatusMessageWrapper";
 
-function Login({ userStore }) {
+function Login() {
+  const userStore = UserStore;
   const [signUp, setSignUp] = useState(false);
 
   const handleLogin = (e) => {

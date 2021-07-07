@@ -29,29 +29,22 @@ function ToastStatusMessageWrapper({...props}) {
       });
     }
 
+    useEffect(() => {    
+      if(userStore.successMSG){
+        if(userStore.successMSG.length > 0){
+          returnSuccessToast();
+          userStore.setProperty('successMSG', "");
+        }
+      }
+    }, [userStore.successMSG]);
 
     useEffect(() => {
-
-      
-    if(userStore.successMSG){
-      if(userStore.successMSG.length > 0){
-        returnSuccessToast();
-        userStore.setProperty('successMSG', "");
+      if(userStore.errorMSG){
+        if(userStore.errorMSG.length > 0) {
+          returnWarningToast();
+          userStore.setProperty('errorMSG', "");
+        } 
       }
-    }
-
-
-    //   if(userStore.successMSG || userStore.successMSG.length > 0) {
-    //     returnSuccessToast();
-    //     userStore.setProperty('successMSG', "");
-    //   }
-    // }, [userStore.successMSG]);
-  
-    // useEffect(() => {
-    //   if(userStore.errorMSG.length > 0) {
-    //     returnWarningToast();
-    //     userStore.setProperty('errorMSG', "");
-    //   } 
     }, [userStore.errorMSG]);
 
     return(

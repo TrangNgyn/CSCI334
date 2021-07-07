@@ -46,7 +46,6 @@ const FindUserPage = () => {
           w="100%"
           justify="center"
           position="absolute"
-          top="140px"
         >
           <Box
             bg="white"

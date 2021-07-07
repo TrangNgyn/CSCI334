@@ -8,11 +8,11 @@ const App = () => {
   const userStore = UserStore;
 
   if (!userStore.isLoggedIn) {
-    return <Login userStore={userStore} />;
+    return <Login />;
   } else {
     return (
       <Router>
-        <AppRouting userStore={userStore} />
+        <AppRouting />
       </Router>
     );
   }

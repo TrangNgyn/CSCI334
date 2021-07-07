@@ -5,8 +5,8 @@ const hash = require("hash.js");
 
 class UserStoreImpl {
   id = "";
-  email = "Tiffany-April@gmail.com";
-  password = "555555";
+  email = "Robert-Desean@gmail.com";
+  password = "jordan";
   accType = "civilian";
   first_name = "";
   last_name = "";
@@ -340,6 +340,7 @@ class UserStoreImpl {
     this.email = "";
     this.password = "";
     this.accType = "civilian";
+    this.isLoggedIn = false;
     this.first_name = "";
     this.last_name = "";
     this.certs = [];
@@ -835,15 +836,16 @@ class UserStoreImpl {
       .then((res) => res.json())
       .then((json) => {
         runInAction(() => {
-          if (json.success) {
+          if (!json.success) {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+            this.isLoggedIn = false;
+          } else { 
             this.alerts = [];
             this.errorMSG = "";
             this.alerts = json.found.alerts;
             this.isLoading = false;
             this.isLoggedIn = true;
-          } else {
-            this.errorMSG = json.message;
-            this.isLoading = false;
           }
         });
       })
@@ -851,6 +853,7 @@ class UserStoreImpl {
         runInAction(() => {
           this.errorMSG = err;
           this.isLoading = false;
+          this.isLoggedIn = false;
         });
       });
   };
@@ -870,8 +873,16 @@ class UserStoreImpl {
       .then((res) => res.json())
       .then((json) => {
         runInAction(() => {
-          if (json.success) {
+          if (!json.success) {
+            this.errorMSG = json.message;
+            this.isLoading = false;
+            this.isLoggedIn = false;
+
+          } else {
+            // set error/success message
             this.errorMSG = "";
+            this.successMSG = "Successfully signed in";
+            
             this.access_token = json.access_token; // store authentication/access token for allowing to stay signed in for a certain amount of time
             this.expires_in = json.expires_in; // store time in seconds before token expires
             this.roles = json.roles; // get a users roles, e.g. civilian, business etc.
@@ -887,26 +898,30 @@ class UserStoreImpl {
             this.isHealthCare = json.is_healthcare_worker;
             this.isLoading = false;
             this.isLoggedIn = true;
-          } else {
-            this.errorMSG = json.message;
-            this.isLoading = false;
+        
+            // retrieve notifications if user is civilian or healthcare
+            if(this.accType === "civilian" || this.accType === "healthcare"){
+              this.getCovidAlerts();
+            }
+              
           }
+          
         });
-      }).then(() => {
-        if(this.accType === "civilian")
-          this.getCovidAlerts();
       })
       .catch((err) => {
         runInAction(() => {
           this.errorMSG = err;
           this.isLoading = false;
+          this.isLoggedIn = false;       
         });
       });
   };
 
   doLogout = () => {
-    this.isLoggedIn = false;
-    this.resetState();
+    runInAction(() => {
+      this.isLoggedIn = false;
+      this.resetState();
+    });
   };
 
   doSignUp = () => {
