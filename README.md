@@ -1,70 +1,127 @@
-# Getting Started with Create React App
+# Getting Started with Trace Response
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created using the MERN stack and hosted on AWS
 
-## Available Scripts
+## Demo Link
 
-In the project directory, you can run:
+https://
 
-### `npm start`
+## About the project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The focus of this project is to develop a web-based COVID-19 contact-tracing and vaccine-rollout support system.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Trace Response is a simulation web app that supports the following key aspects:
 
-### `npm test`
+1. Support and manage different types of users and user profiles.
+2. Support and manage contact tracing.
+3. Support and manage alerts.
+4. Support and manage vaccine rolling out.
+5. Support and manage vaccine certifications.
+6. Manage and generate various relevant reports and statistics.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Targetted Users
 
-### `npm run build`
+1. Civilians: A diverse group of people with enough expertise in technology to use the Internet to access the system.
+2. Businesses: Commercial enterprises offering their services or products to the public who have enough technical skills to utilize the system.
+3. Healthcare Professionals: Trained experts who are knowledgeable about contact tracing and vaccination processes. A healthcare professional is also a Civilian so he/she has all functionalities of a Civilian.
+4. Organisations (Healthcare Organisation): People who have authority to issue important information to the public and manage healthcare professionals. An Organisation can promote/demote a Civilian to a Healthcare Professional.
+5. Admin: There is one and only one Admin account in the system. This account is used to verify Organisation accounts.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Key Functionalities
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<table>
+    <thead>
+        <tr>
+            <th>Actor</th>
+            <th>Product Functions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Civilian</td>
+            <td>
+                <ul>
+                    <li>Register for an account</li>
+                    <li>Sign in/sign out</li>
+                    <li>Check in to a location</li>
+                    <li>Check in dependents</li>
+                    <li>View COVID-19 case information Australia-wide</li>
+                    <li>View Australia-wide Hotspot Map</li>
+                    <li>View their vaccine certification</li>
+                    <li>View vaccine rollout information</li>
+                    <li>Receive contact-tracing alert</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Healthcare Professional</td>
+            <td>
+                <ul>
+                    <li>All Civilian's functionalities</li>
+                    <li>Add/Update a Civilian's vaccination certificate by email</li>
+                    <li>Flag a Civilian as infected</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Business</td>
+            <td>
+                <ul>
+                    <li>Register for an Account</li>
+                    <li>Sign in/sign out</li>
+                    <li>Receive and View a QR code</li>
+                    <li>Print the QR code</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Organisation</td>
+            <td>
+                <ul>
+                    <li>Request to Register for an Account</li>
+                    <li>Sign in/sign out (when verified)</li>
+                    <li>Add an employee (Promote a Civilian account)</li>
+                    <li>Remove an employee (Demote a Healthcare Professional account)</li>
+                    <li>View overall employee statistics</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Admin</td>
+            <td>
+                <ul>
+                    <li>View Organisations' Registration Requests</li>
+                    <li>Verify an Organisation</li>
+                    <li>Search for an Organisation by email</li>
+                    <li>View all verified Organisation</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<ins>Note: </ins>
 
-### `npm run eject`
+- To register for an Organisation account, the user needs to make a request through the Login page, then wait for confirmation from the root account (Admin account).
+- A user cannot sign up as a Healthcare Professional. However, they can request an Organisation to promote their account to have Healthcare Professional access, or demote their account to a Civilian account.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Data Sources
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### User Profile Test Cases
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- To test the web app and simulate how Trace Response will be used, the test data was generated and imported into the database using the data scripts located in server/data_scripts
+- Emails, names and passwords are generated randomly from a pool as located in folder server/data_scripts/random_files
+- Generated logins are recorded in bus-logins (Business users), civ-logins (Civilian users), and org-logins (Organisation users).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Australia-wide COVID-19 Case and Vaccination Datasets
 
-## Learn More
+The datasets for the number of cases in Australia by states, the number of vaccinations, and vaccination rollout information are retreived from the following sources:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Australia OWID COVID-19 Data : https://github.com/owid/covid-19-data/tree/master/public/data
+2. ESRI Australia COVID-19 Cases : https://covid19-esriau.hub.arcgis.com/datasets/esriau::historical-cases-deaths-tests-by-state/about
+3. Confirmed cases by locations : https://data.nsw.gov.au/search/dataset/ds-nsw-ckan-aefcde60-3b0c-4bc0-9af1-6fe652944ec2/details?q=
+4. victoria's Confirmed Cases : https://www.dhhs.vic.gov.au/ncov-covid-cases-by-lga-source-csv
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<ins>Note:</ins>
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- For the owid dataset you need to manually remove all rows that are not from Australia and you need to change the date format from the default "/" to "YYYY-MM-DD" inside the csv document.

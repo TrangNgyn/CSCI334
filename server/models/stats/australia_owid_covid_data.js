@@ -89,7 +89,11 @@ const aus_owid_data_schema = new Schema({
     human_development_index: {
         type: Number,
         default: 0
-    }
+    },
+    new_vaccinations: {
+        type: Number,
+        default: 0
+    },
 },
     {
         collection: 'australia_owid_covid_data'
