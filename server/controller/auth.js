@@ -1,7 +1,7 @@
 const config = require('../config/auth_config'),
     db = require('../models/db'),
     jwt = require('jsonwebtoken'),
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcryptjs');
     user_controllers = require('./user_controllers')
 
 var salt_rounds = 12;

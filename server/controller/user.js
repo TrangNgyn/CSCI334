@@ -5,7 +5,7 @@ const db = require('../models/db'),
       email = process.env.MAILER_EMAIL_ID,
       pass = process.env.MAILER_PASSWORD,
       path = require('path'),
-      bcrypt = require('bcrypt')
+      bcrypt = require('bcryptjs')
 
 var empty_field = {
     message: "All fields must be filled and present"
