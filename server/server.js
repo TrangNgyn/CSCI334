@@ -72,17 +72,17 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api/user',user)
-app.use('/api/alert',alert)
-app.use('/api/check-in',check_in)
+app.use('/alert',alert)
+app.use('/check-in',check_in)
 
 cron_jobs.task.start()
 
-app.use('/api/auth',auth);
-app.use('/api/business',business);
-app.use('/api/civilian', civilian);
-app.use('/api/organisation', organisation);
-app.use('/api/stats', stats);
-app.use('/api/organisation', org)
+app.use('/auth',auth);
+app.use('/business',business);
+app.use('/civilian', civilian);
+app.use('/organisation', organisation);
+app.use('/stats', stats);
+app.use('/organisation', org)
 
 // make server object that contain port property and the value for our server.
 const server = {

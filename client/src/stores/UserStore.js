@@ -614,7 +614,6 @@ class UserStoreImpl {
           if (json.success) {
             this.errorMSG = "";
             this.ausData14Days = json.aus_14days;
-            console.log(json.aus_14days);
             this.isLoading = false;
           } else {
             this.errorMSG = json.message;
