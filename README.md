@@ -4,7 +4,7 @@ This project was created using the MERN stack and hosted on AWS
 
 ## Demo Link
 
-https://
+http://csci334.s3-website-ap-southeast-2.amazonaws.com/
 
 ## About the project
 
