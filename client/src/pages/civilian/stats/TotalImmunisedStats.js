@@ -17,22 +17,25 @@ export default function TotalImmunisedStats() {
     };
   });
 
-  // get the last element in the array (today), convert to locale string to give commas to the number
+  // get the last element in the array (today),
+  // convert to locale string to give commas to the number
   const totalVaccinations =
-    userStore.total_vaccinations[
-      userStore.total_vaccinations.length - 1
-    ].total_vaccinations.toLocaleString();
+    userStore
+      .total_vaccinations[userStore.total_vaccinations.length - 1]
+      .total_vaccinations.toLocaleString();
 
   const vaccinationsToday = {
     date: moment(
-      userStore.ausData14Days[userStore.ausData14Days.length - 1].date
+      userStore
+        .ausData14Days[userStore.ausData14Days.length - 1]
+        .date
     )
       .local()
       .format("YYYY-MM-DD"),
     new_vaccinations:
-      userStore.ausData14Days[
-        userStore.ausData14Days.length - 1
-      ].new_vaccinations.toLocaleString(),
+      userStore
+        .ausData14Days[userStore.ausData14Days.length - 1]
+        .new_vaccinations.toLocaleString(),
   };
 
   console.log(vaccinationsToday);

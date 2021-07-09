@@ -137,7 +137,7 @@ class UserStoreImpl {
   // fetch org's employee stats
   orgEmployeeStats = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/organisation/get-org-employees", {
+    fetch("/api/organisation/get-org-employees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -181,7 +181,7 @@ class UserStoreImpl {
   // healthcare worker confirm positive case of covid in a civilian
   confirmCovidCase = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/civ-create-alerts", {
+    fetch("/api/civilian/civ-create-alerts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -219,7 +219,7 @@ class UserStoreImpl {
   // admin account approve and revoke organisation account status
   updateOrganisationVerification = (email, verified) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/organisation/update-org-status", {
+    fetch("/api/organisation/update-org-status", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -259,7 +259,7 @@ class UserStoreImpl {
 
   addEmployee = (userEmail) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/promote-civilian", {
+    fetch("/api/civilian/promote-civilian", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -298,7 +298,7 @@ class UserStoreImpl {
 
   removeEmployee = (userEmail) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/demote-healthcare", {
+    fetch("/api/civilian/demote-healthcare", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -356,7 +356,7 @@ class UserStoreImpl {
 
   adminPopulateOrgList = (setVerifiedOrgList, setUnverifiedOrgList) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/organisation/get-org-by-status", {
+    fetch("/api/organisation/get-org-by-status", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -393,7 +393,7 @@ class UserStoreImpl {
 
   healthCareSearchUser = (userEmail) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/healthcare-search-user", {
+    fetch("/api/civilian/healthcare-search-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -429,7 +429,7 @@ class UserStoreImpl {
 
   healthCareGetVaccineStatus = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/retrieve-vaccination-status", {
+    fetch("/api/civilian/retrieve-vaccination-status", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -470,7 +470,7 @@ class UserStoreImpl {
     doses_received
   ) => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/update-vaccination-status", {
+    fetch("/api/civilian/update-vaccination-status", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -510,7 +510,7 @@ class UserStoreImpl {
 
   getActiveCases = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/confirmed-cases-14days", {
+    fetch("/api/stats/confirmed-cases-14days", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -541,7 +541,7 @@ class UserStoreImpl {
   // get vaccine locations for Victoria (only state to release a dataset with vaccine locations)
   getVaccineLocations = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-vic-vaccine-locations", {
+    fetch("/api/stats/get-vic-vaccine-locations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -571,7 +571,7 @@ class UserStoreImpl {
 
   getAusData = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-aus-data", {
+    fetch("/api/stats/get-aus-data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -601,7 +601,7 @@ class UserStoreImpl {
 
   getAusData14Days = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-aus-confirmed-cases-14days", {
+    fetch("/api/stats/get-aus-confirmed-cases-14days", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -632,7 +632,7 @@ class UserStoreImpl {
 
   getEsriData = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-esri-data", {
+    fetch("/api/stats/get-esri-data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -662,7 +662,7 @@ class UserStoreImpl {
 
   getRecentVicCases = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-vic-confirmed-cases-14days", {
+    fetch("/api/stats/get-vic-confirmed-cases-14days", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -692,7 +692,7 @@ class UserStoreImpl {
 
   getCurrentTotals = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-current-totals-data", {
+    fetch("/api/stats/get-current-totals-data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -722,7 +722,7 @@ class UserStoreImpl {
 
   getTotalVaccinations = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/stats/get-aus-total-vaccinations", {
+    fetch("/api/stats/get-aus-total-vaccinations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -753,7 +753,7 @@ class UserStoreImpl {
   // get business by id for check in
   getBusiness = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/business/get_business", {
+    fetch("/api/business/get_business", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -791,7 +791,7 @@ class UserStoreImpl {
 
   doCheckIn = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/check-in/create-check-in", {
+    fetch("/api/check-in/create-check-in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -827,7 +827,7 @@ class UserStoreImpl {
   // get alerts for a user account on login
   getCovidAlerts = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/civilian/alerts", {
+    fetch("/api/civilian/alerts", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -861,7 +861,7 @@ class UserStoreImpl {
 
   doLogin = () => {
     this.preFetchOperations();
-    fetch("http://localhost:5000/api/auth/sign_in", {
+    fetch("/api/auth/sign_in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -947,7 +947,7 @@ class UserStoreImpl {
 
     // method used for user sign up
     const signUp = () => {
-      fetch("http://localhost:5000/api/auth/sign_up", {
+      fetch("/api/auth/sign_up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -995,7 +995,7 @@ class UserStoreImpl {
 
     // method used for user business sign up
     const signUpCallbackBusiness = (qr_code_url, business_id) => {
-      fetch("http://localhost:5000/api/auth/sign_up", {
+      fetch("/api/auth/sign_up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

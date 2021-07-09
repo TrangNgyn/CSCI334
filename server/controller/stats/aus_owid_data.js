@@ -64,7 +64,7 @@ class AusOWIDData {
         .then(docs => {
             if(!docs){
                 return res.status(404).send({
-                    success: true,
+                    success: false,
                     message: 'No record found.'
                 })
             }
