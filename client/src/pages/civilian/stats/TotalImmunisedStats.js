@@ -35,6 +35,8 @@ export default function TotalImmunisedStats() {
       ].new_vaccinations.toLocaleString(),
   };
 
+  console.log(vaccinationsToday);
+
   // sum the total number of vaccinations over the past 14 days
   function getRecentVaccinations() {
     let temp = 0;

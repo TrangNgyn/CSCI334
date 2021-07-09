@@ -18,6 +18,10 @@ const aus_owid_data_schema = new Schema({
         type: Date,
         default: Date.now()
     },
+    new_vaccinations: {
+        type: Number,
+        default: 0,
+    },
     total_cases: {
         type: Number,
         default: 0,
