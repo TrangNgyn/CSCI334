@@ -1,5 +1,5 @@
 var data = require('./load_data')
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var db = require('../models/db')
 var fs = require('fs')
 const path = require('path');

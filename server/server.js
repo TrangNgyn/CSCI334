@@ -70,9 +70,9 @@ app.use(function(req, res, next) {
   next(); 
 });
 
-app.use('/api/user',user)
-app.use('/api/alert',alert)
-app.use('/api/check-in',check_in)
+app.use('/user',user)
+app.use('/alert',alert)
+app.use('/check-in',check_in)
 
 cron_jobs.task.start()
 

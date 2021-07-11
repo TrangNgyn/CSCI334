@@ -112,6 +112,12 @@ Trace Response is a simulation web app that supports the following key aspects:
 - To test the web app and simulate how Trace Response will be used, the test data was generated and imported into the database using the data scripts located in server/data_scripts
 - Emails, names and passwords are generated randomly from a pool as located in folder server/data_scripts/random_files
 - Generated logins are recorded in bus-logins (Business users), civ-logins (Civilian users), and org-logins (Organisation users).
+- Generated users include:
+  - 500 Civilian accounts
+  - 500 verified Healthcare Professional accounts
+  - 1000 Business accounts
+  - 100 verified Organisation accounts
+  - 1 Admin account
 
 ### Australia-wide COVID-19 Case and Vaccination Datasets
 
@@ -125,3 +131,5 @@ The datasets for the number of cases in Australia by states, the number of vacci
 <ins>Note:</ins>
 
 - For the owid dataset you need to manually remove all rows that are not from Australia and you need to change the date format from the default "/" to "YYYY-MM-DD" inside the csv document.
+
+## In-app Screenshots
