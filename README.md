@@ -136,22 +136,28 @@ The datasets for the number of cases in Australia by states, the number of vacci
 
 ##### 1. Log-in Page
 
-   <img alt="Login Page" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Login.png" width="60%" />
+   <img alt="Login Page" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Login.png" width="50%" />
 
-2. Healthcare Worker's Homepage
-   ![Healthcare Worker's Homepage](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareHomepage.png?raw=true)
+##### 2. Healthcare Worker's Homepage
 
-3. Healthcare Tools
-   ![Healthcare Tools](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareTools.png?raw=true)
+   <img alt="Healthcare Worker's Homepage" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareHomepage.png" width="50%" />
 
-4. Business' QR Code
-   ![QR Code](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/QRCode.png?raw=true)
+##### 3. Healthcare Tools
 
-5. Dependant Check-in Page
-   ![Dependant Check-in](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/CheckinDependants.png?raw=true)
+   <img alt="Healthcare Tools" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareTools.png" width="50%" />
 
-6. Roll Out Information
-   ![Roll Out Information](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/RolloutInfo.png?raw=true)
+#### 4. Business' QR Code
 
-7. Demoting Healthcare Account / Remove Employee from Organisation
-   ![Remove Employee](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/OrgRemoveEmp.png?raw=true)
+   <img alt="QR Code" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/QRCode.png" width="50%" />
+
+#### 5. Dependant Check-in Page
+
+   <img alt="Dependant Check-in" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/CheckinDependants.png" width="50%" />
+
+#### 6. Roll Out Information
+
+   <img alt="Roll Out Information" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/RolloutInfo.png" width="50%" />
+
+#### 7. Demoting Healthcare Account / Remove Employee from Organisation
+
+   <img alt="Remove Employee" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/OrgRemoveEmp.png" width="50%" />
