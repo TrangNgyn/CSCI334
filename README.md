@@ -132,4 +132,25 @@ The datasets for the number of cases in Australia by states, the number of vacci
 
 - For the owid dataset you need to manually remove all rows that are not from Australia and you need to change the date format from the default "/" to "YYYY-MM-DD" inside the csv document.
 
-## In-app Screenshots
+## Some In-app Screenshots
+
+1. Log-in Page
+   ![Login Page](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Login.png?raw=true)
+
+2. Healthcare Worker's Homepage
+   ![Healthcare Worker's Homepage](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareHomepage.png?raw=true)
+
+3. Healthcare Tools
+   ![Healthcare Tools](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareTools.png?raw=true)
+
+4. Business' QR Code
+   ![QR Code](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/QRCode.png?raw=true)
+
+5. Dependant Check-in Page
+   ![Dependant Check-in](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/CheckinDependants.png?raw=true)
+
+6. Roll Out Information
+   ![Roll Out Information](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/RolloutInfo.png?raw=true)
+
+7. Demoting Healthcare Account / Remove Employee from Organisation
+   ![Remove Employee](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/OrgRemoveEmp.png?raw=true)
