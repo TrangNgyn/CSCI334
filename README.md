@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Trace Response Logo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" />
+    <img alt="Trace Response Logo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="30%" />
 </p>
 
 # Getting Started
