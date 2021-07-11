@@ -1,4 +1,8 @@
-# Getting Started with Trace Response
+<div style="text-align: center;">
+    <img alt="Trace ResponseLogo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" />
+</div>
+
+# Getting Started
 
 This project was created using the MERN stack and hosted on AWS
 
@@ -132,7 +136,7 @@ The datasets for the number of cases in Australia by states, the number of vacci
 
 - For the owid dataset you need to manually remove all rows that are not from Australia and you need to change the date format from the default "/" to "YYYY-MM-DD" inside the csv document.
 
-## Some In-app Screenshots
+# Some In-app Screenshots
 
 ##### 1. Log-in Page
 
