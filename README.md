@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img alt="Trace ResponseLogo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" />
+    <img alt="Trace Response Logo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" />
 </div>
 
 # Getting Started
