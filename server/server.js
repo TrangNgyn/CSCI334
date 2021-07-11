@@ -49,7 +49,6 @@ const business = require('./routes/business')
 const civilian = require('./routes/civilian')
 const organisation = require('./routes/organisation');
 const stats = require('./routes/stats')
-const org = require('./routes/organisation')
 
 // setup database
 db.mongoose
@@ -71,7 +70,7 @@ app.use(function(req, res, next) {
   next(); 
 });
 
-app.use('/api/user',user)
+app.use('/user',user)
 app.use('/alert',alert)
 app.use('/check-in',check_in)
 
@@ -82,7 +81,6 @@ app.use('/business',business);
 app.use('/civilian', civilian);
 app.use('/organisation', organisation);
 app.use('/stats', stats);
-app.use('/organisation', org)
 
 // make server object that contain port property and the value for our server.
 const server = {
