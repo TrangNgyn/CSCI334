@@ -1,4 +1,6 @@
-<img alt="Trace Response Logo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" style="display:bloc;k margin-left:auto; margin-right:auto;" />
+<p align="center">
+    <img alt="Trace Response Logo" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Logo.png" width="40%" />
+</p>
 
 # Getting Started
 
