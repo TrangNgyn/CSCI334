@@ -135,12 +135,7 @@ The datasets for the number of cases in Australia by states, the number of vacci
 ## Some In-app Screenshots
 
 1. Log-in Page
-   <img
-   width="30%" height="50%"
-   src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Login.png"
-   alt="Login Page"
-
-   >
+   <img alt="Login Page" src="https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/Login.png" width="30%" />
 
 2. Healthcare Worker's Homepage
    ![Healthcare Worker's Homepage](https://github.com/TrangNgyn/CSCI334/blob/main/screenshots/HealthcareHomepage.png?raw=true)
