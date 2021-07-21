@@ -28,6 +28,8 @@ const MapChart = ({ activeCases, setTooltipContent, height }) => {
         height={height}
       >
         <ZoomableGroup center={[0, 0]} maxZoom={200}>
+          
+          {/* map areas by post code */}
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
@@ -78,6 +80,7 @@ const MapChart = ({ activeCases, setTooltipContent, height }) => {
             }
           </Geographies>
 
+        {/* map suburb names + areas over postcode areas for better usability */}
         <Geographies geography={geoSuburbsUrl}>
           {({ geographies }) =>
             geographies.map(geo => {
@@ -104,70 +107,3 @@ const MapChart = ({ activeCases, setTooltipContent, height }) => {
 };
 
 export default memo(MapChart);
-
-{
-  /* <Geographies geography={geoSuburbsUrl}>
-  {({ geographies }) =>
-    geographies.map(geo => {
-      console.log(geo.properties.SED_NAME16)
-      const centroid = geoCentroid(geo);
-      return (
-        <>
-          <Geography
-            key={geo.rsmKey}
-            geography={geo}
-            style={{
-              default: {
-                outline: "none",
-                fillOpacity: 0.0
-              },
-              hover: {
-                fillOpacity: 0.0,
-                outline: "none"
-              },
-              pressed: {
-                fillOpacity: 0.0,
-                outline: "none"
-              }
-            }}
-          />
-          <Marker coordinates={centroid}>
-            <text y="2" fontSize={0.05} textAnchor="middle">
-              {geo.properties.SED_NAME16}
-            </text>
-          </Marker>
-        </>
-      );
-    })
-  }
-  </Geographies> */
-}
-
-// {activeCases[POST_CODE] != null ?
-//   <Annotation
-//     subject={centroid}
-//     connectorProps={{
-//       stroke: "#FF5533",
-//       strokeWidth: 0.05,
-//       strokeLinecap: "round"
-//     }}
-//   >
-//     <text fontSize={1} x="1" y="1" textAnchor="end" fill="#F53" size={0.5}>
-//       {"Paris"}
-//     </text>
-//   </Annotation>
-//   :
-//   null
-// }
-
-{
-  /* <Annotation
-    subject={centroid}
-    dx={offsets[cur.id][0]}
-    dy={offsets[cur.id][1]}
-  >
-    <text x={4} fontSize={14} alignmentBaseline="middle">
-      {cur.id}
-    </text>
-  </Annotation> */
-}
