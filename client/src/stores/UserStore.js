@@ -111,6 +111,7 @@ class UserStoreImpl {
     this[key] = value;
   };
 
+  // add dependant to list when checking in to business via QR code
   addDependant = () => {
     if (this.newDependant !== "") {
       if (!this.dependants.includes(this.newDependant)) {
@@ -120,6 +121,7 @@ class UserStoreImpl {
     }
   };
 
+  // remove dependant from list when checking in to business via QR code
   removeDependant = (name) => {
     this.dependants = this.dependants.filter((dep) => dep !== name.name);
   };
@@ -257,6 +259,8 @@ class UserStoreImpl {
       });
   };
 
+  
+  // as an organization, promote a user/civilian account to a healthcare worker
   addEmployee = (userEmail) => {
     this.preFetchOperations();
     fetch("/api/civilian/promote-civilian", {
@@ -296,6 +300,7 @@ class UserStoreImpl {
       });
   };
 
+  // as an organization, demote a current healthcare worker account under your organization account to a user/civilian account
   removeEmployee = (userEmail) => {
     this.preFetchOperations();
     fetch("/api/civilian/demote-healthcare", {
@@ -335,6 +340,7 @@ class UserStoreImpl {
       });
   };
 
+  // reset user store variables
   resetState = () => {
     this.id = "";
     this.email = "";
@@ -354,6 +360,7 @@ class UserStoreImpl {
     this.employees = [];
   };
 
+  // as an Admin account, get all currently verified organisations and organisations pending verification
   adminPopulateOrgList = (setVerifiedOrgList, setUnverifiedOrgList) => {
     this.preFetchOperations();
     fetch("/api/organisation/get-org-by-status", {
@@ -391,6 +398,7 @@ class UserStoreImpl {
       });
   };
 
+  // as a healthcare worker, search for a user (civilian or healthcare worker) by their email
   healthCareSearchUser = (userEmail) => {
     this.preFetchOperations();
     fetch("/api/civilian/healthcare-search-user", {
@@ -427,6 +435,7 @@ class UserStoreImpl {
       });
   };
 
+  // as a healthcare worker, get a users vaccination status via their email
   healthCareGetVaccineStatus = () => {
     this.preFetchOperations();
     fetch("/api/civilian/retrieve-vaccination-status", {
@@ -508,6 +517,7 @@ class UserStoreImpl {
       });
   };
 
+  // get active covid-19 cases from the past 14 days
   getActiveCases = () => {
     this.preFetchOperations();
     fetch("/api/stats/confirmed-cases-14days", {
@@ -569,6 +579,7 @@ class UserStoreImpl {
       });
   };
 
+  // get covid-19 data from the World Health Organization dataset
   getAusData = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-aus-data", {
@@ -599,6 +610,7 @@ class UserStoreImpl {
       });
   };
 
+  // get confirmed covid-19 cases in Australia from the past 14 days
   getAusData14Days = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-aus-confirmed-cases-14days", {
@@ -629,6 +641,7 @@ class UserStoreImpl {
       });
   };
 
+  // get covid-19 data from the ESRI dataset
   getEsriData = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-esri-data", {
@@ -659,6 +672,7 @@ class UserStoreImpl {
       });
   };
 
+  // get confirmed covid-19 cases in Victoria over the past 14 days
   getRecentVicCases = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-vic-confirmed-cases-14days", {
@@ -689,6 +703,7 @@ class UserStoreImpl {
       });
   };
 
+  // get totals such as, total current cases, current deaths etc. in Australia
   getCurrentTotals = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-current-totals-data", {
@@ -718,7 +733,8 @@ class UserStoreImpl {
         });
       });
   };
-
+  
+ // get total vaccinations in Australia
   getTotalVaccinations = () => {
     this.preFetchOperations();
     fetch("/api/stats/get-aus-total-vaccinations", {
@@ -788,6 +804,7 @@ class UserStoreImpl {
       });
   };
 
+   // As a user account (healthcare or civilian) check in to a venue/business
   doCheckIn = () => {
     this.preFetchOperations();
     fetch("/api/check-in/create-check-in", {
@@ -858,6 +875,7 @@ class UserStoreImpl {
       });
   };
 
+   // Log in to account
   doLogin = () => {
     this.preFetchOperations();
     fetch("/api/auth/sign_in", {
@@ -917,6 +935,7 @@ class UserStoreImpl {
       });
   };
 
+   // Logout of currently authenticated account
   doLogout = () => {
     runInAction(() => {
       this.isLoggedIn = false;
